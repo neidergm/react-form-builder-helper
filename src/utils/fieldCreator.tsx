@@ -15,12 +15,14 @@ import {
 import { RegisteredField } from "../interfaces/registered.interface";
 import { FieldOption } from "../interfaces/fields.interface";
 import { I_JsonObject } from "../interfaces/generic.interfaces";
-import withRequest from "../hoc/withRequest";
+import { Control } from "react-hook-form";
+import RequestWrapper from "../components/RequestWrapper";
 
 const createFormField = (
     config: RegisteredField,
     as?: string | ComponentType,
     labelAs?: string | ComponentType,
+    control?: Control
 ) => {
     const { label: lbl, tag, type, invalid, ...rest } = config;
 
@@ -71,7 +73,7 @@ const createFormField = (
         inputProps = { invalid };
     } else if (tag === "select") {
         inputProps.Element = element;
-        element = config.request ? SelectWithRequest : Select as unknown as ComponentType;
+        element = Select as unknown as ComponentType;
         
         if (type === "multiple") {
             inputProps.multiple = true
@@ -108,12 +110,16 @@ const createFormField = (
         child = <b>{tag} ({type})</b>
     }
 
+    if (config.request) {
+        inputProps.Child = element;
+        inputProps.control = control;
+        element = RequestWrapper;
+    }
+
     return <>
         {label && <Label Element={labelAs}>{label}</Label>}
         {createElement(element, inputProps as Attributes, child)}
     </>
 }
-
-const SelectWithRequest = withRequest(Select)
 
 export default createFormField;

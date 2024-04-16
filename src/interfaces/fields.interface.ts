@@ -14,6 +14,7 @@ export type FieldTypes = (
 ) & {
     controlled?: boolean
 } & Partial<WithRequestConfig>
+    & Partial<WithChildren>
 
 export type FieldOption = { value: string, label: string };
 
@@ -169,12 +170,26 @@ export interface HtmlConfig extends Pick<FieldCommonConfig, "className" | "label
 \********************************************************************/
 
 type RequestMethod = "GET" | "POST" | "post" | "get"
-type RequestParams = { [key: string]: number | boolean | string }
+type RequestParams = { [key: string]: number | boolean | string } | string
 export interface WithRequestConfig {
+    // loading?: boolean,
     request: {
         method: RequestMethod,
         url: string,
-        params: RequestParams
+        /**
+         * When is string the param is concatenated to de URL.
+         * @param {string} as "{key1}/{key2}/{keyN}"
+         */
+        params?: RequestParams ;
     },
-    doRequest?: (url: string, method: RequestMethod, params: RequestParams) => Promise<any>
+    doRequest?: (url: string, method: RequestMethod, params?: RequestParams) => Promise<any>
 }
+
+/********************************************************************\
+| WITH CHILDREN
+\********************************************************************/
+
+export interface WithChildren {
+    dependsOn: string;
+}
+

@@ -23,18 +23,20 @@ type Props<T> = {
 }
 
 const FieldPrinter = <T extends Record<string, unknown>>({
-  field: _field, error, Wrapper, wrapperProps = {} as T, FieldComponent, Label, control, register
+  field: _field, error, Wrapper, wrapperProps: wp, FieldComponent, Label, control, register
 }: Props<T>) => {
 
+  const wrapperProps: I_JsonObject = wp || {};
+
   const { wrapperClassName, ...field } = _field;
-  const wrapperComponent = Wrapper || WrapperFormGroup;
+  const WrapperComponent = Wrapper || WrapperFormGroup;
 
   if (wrapperClassName) {
     wrapperProps.className = classnames(wrapperProps.className, wrapperClassName)
   }
 
   if (field.tag === "HTML") {
-    return createElement(wrapperComponent, wrapperProps,
+    return createElement(WrapperComponent, wrapperProps as T,
       createFormField(field as unknown as RegisteredField, FieldComponent, Label || Lbl)
     )
   }
@@ -50,9 +52,9 @@ const FieldPrinter = <T extends Record<string, unknown>>({
         const props = { ...field, ...rf, invalid: !!error } as unknown as RegisteredField
         delete props.controlled;
 
-        return createElement(wrapperComponent, wrapperProps,
+        return createElement(WrapperComponent, wrapperProps as T,
           <>
-            {createFormField(props, FieldComponent, Label || Lbl)}
+            {createFormField(props, FieldComponent, Label || Lbl, control)}
             <FormFeedback>{error?.message as string}</FormFeedback>
           </>)
       }}
@@ -62,10 +64,9 @@ const FieldPrinter = <T extends Record<string, unknown>>({
   const registeredField = registerField(field, register);
   registeredField.invalid = !!error;
 
-  return createElement(Wrapper || WrapperFormGroup,
-    wrapperProps,
+  return createElement(WrapperComponent, wrapperProps as T,
     <>
-      {createFormField(registeredField, FieldComponent, Label || Lbl)}
+      {createFormField(registeredField, FieldComponent, Label || Lbl, control)}
       <FormFeedback>{error?.message as string}</FormFeedback>
     </>)
 }

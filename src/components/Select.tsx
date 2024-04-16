@@ -5,7 +5,7 @@ import { SelectConfig } from "../interfaces/fields.interface"
 type Props = {
     invalid?: boolean,
     Element?: ComponentType,
-} & SelectHTMLAttributes<HTMLSelectElement> & Pick<SelectConfig, "options" | "placeholder" >
+} & SelectHTMLAttributes<HTMLSelectElement> & Pick<SelectConfig, "options" | "placeholder">
 
 const Select = forwardRef<unknown, Props>(
     ({
@@ -19,7 +19,7 @@ const Select = forwardRef<unknown, Props>(
             [typeof Element === "string" ? "ref" : "innerRef"]: ref
         }
 
-        if(!options?.length){
+        if (!options?.length) {
             elementProps.disabled = true
         }
 
@@ -30,7 +30,7 @@ const Select = forwardRef<unknown, Props>(
 
         return (
             <Element {...elementProps} >
-                <option value="">{options?.length ? (placeholder || "Seleccione...") : "Cargando..."}</option>
+                <option value="">{options ? (placeholder || "Seleccione...") : "Cargando..."}</option>
                 {options?.map((o, i) => {
                     typeof o === "string" && (o = { value: o, label: o });
                     return <option value={o.value} key={`${o.value}-${i}`}>{o.label}</option>
