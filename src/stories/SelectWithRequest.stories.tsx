@@ -31,7 +31,7 @@ export const WithRequest: Story = {
             required: true
         },
         doRequest(url, method, params) {
-            return fetch(url).then((response) => response.json()).then((r: I_JsonObject) => {
+            return fetch(url, { method }).then((response) => response.json()).then((r: I_JsonObject) => {
                 return { options: r.data.map((i: any) => ({ value: i.cod_pais, label: i.nombre_pais })) }
             })
         },

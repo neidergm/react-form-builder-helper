@@ -3,7 +3,7 @@ import MyOwnDynamicFormMaker from "../MyOwnFormMaker"
 const commonConfiguration = {
     render: (props: any) => {
         return <MyOwnDynamicFormMaker
-            fields={[props]}
+            fields={Array.isArray(props) ? props : [props]}
             onSubmit={(data) => {
                 console.log(data)
             }}

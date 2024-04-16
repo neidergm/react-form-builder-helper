@@ -17,6 +17,7 @@ import { FieldOption } from "../interfaces/fields.interface";
 import { I_JsonObject } from "../interfaces/generic.interfaces";
 import { Control } from "react-hook-form";
 import RequestWrapper from "../components/RequestWrapper";
+import ChildrenWrapper from "../components/ChildrenWrapper";
 
 const createFormField = (
     config: RegisteredField,
@@ -112,8 +113,13 @@ const createFormField = (
 
     if (config.request) {
         inputProps.Child = element;
-        inputProps.control = control;
         element = RequestWrapper;
+    }
+
+    if(config.dependsOn){
+        inputProps.ChildComponent = element;
+        inputProps.control = control;
+        element = ChildrenWrapper;
     }
 
     return <>

@@ -1,35 +1,30 @@
 import { ComponentType, forwardRef, useEffect, useState } from "react";
-import { I_JsonObject } from "../interfaces/generic.interfaces";
 import { FieldTypes } from "../interfaces/fields.interface";
+import { useWatch } from "react-hook-form";
+import requestParamsMapper from "../utils/requestParamsMapper";
 
 const withRequest = (WrappedComponent: ComponentType<any>): ComponentType => {
     const MyComp = forwardRef(
-        ({ request, doRequest, ...props }: FieldTypes & any, ref) => {
+        ({ request, doRequest, control, dependsOn, ...props }: FieldTypes & any, ref) => {
+
+            const value = useWatch({ control, name: dependsOn })
+
             const [data, setData] = useState<any>({});
+
+            console.log({ request }, { props })
 
             useEffect(() => {
                 if (request) {
-                    let result;
-                    const { url, method, params } = request;
+                    const { url, method, params } = requestParamsMapper({...request}, {[dependsOn]:value});
 
                     if (doRequest) {
-                        result = doRequest?.(url, method, params);
-                    } else {
-                        const options: I_JsonObject = {
-                            method,
-                            headers: { "Content-Type": "application/json" },
-                        }
-                        if (method.toUpperCase() === "POST") {
-                            options.body = JSON.stringify(params)
-                        }
-                        result = fetch(url, options).then(r => r.json());
+                        control
+                        doRequest?.(url, method, params).then((response: any) => {
+                            setData(response)
+                        });
                     }
-
-                    result.then((response: any) => {
-                        setData(response)
-                    })
                 }
-            }, [])
+            }, [value])
 
             return <WrappedComponent
                 {...props}

@@ -27,7 +27,7 @@ const DynamicForm = ({
         console.log(data)
     }
 
-    console.log(getValues())
+    // console.log(getValues())
 
     return (
         <form onSubmit={handleSubmit(submit, submitError)} id={id}>
