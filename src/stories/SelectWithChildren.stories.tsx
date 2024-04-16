@@ -22,7 +22,7 @@ const child = {
         params: "{select1}"
     },
     dependsOn: "select1",
-    // controlled: true
+    controlled: true
 }
 
 const meta = {

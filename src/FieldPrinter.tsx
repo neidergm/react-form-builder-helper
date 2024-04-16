@@ -50,7 +50,6 @@ const FieldPrinter = <T extends Record<string, unknown>>({
       render={({ field: rf, fieldState: { error } }) => {
         delete field.defaultValue;
         const props = { ...field, ...rf, invalid: !!error } as unknown as RegisteredField
-        delete props.controlled;
 
         return createElement(WrapperComponent, wrapperProps as T,
           <>

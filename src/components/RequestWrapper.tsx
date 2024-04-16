@@ -13,6 +13,7 @@ const RequestWrapper = forwardRef(({
     doRequest,
     dependsOn,
     parentValue,
+    controlled,
     ...props
 }: Props, ref) => {
 
@@ -20,25 +21,24 @@ const RequestWrapper = forwardRef(({
 
     const getData = (req: typeof request) => {
         setData({ options: null })
-
         const { url, method, params } = req;
 
         doRequest?.(url, method, params).then((newData: typeof data) => {
             setData(newData)
         }).catch(() => {
-            setData([])
+            setData({})
         });
     }
 
     useEffect(() => {
-        console.log(parentValue, dependsOn, request)
-
         if (request) {
             if (dependsOn) {
-                if (!["", undefined, null].includes(parentValue))
+                controlled && props.onChange("")
+                if (!["", undefined, null].includes(parentValue)) {
                     getData(requestParamsMapper(request, { [dependsOn]: parentValue }));
-                else
-                    setData(props)
+                } else {
+                    setData({})
+                }
             } else {
                 getData(request);
             }

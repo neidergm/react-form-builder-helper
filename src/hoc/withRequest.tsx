@@ -11,8 +11,6 @@ const withRequest = (WrappedComponent: ComponentType<any>): ComponentType => {
 
             const [data, setData] = useState<any>({});
 
-            console.log({ request }, { props })
-
             useEffect(() => {
                 if (request) {
                     const { url, method, params } = requestParamsMapper({...request}, {[dependsOn]:value});

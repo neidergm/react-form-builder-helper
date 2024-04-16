@@ -25,7 +25,7 @@ const createFormField = (
     labelAs?: string | ComponentType,
     control?: Control
 ) => {
-    const { label: lbl, tag, type, invalid, ...rest } = config;
+    const { label: lbl, tag, type, invalid, controlled, ...rest } = config;
 
     let label = lbl;
     let element: typeof as = as;
@@ -75,7 +75,7 @@ const createFormField = (
     } else if (tag === "select") {
         inputProps.Element = element;
         element = Select as unknown as ComponentType;
-        
+
         if (type === "multiple") {
             inputProps.multiple = true
         }
@@ -112,11 +112,12 @@ const createFormField = (
     }
 
     if (config.request) {
+        inputProps.controlled = controlled;
         inputProps.Child = element;
         element = RequestWrapper;
     }
 
-    if(config.dependsOn){
+    if (config.dependsOn) {
         inputProps.ChildComponent = element;
         inputProps.control = control;
         element = ChildrenWrapper;
