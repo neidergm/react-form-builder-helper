@@ -1,19 +1,23 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { ComponentType, InputHTMLAttributes, forwardRef } from "react"
 import { default as Lbl } from "./Label"
 import classnames from 'classnames'
+import { RadioConfig } from "../interfaces/fields.interface"
+import mapOptions from "../utils/fieldOptionsMapper"
 
 type Props = {
     invalid?: boolean,
-    children: string,
     Label?: string | ComponentType,
-    Element?: ComponentType | string,
+    Element?: ComponentType<any> | string,
+    options: NonNullable<RadioConfig["options"]>,
 } & InputHTMLAttributes<HTMLInputElement>
 
 const Radio = forwardRef<unknown, Props>(
     ({
         Element = "input",
         Label,
-        children,
+        options,
+        id,
         ...props
     }, ref) => {
         const elementProps = {
@@ -27,11 +31,16 @@ const Radio = forwardRef<unknown, Props>(
             delete elementProps.invalid;
         }
 
-        return (
-            <div className="form-check">
-                <Element {...elementProps} />
-                <Lbl Element={Label} htmlFor={props.id} check>{children}</Lbl>
-            </div>
+        return (<>
+            {
+                mapOptions(options, (label, value, index) =>
+                    <div className="form-check" key={value}>
+                        <Element {...elementProps} value={value} id={`${id}-${index}`}/>
+                        <Lbl Element={Label} htmlFor={`${id}-${index}`} check>{label}</Lbl>
+                    </div >
+                )
+            }
+        </>
         )
     }
 )

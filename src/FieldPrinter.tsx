@@ -5,7 +5,7 @@ import WrapperFormGroup from "./components/WrapperFormGroup"
 import { default as Lbl } from "./components/Label"
 import { Control, Controller, FieldError, FieldErrorsImpl, Merge, UseFormRegister } from "react-hook-form"
 import { I_JsonObject } from "./interfaces/generic.interfaces"
-import { FieldTypes } from "./interfaces/fields.interface"
+import { FieldTypes, HtmlConfig } from "./interfaces/fields.interface"
 import registerField from "./utils/registerField"
 import validationsMapper from "./utils/validatoinsMapper"
 import { RegisteredField } from "./interfaces/registered.interface"
@@ -16,7 +16,7 @@ type Props<T> = {
   Wrapper?: ComponentType<T>;
   Label?: ComponentType,
   wrapperProps?: T & { className?: string },
-  field: FieldTypes,
+  field: FieldTypes | HtmlConfig,
   error?: FieldError | Merge<FieldError, FieldErrorsImpl<I_JsonObject>>,
   control: Control,
   register: UseFormRegister<I_JsonObject>,
@@ -41,7 +41,7 @@ const FieldPrinter = <T extends Record<string, unknown>>({
     )
   }
 
-  if (field.controlled || (field.request && field.defaultValue)) {
+  if (field.controlled || (field.request)) {
     return <Controller
       name={field.name}
       control={control}

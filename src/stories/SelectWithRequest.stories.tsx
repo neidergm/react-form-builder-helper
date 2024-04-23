@@ -26,7 +26,7 @@ export const WithRequest: Story = {
         type: "simple",
         placeholder: "Pick one...",
         options: [],
-        // defaultValue: "008",
+        defaultValue: "008",
         validations: {
             required: true
         },

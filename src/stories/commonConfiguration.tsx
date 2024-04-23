@@ -1,9 +1,11 @@
 import MyOwnDynamicFormMaker from "../MyOwnFormMaker"
+import { I_JsonObject } from "../interfaces/generic.interfaces"
 
 const commonConfiguration = {
-    render: (props: any) => {
+    render: (fields: any, formProps: I_JsonObject = {}) => {
         return <MyOwnDynamicFormMaker
-            fields={Array.isArray(props) ? props : [props]}
+            {...formProps}
+            fields={Array.isArray(fields) ? fields : [fields]}
             onSubmit={(data) => {
                 console.log(data)
             }}

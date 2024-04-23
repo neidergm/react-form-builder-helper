@@ -15,7 +15,6 @@ const DynamicForm = ({
         handleSubmit,
         register,
         control,
-        getValues,
         formState: { errors }
     } = useForm<I_JsonObject>({ defaultValues });
 
@@ -26,8 +25,6 @@ const DynamicForm = ({
     const submitError: SubmitErrorHandler<FieldValues> = (data) => {
         console.log(data)
     }
-
-    // console.log(getValues())
 
     return (
         <form onSubmit={handleSubmit(submit, submitError)} id={id}>

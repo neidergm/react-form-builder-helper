@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Attributes, ComponentType, createElement } from "react";
 import classnames from 'classnames'
 import {
@@ -13,11 +14,10 @@ import {
     Custom
 } from "./../components"
 import { RegisteredField } from "../interfaces/registered.interface";
-import { FieldOption } from "../interfaces/fields.interface";
-import { I_JsonObject } from "../interfaces/generic.interfaces";
 import { Control } from "react-hook-form";
 import RequestWrapper from "../components/RequestWrapper";
 import ChildrenWrapper from "../components/ChildrenWrapper";
+import { I_JsonObject } from "../interfaces/generic.interfaces";
 
 const createFormField = (
     config: RegisteredField,
@@ -46,10 +46,7 @@ const createFormField = (
         element = Input;
 
         if (type === "radio") {
-            child = (config.options as FieldOption[]).map((o, i) => <Radio defaultValue={o.value} key={o.value}
-                {...inputProps} id={`${config.id}-${i}`} Label={labelAs}
-            >{o.label}</Radio>)
-
+            child = <Radio {...inputProps as any} Label={labelAs} />
             element = WrapperFormGroup;
             inputProps = { invalid };
         } else if (type === "textarea") {
@@ -59,18 +56,9 @@ const createFormField = (
             inputProps.type = type;
         }
     } else if (tag === "checkbox") {
-        inputProps.Element = element
+        child = <Checkbox {...inputProps as any} Label={labelAs} Element={element} type={type}>{label}</Checkbox>;
+        if (type === "simple") label = undefined;
         element = WrapperFormGroup;
-
-        if (type === "multiple") {
-            child = (config.options as FieldOption[]).map((o, i) =>
-                <Checkbox {...inputProps} key={o.value} Label={labelAs} defaultValue={o.value} id={`${inputProps.id}-${i}`}>{o.label}</Checkbox>
-            )
-        } else {
-            child = <Checkbox {...inputProps} Label={labelAs}>{label}</Checkbox>;
-            label = undefined;
-        }
-
         inputProps = { invalid };
     } else if (tag === "select") {
         inputProps.Element = element;
@@ -112,19 +100,21 @@ const createFormField = (
     }
 
     if (config.request) {
-        inputProps.controlled = controlled;
         inputProps.Child = element;
         element = RequestWrapper;
     }
 
     if (config.dependsOn) {
+        inputProps.controlled = controlled;
         inputProps.ChildComponent = element;
         inputProps.control = control;
         element = ChildrenWrapper;
     }
 
     return <>
-        {label && <Label Element={labelAs}>{label}</Label>}
+        {label && <Label htmlFor={inputProps.id} Element={labelAs}>
+            {label} {config.validations?.required && <span className="text-danger">*</span>}
+        </Label>}
         {createElement(element, inputProps as Attributes, child)}
     </>
 }

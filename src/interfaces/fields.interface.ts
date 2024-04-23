@@ -9,11 +9,10 @@ export type FieldTypes = (
     DateConfig |
     TimeConfig |
     FileConfig |
-    CustomConfig |
-    HtmlConfig
-) & {
-    controlled?: boolean
-} & Partial<WithRequestConfig>
+    CustomConfig
+    // HtmlConfig
+)
+    & Partial<WithRequestConfig>
     & Partial<WithChildren>
 
 export type FieldOption = { value: string, label: string };
@@ -22,6 +21,7 @@ export interface FieldCommonConfig {
 
     label?: string | JSX.Element;
     className?: string,
+    controlled?: boolean
 
     name: string;
     id?: string;
@@ -180,7 +180,7 @@ export interface WithRequestConfig {
          * When is string the param is concatenated to de URL.
          * @param {string} as "{key1}/{key2}/{keyN}"
          */
-        params?: RequestParams ;
+        params?: RequestParams;
     },
     doRequest?: (url: string, method: RequestMethod, params?: RequestParams) => Promise<any>
 }

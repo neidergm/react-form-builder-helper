@@ -15,6 +15,7 @@ const child = {
             return { options: r.data.map((i: I_JsonObject) => ({ value: i.codalf, label: i.nomid1 })) }
         })
     },
+    // defaultValue: "11",
     validations: { required: true },
     request: {
         url: "https://axis.uninunez.edu.co/apiuninsc/programas/2024-2S/1/1/",
@@ -22,13 +23,13 @@ const child = {
         params: "{select1}"
     },
     dependsOn: "select1",
-    controlled: true
+    // controlled: true
 }
 
 const meta = {
     ...commonConfiguration,
-    render: (props) => commonConfiguration.render([props, child]),
-    title: 'Form/Select with children',
+    render: (props) => commonConfiguration.render([props, child], {defaultValues: {select1: "1", select2: "11"}}),
+    title: 'Form/Select',
     component: SelectWithChildrenComponent,
     parameters: {
         controls: { sort: 'requiredFirst' },
@@ -49,7 +50,8 @@ export const WithChildren: Story = {
         type: "simple",
         placeholder: "Pick one...",
         options: [{ label: "PREGRADO", value: "1" }, { label: "POSGRADO", value: "2" }, { label: "TÉCNOLOGO", value: "5" }],
-        // defaultValue: "008",
+        // defaultValue: "1",
+        // controlled: true,
         validations: {
             required: true
         },
