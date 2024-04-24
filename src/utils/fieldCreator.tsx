@@ -14,18 +14,17 @@ import {
     Custom
 } from "./../components"
 import { RegisteredField } from "../interfaces/registered.interface";
-import { Control } from "react-hook-form";
+// import { Control } from "react-hook-form";
 import RequestWrapper from "../components/RequestWrapper";
-import ChildrenWrapper from "../components/ChildrenWrapper";
 import { I_JsonObject } from "../interfaces/generic.interfaces";
 
 const createFormField = (
     config: RegisteredField,
     as?: string | ComponentType,
     labelAs?: string | ComponentType,
-    control?: Control
+    // control?: Control
 ) => {
-    const { label: lbl, tag, type, invalid, controlled, ...rest } = config;
+    const { label: lbl, tag, type, invalid, parentValue, ...rest } = config;
 
     let label = lbl;
     let element: typeof as = as;
@@ -100,15 +99,9 @@ const createFormField = (
     }
 
     if (config.request) {
+        inputProps.parentValue = parentValue;
         inputProps.Child = element;
         element = RequestWrapper;
-    }
-
-    if (config.dependsOn) {
-        inputProps.controlled = controlled;
-        inputProps.ChildComponent = element;
-        inputProps.control = control;
-        element = ChildrenWrapper;
     }
 
     return <>

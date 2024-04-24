@@ -1,5 +1,6 @@
 import { ComponentType } from "react";
 import { ControllerRenderProps, FieldValues, RegisterOptions } from "react-hook-form";
+import { I_JsonObject } from "./generic.interfaces";
 
 export type FieldTypes = (
     SelectConfig |
@@ -189,7 +190,16 @@ export interface WithRequestConfig {
 | WITH CHILDREN
 \********************************************************************/
 
+type DependsOnItem = {
+    name: string,
+    whenValue: string | number | boolean | "*",
+    show: boolean,
+    props?: I_JsonObject
+    // showWhenValue: ,
+    // hideWhenValue?: string | number | boolean
+}
+
 export interface WithChildren {
-    dependsOn: string;
+    dependsOn: string | DependsOnItem[];
 }
 

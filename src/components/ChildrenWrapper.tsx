@@ -1,18 +1,22 @@
-import { ComponentType, forwardRef } from 'react'
 import { Control, useWatch } from 'react-hook-form'
+import fieldWatcher from '../utils/fieldWatcher';
+import { WithChildren } from '../interfaces/fields.interface';
+import { I_JsonObject } from '../interfaces/generic.interfaces';
 
 type Props = {
-    ChildComponent: ComponentType<any>,
+    children: (props: I_JsonObject) => JSX.Element,
     control: Control,
-    dependsOn: string,
-} & { [x: string]: any }
+    dependsOn: WithChildren["dependsOn"],
+}
 
-const ChildrenWrapper = forwardRef(
-    ({ ChildComponent, control, ...props }: Props, ref) => {
-        const parentValue = useWatch({ name: props.dependsOn, control })
+const ChildrenWrapper = ({ children, control, dependsOn }: Props) => {
+    const names = typeof dependsOn === "string" ? [dependsOn] : dependsOn.map(item => item.name);
+    const parentValue = useWatch({ name: names, control });
 
-        return <ChildComponent {...props} parentValue={parentValue} ref={ref} />
-    }
-)
+    const watcherResult = fieldWatcher(dependsOn, parentValue)
+
+    if (!watcherResult.show) return null
+    return children(watcherResult.parentValue)
+}
 
 export default ChildrenWrapper;

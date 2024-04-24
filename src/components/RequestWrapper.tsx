@@ -1,7 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { ComponentType, forwardRef, useEffect, useState } from 'react'
 import { WithRequestConfig } from '../interfaces/fields.interface';
-import { I_JsonObject } from '../interfaces/generic.interfaces';
 import requestParamsMapper from '../utils/requestParamsMapper';
+import { I_JsonObject } from '../interfaces/generic.interfaces';
 
 type Props = {
     Child: ComponentType,
@@ -11,12 +12,11 @@ const RequestWrapper = forwardRef(({
     Child,
     request,
     doRequest,
-    dependsOn,
     parentValue,
     controlled,
     ...props
 }: Props, ref) => {
-
+    console.log(props.name, parentValue)
     const [data, setData] = useState<any>({});
 
     const getData = (req: typeof request) => {
@@ -32,10 +32,10 @@ const RequestWrapper = forwardRef(({
 
     useEffect(() => {
         if (request) {
-            if (dependsOn) {
+            if (parentValue) {
                 controlled && props.onChange("")
-                if (!["", undefined, null].includes(parentValue)) {
-                    getData(requestParamsMapper(request, { [dependsOn]: parentValue }));
+                if (!["", undefined, null].includes(Object.values(parentValue as I_JsonObject)[0])) {
+                    getData(requestParamsMapper(request, parentValue));
                 } else {
                     setData({})
                 }
@@ -43,7 +43,7 @@ const RequestWrapper = forwardRef(({
                 getData(request);
             }
         }
-    }, [parentValue])
+    }, Object.values(parentValue || {}))
 
     return <Child {...props} {...data} ref={ref} />
 }

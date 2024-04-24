@@ -1,5 +1,6 @@
 import { UseFormRegisterReturn } from "react-hook-form";
 import { FieldTypes } from "./fields.interface";
+import fieldWatcher from "../utils/fieldWatcher";
 
 type registeredConfigField = FieldTypes & UseFormRegisterReturn & {
     id: string,
@@ -11,4 +12,4 @@ type controlledConfigField = FieldTypes & UseFormRegisterReturn & {
     componentProps?: object
 };
 
-export type RegisteredField = registeredConfigField & controlledConfigField;
+export type RegisteredField = registeredConfigField & controlledConfigField & {parentValue?: ReturnType<typeof fieldWatcher>};
