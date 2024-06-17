@@ -1,15 +1,15 @@
-import { UseFormRegisterReturn } from "react-hook-form";
+// import { UseFormRegisterReturn } from "react-hook-form";
 import { FieldTypes } from "./fields.interface";
 import fieldWatcher from "../utils/fieldWatcher";
 
-type registeredConfigField = FieldTypes & UseFormRegisterReturn & {
+type registeredConfigField = {
     id: string,
     invalid?: boolean
 };
 
-type controlledConfigField = FieldTypes & UseFormRegisterReturn & {
+type controlledConfigField = {
     value?: unknown ,
     componentProps?: object
 };
 
-export type RegisteredField = registeredConfigField & controlledConfigField & {parentValue?: ReturnType<typeof fieldWatcher>};
+export type RegisteredField = registeredConfigField & controlledConfigField & FieldTypes &  {parentValue?: ReturnType<typeof fieldWatcher>};

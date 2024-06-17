@@ -1,4 +1,5 @@
-import { ComponentType } from "react";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { ChangeEventHandler, ComponentType, FocusEventHandler } from "react";
 import { ControllerRenderProps, FieldValues, RegisterOptions } from "react-hook-form";
 import { I_JsonObject } from "./generic.interfaces";
 
@@ -12,8 +13,9 @@ export type FieldTypes = (
     FileConfig |
     CustomConfig
     // HtmlConfig
-)
-    & Partial<WithRequestConfig>
+) & {
+    controlled?: boolean
+} & Partial<WithRequestConfig>
     & Partial<WithChildren>
 
 export type FieldOption = { value: string, label: string };
@@ -21,16 +23,18 @@ export type FieldOption = { value: string, label: string };
 export interface FieldCommonConfig {
 
     label?: string | JSX.Element;
-    className?: string,
-    controlled?: boolean
+    className?: string;
+    onBlur?: FocusEventHandler<HTMLInputElement>;
+    onChange?: ChangeEventHandler<HTMLInputElement> ;
 
     name: string;
     id?: string;
     placeholder?: string;
     defaultValue?: any;
     value?: any;
-    // invalid?: boolean;
+    invalid?: boolean;
     disabled?: boolean;
+
     // /**
     //  * classNames for input field
     //  */
@@ -162,7 +166,6 @@ export interface HtmlConfig extends Pick<FieldCommonConfig, "className" | "label
     tag: "HTML";
     value: string;
     wrapperClassName?: string;
-    // validations?: RegisterOptions
 }
 
 
@@ -190,10 +193,12 @@ export interface WithRequestConfig {
 | WITH CHILDREN
 \********************************************************************/
 
+type WhenValueTypes = string | number | boolean | "*";
+
 type DependsOnItem = {
     name: string,
-    whenValue: string | number | boolean | "*",
-    show: boolean,
+    whenValue?: WhenValueTypes | Array<WhenValueTypes>,
+    show?: boolean,
     props?: I_JsonObject
     // showWhenValue: ,
     // hideWhenValue?: string | number | boolean

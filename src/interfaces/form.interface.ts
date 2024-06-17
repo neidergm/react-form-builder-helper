@@ -10,4 +10,5 @@ export interface FormProps {
     onSubmit: OnSubmit;
     onInvalidSubmit?: OnSubmit;
     defaultValues?: object;
+    saveTemporalData?: (data: FieldValues) => void
 }

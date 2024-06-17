@@ -1,13 +1,12 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { ComponentType, createElement } from "react"
 import createFormField from "./utils/fieldCreator"
 import { FormFeedback } from "reactstrap"
 import WrapperFormGroup from "./components/WrapperFormGroup"
 import { default as Lbl } from "./components/Label"
-import { Controller, FieldError, FieldErrorsImpl, Merge, UseFormReturn } from "react-hook-form"
+import { Control, Controller, FieldError, FieldErrorsImpl, FieldValues, Merge, UseFormRegister, UseFormReturn } from "react-hook-form"
 import { FieldTypes, HtmlConfig } from "./interfaces/fields.interface"
 import registerField from "./utils/registerField"
-import validationsMapper from "./utils/validatoinsMapper"
+import validationsMapper from "./utils/validationsMapper"
 import { RegisteredField } from "./interfaces/registered.interface"
 import classnames from 'classnames';
 import ChildrenWrapper from "./components/ChildrenWrapper"
@@ -36,51 +35,97 @@ const FieldPrinter = <T extends Record<string, unknown>>({
     wrapperProps.className = classnames(wrapperProps.className, wrapperClassName)
   }
 
-
   if (fieldTemp.tag === "HTML") {
     return createElement(WrapperComponent, wrapperProps as T,
       createFormField(fieldTemp as unknown as RegisteredField, FieldComponent, Label || Lbl)
     )
   }
+
   const { controlled, dependsOn, ...field } = fieldTemp;
 
-  const component = (parentValue?: I_JsonObject) => {
-    if (controlled || (field.request)) {
-      return <Controller
-        name={field.name}
-        control={control}
-        defaultValue={field.defaultValue}
-        rules={validationsMapper(field.validations || {})}
-        render={({ field: rf, fieldState: { error } }) => {
-          delete field.defaultValue;
-          const props = { ...field, ...rf, invalid: !!error } as unknown as RegisteredField
+  const compProps = {
+    Label: Label || Lbl,
+    control,
+    FieldComponent
+  }
 
-          parentValue && (props.parentValue = parentValue);
+  const component = (parentValue?: I_JsonObject, newProps?: I_JsonObject) => {
+    const finallyFieldProps = newProps ? { ...field, ...newProps } : field;
 
-          return createElement(WrapperComponent, wrapperProps as T,
-            <>
-              {createFormField(props, FieldComponent, Label || Lbl)}
-              <FormFeedback>{error?.message as string}</FormFeedback>
-            </>)
-        }}
-      />
-    } else {
-      const registeredField = registerField(field, register);
-      registeredField.invalid = !!error;
-      parentValue && (registeredField.parentValue = parentValue);
-
+    if (controlled || (finallyFieldProps.request)) {
       return createElement(WrapperComponent, wrapperProps as T,
-        <>
-          {createFormField(registeredField, FieldComponent, Label || Lbl)}
-          <FormFeedback>{error?.message as string}</FormFeedback>
-        </>)
+        <ControlledField {...compProps} finallyFieldProps={finallyFieldProps} parentValue={parentValue} />
+      )
+    } else {
+      return createElement(WrapperComponent, wrapperProps as T,
+        <UncrontrolledFIeld {...compProps}
+          finallyFieldProps={finallyFieldProps}
+          parentValue={parentValue}
+          error={error}
+          register={register}
+        />
+      )
     }
   }
 
-  return dependsOn ? <ChildrenWrapper
-    control={control} dependsOn={dependsOn} children={component}
+  return dependsOn ?
+    <ChildrenWrapper control={control} dependsOn={dependsOn} children={component} /> : component()
+}
+
+type ComponentFieldProps = {
+  finallyFieldProps: Omit<FieldTypes, "dependsOn" | "controlled" | "wrapperClassName">;
+  control: Control<FieldValues>;
+  FieldComponent?: string | ComponentType,
+  Label: ComponentType,
+  parentValue?: I_JsonObject;
+}
+
+const ControlledField = ({
+  finallyFieldProps,
+  control,
+  FieldComponent,
+  Label,
+  parentValue,
+}: ComponentFieldProps) => {
+  return <Controller
+    name={finallyFieldProps.name}
+    control={control}
+    defaultValue={finallyFieldProps.defaultValue}
+    rules={validationsMapper(finallyFieldProps.validations, { type: finallyFieldProps.type, tag: finallyFieldProps.tag })}
+    render={({ field: rf, fieldState: { error } }) => {
+      const props = { ...finallyFieldProps, ...rf, invalid: !!error } as unknown as RegisteredField
+      delete props.defaultValue;
+      parentValue && (props.parentValue = parentValue);
+
+      return <>
+        {createFormField(props, FieldComponent, Label)}
+        <FormFeedback>{error?.message as string}</FormFeedback>
+      </>
+    }}
   />
-    : component()
+}
+
+const UncrontrolledFIeld = ({
+  finallyFieldProps,
+  FieldComponent,
+  Label,
+  register,
+  error,
+  parentValue,
+}: ComponentFieldProps & {
+  register: UseFormRegister<FieldValues>,
+  error?: FieldError | Merge<FieldError, FieldErrorsImpl<I_JsonObject>>,
+}
+) => {
+  const registeredField = registerField(finallyFieldProps as FieldTypes, register);
+
+  registeredField.invalid = !!error;
+  parentValue && (registeredField.parentValue = parentValue);
+
+  return <>
+    {createFormField(registeredField, FieldComponent, Label)}
+    <FormFeedback>{error?.message as string}</FormFeedback>
+  </>
 }
 
 export default FieldPrinter
