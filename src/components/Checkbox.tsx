@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { ComponentType, InputHTMLAttributes, forwardRef } from "react"
 import { default as Lbl } from "./Label"
 import classnames from 'classnames'
@@ -8,9 +7,9 @@ import mapOptions from "../utils/fieldOptionsMapper";
 type Props = {
     invalid?: boolean,
     Label?: string | ComponentType,
-    Element?: ComponentType<any> | string,
+    Element?: ComponentType<InputHTMLAttributes<HTMLInputElement>> | string,
     type: CheckboxConfig["type"],
-    options: NonNullable<CheckboxConfig["options"]>,
+    options?: CheckboxConfig["options"],
 } & InputHTMLAttributes<HTMLInputElement>;
 
 const Checkbox = forwardRef<unknown, Props>(
@@ -18,15 +17,21 @@ const Checkbox = forwardRef<unknown, Props>(
         Element = "input",
         Label,
         children,
+        defaultValue,
         type,
         options,
         id,
         ...props
     }, ref) => {
+
         const elementProps = {
             ...props,
             type: "checkbox",
             [typeof Element === "string" ? "ref" : "innerRef"]: ref
+        }
+
+        if (defaultValue) {
+            elementProps.defaultChecked = defaultValue as never;
         }
 
         if (typeof Element === "string") {
@@ -35,14 +40,20 @@ const Checkbox = forwardRef<unknown, Props>(
             delete elementProps.invalid;
         }
 
-        if (type === "multiple") {
+        if (type !== "simple") {
+            if (!options) return <></>
             return (<>
                 {
-                    mapOptions(options, (label, value, index) =>
-                        <div className="form-check" key={value}>
+                    mapOptions(options, (label, value, index) => {
+                        if (Array.isArray(defaultValue)) {
+                            elementProps.defaultChecked = defaultValue?.includes(value) as never;
+                        }
+
+                        return <div className="form-check" key={value}>
                             <Element {...elementProps} value={value} id={`${id}-${index}`} />
                             <Lbl Element={Label} htmlFor={`${id}-${index}`} check>{label}</Lbl>
                         </div >
+                    }
                     )
                 }
             </>)

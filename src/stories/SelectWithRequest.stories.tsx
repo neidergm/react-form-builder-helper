@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import commonConfiguration from './commonConfiguration';
-import { SelectWithRequestComponent } from '../MyOwnFormMaker';
+import { SelectWithRequestComponent } from './FormFieldsComponentsForStory';
 import { I_JsonObject } from '../interfaces/generic.interfaces';
 
 const meta = {

@@ -1,25 +1,24 @@
 import { FieldValues, SubmitErrorHandler, SubmitHandler, useForm } from 'react-hook-form';
-import { FormProps } from './../interfaces/form.interface';
+import { FormProps } from './interfaces/form.interface';
 import { Button, FormGroup, Label, Row } from 'reactstrap';
-import FieldPrinter from './../FieldPrinter';
-import { I_JsonObject } from '../interfaces/generic.interfaces';
+import FieldPrinter from './FieldPrinter';
+import { I_JsonObject } from './interfaces/generic.interfaces';
 
-const DynamicForm = ({
+const Form = ({
     id,
     fields,
-    defaultValues,
-    onSubmit
+    defaultValues
 }: FormProps) => {
     // const fieldsJson = fields.reduce((p, c)=>{return {...p, [c.name]: ""}}, {})
+    const form = useForm<I_JsonObject>({ defaultValues });
+
     const {
         handleSubmit,
-        register,
-        control,
         formState: { errors }
-    } = useForm<I_JsonObject>({ defaultValues });
+    } = form;
 
     const submit: SubmitHandler<FieldValues> = (data) => {
-        onSubmit(data)
+        console.log(data)
     }
 
     const submitError: SubmitErrorHandler<FieldValues> = (data) => {
@@ -27,13 +26,12 @@ const DynamicForm = ({
     }
 
     return (
-        <form onSubmit={handleSubmit(submit, submitError)} id={id}>
+        <form onSubmit={handleSubmit(submit, submitError)} id={id} noValidate className='bg-light rounded-4 px-3 py-4 h-100'>
             <Row>
                 {
                     fields.map((field, i) => {
                         return <FieldPrinter
-                            control={control}
-                            register={register}
+                            form={form}
                             key={i}
                             Wrapper={FormGroup}
                             wrapperProps={{
@@ -48,9 +46,9 @@ const DynamicForm = ({
                 }
             </Row>
 
-            <Button>Send</Button>
+            <Button className='px-5 mt-4' color='primary'>Send form</Button>
         </form>
     )
 }
 
-export default DynamicForm
+export default Form

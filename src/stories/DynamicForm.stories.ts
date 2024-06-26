@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import DynamicForm from '../components/DynamicForm';
+import DynamicForm from '../Form';
 
  './../components';
 

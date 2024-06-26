@@ -8,8 +8,11 @@ type registeredConfigField = {
 };
 
 type controlledConfigField = {
-    value?: unknown ,
+    value?: unknown,
     componentProps?: object
 };
 
-export type RegisteredField = registeredConfigField & controlledConfigField & FieldTypes &  {parentValue?: ReturnType<typeof fieldWatcher>};
+export type RegisteredField = registeredConfigField & controlledConfigField & FieldTypes &
+{
+    parentValue?: ReturnType<typeof fieldWatcher>
+};

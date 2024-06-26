@@ -11,10 +11,12 @@ const meta = {
     },
     argTypes: {
         tag: { control: "inline-radio", options: ["select"] },
-        type: { control: "inline-radio", options: ["simple"] }
+        type: { control: "inline-radio", options: ["multiple"] },
+        defaultValue: { control: "object" }
     },
     args: {
-        tag: 'select'
+        tag: 'select',
+        defaultValue: []
     },
     tags: ['autodocs'],
 } satisfies Meta<typeof SelectComponent>;
@@ -23,27 +25,15 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const Simple: Story = {
+export const Multiple: Story = {
     args: {
         label: "Select component",
-        name: "selectField",
-        type: "simple",
-        placeholder: "Pick one...",
-        options: ["Option1", "Option2", { "label": "Option3", "value": "op3" }],
+        name: "selectMultipleField",
+        type: "multiple",
+        placeholder: "Pick one or more...",
+        options: ["Option1", "Option2", { "label": "Option3", "value": "Option3" }],
         validations: {
             required: true
         }
     },
 };
-// export const Multiple: Story = {
-//     args: {
-//         label: "Select component",
-//         name: "selectMultipleField",
-//         type: "multiple",
-//         placeholder: "Pick one or more...",
-//         options: ["Option1", "Option2", { "label": "Option3", "value": "op3" }],
-//         validations: {
-//             required: true
-//         }
-//     },
-// };

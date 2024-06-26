@@ -2,13 +2,16 @@ import { RegisterOptions } from "react-hook-form";
 
 type TimeTypes = "day" | "days" | "month" | "months" | "year" | "years"
 
-const timeGenerator = (min = "00:00", max = "24:00", step = 5) => {
+const timeGenerator = (min: string | number = "00:00", max: string | number = "24:00", step = 15) => {
+    if (typeof min === "number") min = String(min)
+    if (typeof max === "number") max = String(max)
+
     const [minH, minMin] = (min).split(":");
     const [maxH, maxMin] = (max).split(":");
     const divider = 60 / step;
     const firstH = Number(minH), lastH = Number(maxH);
 
-    return Array((lastH + 1) * divider)
+    const l = Array((lastH + 1) * divider)
         .fill(0).reduce((p, _, i) => {
             const hh = ~~(i / divider);
             const mm = Math.round(60 * (i / divider % 1));
@@ -20,6 +23,9 @@ const timeGenerator = (min = "00:00", max = "24:00", step = 5) => {
             }
             return p;
         }, [])
+
+    if (l[l.length - 1] === "24:00") l.pop()
+    return l;
 }
 
 const minOrMaxDateSetter = (val: RegisterOptions["min"]) => {
@@ -36,6 +42,20 @@ const minOrMaxDateSetter = (val: RegisterOptions["min"]) => {
     }
     return obj;
 }
+
+// const minOrMaxTimeSetter = (val: RegisterOptions["min"]) => {
+
+//     const obj = typeof val === "object" ? val : { value: val }
+
+//     const value = obj.value as string;
+
+//     const [hours, mins = 0, secs = 0] = value.split(":");
+
+//     obj.value = new Date().setHours(Number(hours), Number(mins), Number(secs));
+
+//     return obj;
+// }
+
 // const maxDateSetter = (max: string) => {
 //     if (max === "today") {
 //         return dateSetter(0);

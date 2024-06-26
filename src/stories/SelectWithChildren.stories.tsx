@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import commonConfiguration from './commonConfiguration';
-import { SelectWithChildrenComponent } from '../MyOwnFormMaker';
+import { SelectWithChildrenComponent } from './FormFieldsComponentsForStory';
 import { I_JsonObject } from '../interfaces/generic.interfaces';
 
 const child = {

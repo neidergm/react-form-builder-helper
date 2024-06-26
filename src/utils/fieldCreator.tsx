@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Attributes, ComponentType, createElement } from "react";
 import classnames from 'classnames'
 import {
@@ -14,25 +13,27 @@ import {
     Custom
 } from "./../components"
 import { RegisteredField } from "../interfaces/registered.interface";
-// import { Control } from "react-hook-form";
 import RequestWrapper from "../components/RequestWrapper";
 import { ValidationValueMessage } from "react-hook-form";
 import { I_JsonObject } from "../interfaces/generic.interfaces";
+import { timeGenerator } from "./TimeAndDateUtilities";
+
+type InputProps = I_JsonObject & { Element?: ComponentType | string, invalid?: boolean };
 
 const createFormField = (
     config: RegisteredField,
     as?: string | ComponentType,
     labelAs?: string | ComponentType,
-    // control?: Control
-) => {
+): JSX.Element => {
     const { label: lbl, tag, type, invalid, parentValue, ...rest } = config;
-
     let label = lbl;
     let mainElement: typeof as = as;
     let child;
-    let inputProps: I_JsonObject & { Element?: typeof as } = {
-        invalid,
-        ...rest
+    // let inputProps: InputProps = { invalid, ...rest }
+    let inputProps: InputProps = { ...rest }
+
+    if (typeof as !== "string") {
+        inputProps.invalid = invalid;
     }
 
     if (!as) {
@@ -41,66 +42,87 @@ const createFormField = (
 
     delete inputProps.validations;
 
-    if (tag === "input") {
-        inputProps.Element = mainElement;
-        mainElement = Input;
+    switch (tag) {
+        case "input": {
+            const _inputProps = { Element: mainElement, invalid, ...rest, Label: labelAs };
 
-        if (type === "radio") {
-            child = <Radio {...inputProps as any} Label={labelAs} />
+            // inputProps.Element = mainElement;
+            mainElement = Input;
+
+            if (type === "radio") {
+                child = <Radio {..._inputProps} />;
+                mainElement = WrapperFormGroup;
+                inputProps = { invalid };
+            } else if (type === "textarea") {
+                inputProps.type = type;
+                inputProps.Element = inputProps.Element || "textarea";
+            } else {
+                inputProps.type = type;
+            }
+            break;
+        }
+        case "checkbox":
+            child = <Checkbox {...inputProps} Label={labelAs} Element={mainElement} type={type}>{label}</Checkbox>;
+            if (type === "simple") label = undefined;
             mainElement = WrapperFormGroup;
             inputProps = { invalid };
-        } else if (type === "textarea") {
-            inputProps.type = type;
-            inputProps.Element = inputProps.Element || "textarea";
-        } else {
-            inputProps.type = type;
-        }
-    } else if (tag === "checkbox") {
-        child = <Checkbox {...inputProps as any} Label={labelAs} Element={mainElement} type={type}>{label}</Checkbox>;
-        if (type === "simple") label = undefined;
-        mainElement = WrapperFormGroup;
-        inputProps = { invalid };
-    } else if (tag === "select") {
-        inputProps.Element = mainElement;
-        mainElement = Select as unknown as ComponentType;
+            break;
 
-        if (type === "multiple") {
-            inputProps.multiple = true
-        }
-        inputProps.type = "select";
-    } else if (tag === "file") {
-        inputProps.Element = mainElement;
-        mainElement = FilePicker;
+        case "select":
+            inputProps.Element = mainElement;
+            mainElement = Select as ComponentType<unknown>;
+            inputProps.multiple = type === "multiple";
+            inputProps.type = "select";
+            break;
 
-        if (type === "multiple") {
-            inputProps.multiple = true
-        }
-    } else if (tag === "date") {
-        inputProps.type = type;
-        inputProps.Element = mainElement;
-        mainElement = DatePicker;
-    } else if (tag === "time") {
-        inputProps.Element = mainElement;
-        mainElement = TimePicker;
-    } else if (tag === "custom") {
-        // console.log(config)
-        inputProps.Element = type;
-        mainElement = Custom;
-        inputProps.invalid = invalid;
-        // inputProps.Element = type;
-        // child = <Custom {...inputProps} />
-        // mainElement = WrapperFormGroup;
-        // inputProps.invalid = invalid;
-    } else if (tag === "HTML") {
-        delete inputProps.invalid;
-        mainElement = type;
-        inputProps = { ...inputProps.componentProps || {}, dangerouslySetInnerHTML: { __html: inputProps.value } };
-    } else {
-        mainElement = WrapperFormGroup;
-        label = `Not supported field for "${label}"`
-        inputProps.className = "text-warning"
-        inputProps.ref = null;
-        child = <b>{tag} ({type})</b>
+        case "file":
+            inputProps.Element = mainElement;
+            mainElement = FilePicker;
+            inputProps.multiple = type === "multiple";
+            break;
+
+        case "date":
+            inputProps.type = type;
+            inputProps.Element = mainElement;
+            mainElement = DatePicker;
+            break;
+
+        case "time":
+            if (type === "select") {
+                return createFormField({
+                    ...config, tag: "select", type: "simple",
+                    options: timeGenerator(
+                        (config.validations?.min as I_JsonObject)?.value,
+                        (config.validations?.max as I_JsonObject)?.value
+                    )
+                }, as, labelAs);
+            }
+            inputProps.Element = mainElement;
+            mainElement = TimePicker;
+            break;
+
+        case "custom":
+            inputProps.Element = type as ComponentType;
+            mainElement = Custom;
+            inputProps.invalid = invalid;
+            break;
+
+        default:
+            if (tag === "HTML") {
+                delete inputProps.invalid;
+                mainElement = type as ComponentType;
+                inputProps = {
+                    className: inputProps.className,
+                    dangerouslySetInnerHTML: { __html: inputProps.value as string }
+                };
+            } else {
+                mainElement = WrapperFormGroup;
+                label = `Not supported field for "${label}"`;
+                inputProps.className = "text-warning";
+                inputProps.ref = null;
+                child = <b>{tag} ({type})</b>;
+            }
+            break;
     }
 
     if (config.request) {

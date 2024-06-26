@@ -1,6 +1,6 @@
 import { ComponentType, createElement } from "react"
 import createFormField from "./utils/fieldCreator"
-import { FormFeedback } from "reactstrap"
+import Feedback from "./components/Feedback"
 import WrapperFormGroup from "./components/WrapperFormGroup"
 import { default as Lbl } from "./components/Label"
 import { Control, Controller, FieldError, FieldErrorsImpl, FieldValues, Merge, UseFormRegister, UseFormReturn } from "react-hook-form"
@@ -99,7 +99,7 @@ const ControlledField = ({
 
       return <>
         {createFormField(props, FieldComponent, Label)}
-        <FormFeedback>{error?.message as string}</FormFeedback>
+        <Feedback>{error?.message as string}</Feedback>
       </>
     }}
   />
@@ -124,7 +124,7 @@ const UncrontrolledFIeld = ({
 
   return <>
     {createFormField(registeredField, FieldComponent, Label)}
-    <FormFeedback>{error?.message as string}</FormFeedback>
+    <Feedback>{error?.message as string}</Feedback>
   </>
 }
 

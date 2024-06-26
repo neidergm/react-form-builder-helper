@@ -1,6 +1,5 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { ChangeEventHandler, ComponentType, FocusEventHandler } from "react";
-import { ControllerRenderProps, FieldValues, RegisterOptions } from "react-hook-form";
+import { ControllerRenderProps, FieldValues, RegisterOptions, ValidationRule } from "react-hook-form";
 import { I_JsonObject } from "./generic.interfaces";
 
 export type FieldTypes = (
@@ -21,38 +20,34 @@ export type FieldTypes = (
 export type FieldOption = { value: string, label: string };
 
 export interface FieldCommonConfig {
-
-    label?: string | JSX.Element;
-    className?: string;
-    onBlur?: FocusEventHandler<HTMLInputElement>;
-    onChange?: ChangeEventHandler<HTMLInputElement> ;
-
     name: string;
-    id?: string;
+    label?: string | JSX.Element;
     placeholder?: string;
-    defaultValue?: any;
-    value?: any;
-    invalid?: boolean;
     disabled?: boolean;
 
-    // /**
-    //  * classNames for input field
-    //  */
-    // className?: string;
-    // /**
-    //  * classNames for the input and label (it's item in a form) wrapper
-    //  */
-    wrapperClassName?: string;
-    // style?: { [x: string]: string };
+    /**
+     * Depends of input type
+     */
+    defaultValue?: unknown;
 
-    // key?: string | number;
-    // /**
-    //  * Show loading message
-    //  */
-    // loading?: boolean;
-    // /**
-    // * Show icon for help with tooltip
-    // */
+    /**
+     * By default is same of "name"
+     */
+    id?: string;
+
+    /**
+     * Class for input element
+     */
+    className?: string;
+
+    /**
+     * Class for input wrapper element
+     */
+    wrapperClassName?: string;
+    onBlur?: FocusEventHandler<HTMLInputElement>;
+    onChange?: ChangeEventHandler<HTMLInputElement>;
+
+    // style?: { [x: string]: string };
     // help?: string;
 }
 
@@ -66,8 +61,6 @@ type InputTypes = "text" | "email" | "number" | "textarea" | "password" | "url" 
 export interface InputConfig extends FieldCommonConfig {
     tag: "input";
     type: InputTypes;
-    defaultValue?: string;
-
     validations?: RegisterOptions
 }
 
@@ -79,7 +72,7 @@ export interface InputConfig extends FieldCommonConfig {
 export interface SelectConfig extends FieldCommonConfig {
     tag: "select";
     type: "simple" | "multiple";
-    defaultValue?: string;
+    defaultValue?: string | Array<string>;
     validations?: RegisterOptions;
     options: Array<FieldOption | string> | null;
 }
@@ -88,13 +81,32 @@ export interface SelectConfig extends FieldCommonConfig {
 | CHECKBOX
 \********************************************************************/
 
-export interface CheckboxConfig extends FieldCommonConfig {
+export interface CheckboxConfig extends Omit<FieldCommonConfig, "placeholder"> {
     tag: "checkbox";
     type: "simple" | "multiple";
-    defaultValue?: string;
+    defaultValue?: boolean | Array<string | boolean | number>;
     validations?: RegisterOptions;
     options?: Array<FieldOption | string> | null;
 }
+
+// interface SimpleCheckbox {
+//     type: "simple",
+//     options?: never
+// }
+// interface MultipleCheckbox {
+//     type: "simple",
+//     options: Array<FieldOption | string> | null;
+// }
+
+// interface BaseCheckbox extends Omit<FieldCommonConfig, "placeholder"> {
+//     tag: "checkbox";
+//     // type: "simple" | "multiple";
+//     defaultValue?: boolean | Array<string | boolean | number>;
+//     validations?: RegisterOptions;
+// }
+
+// export type CheckboxConfig = BaseCheckbox & (SimpleCheckbox | MultipleCheckbox);
+
 
 /********************************************************************\
 | RADIO
@@ -116,7 +128,11 @@ export interface FileConfig extends FieldCommonConfig {
     tag: "file";
     type: "simple" | "multiple";
     defaultValue?: string;
-    validations?: RegisterOptions;
+    validations?: RegisterOptions & {
+        "maxFileSize"?: ValidationRule<number>,
+        "minFileSize"?: ValidationRule<number>,
+        "accept"?: ValidationRule<string>,
+    };
 }
 
 /********************************************************************\
@@ -154,7 +170,7 @@ export interface CustomConfig extends FieldCommonConfig {
     type: ComponentType;
     defaultValue?: string;
     validations?: RegisterOptions;
-    componentProps: CustomFieldComponentProps
+    componentProps?: Omit<CustomFieldComponentProps, "name">
 }
 
 /********************************************************************\
@@ -164,8 +180,7 @@ export interface CustomConfig extends FieldCommonConfig {
 export interface HtmlConfig extends Pick<FieldCommonConfig, "className" | "label" | "name" | "wrapperClassName"> {
     type: string;
     tag: "HTML";
-    value: string;
-    wrapperClassName?: string;
+    value: unknown;
 }
 
 
@@ -186,7 +201,7 @@ export interface WithRequestConfig {
          */
         params?: RequestParams;
     },
-    doRequest?: (url: string, method: RequestMethod, params?: RequestParams) => Promise<any>
+    doRequest?: (url: string, method: RequestMethod, params?: RequestParams) => Promise<unknown>
 }
 
 /********************************************************************\
