@@ -1,13 +1,13 @@
 import { Control, useWatch } from 'react-hook-form'
 import fieldWatcher from '../utils/fieldWatcher';
-import { WithChildren } from '../interfaces/fields.interface';
+import { WithDepends } from '../interfaces/fields.interface';
 import { useMemo } from 'react';
 import { I_JsonObject } from '../interfaces/generic.interfaces';
 
 type Props = {
     children: (parentValues: I_JsonObject, props: I_JsonObject) => JSX.Element,
     control: Control,
-    dependsOn: WithChildren["dependsOn"],
+    dependsOn: WithDepends["dependsOn"],
 }
 
 const ChildrenWrapper = ({ children, control, dependsOn }: Props) => {

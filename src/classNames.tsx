@@ -1,5 +1,6 @@
 export const INVALID_CLASSNAME = "is-invalid";
-export const FORM_LABEL = "form-label";
+export const FORM_LABEL_CLASSNAME = "form-label";
+export const SELECT_CLASSNAME = "form-select";
 
 export const RADIO_BUTTON_WRAPPER_CLASSNAME = "form-check";
 export const RADIO_BUTTON_CLASSNAME = `${RADIO_BUTTON_WRAPPER_CLASSNAME}-input`;

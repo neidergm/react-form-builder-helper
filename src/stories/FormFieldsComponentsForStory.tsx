@@ -10,7 +10,8 @@ import {
     TimeConfig,
     CustomConfig,
     FileConfig,
-    HtmlConfig
+    HtmlConfig,
+    WithDepends
 } from '../interfaces/fields.interface';
 import { useState } from 'react';
 
@@ -27,15 +28,33 @@ export const FileComponent = (props: FileConfig) => <PrintOneField {...props} />
 export const HtmlComponent = (props: HtmlConfig) => <PrintOneField {...props} />
 
 export const SelectWithRequestComponent = (props: SelectConfig & WithRequestConfig) => <PrintOneField {...props} />
-export const SelectWithChildrenComponent = (props: SelectConfig) => <PrintOneField {...props} />
+export const SelectWithDependsComponent = (props: SelectConfig & WithRequestConfig & WithDepends) => {
+
+    const parentField = {
+        label: "Parent",
+        tag: "select",
+        name: "select1",
+        type: "simple",
+        placeholder: "Pick one...",
+        options: [{ label: "Option1", value: "1" }, { label: "Option2", value: "2" }, { label: "Option3", value: "3" }],
+        // defaultValue: "1",
+        // controlled: true,
+        validations: {
+            required: true
+        },
+    }
+
+    return <PrintOneField fields={[parentField, props]} />
+}
 
 
-const PrintOneField =  <T extends Record<string, unknown>>(field: T) => {
+
+const PrintOneField = <T extends Record<string, unknown>>({ fields, ...field }: T) => {
 
     const [showjson, setShowJson] = useState(false)
 
     const copy = () => {
-        navigator.clipboard.writeText(JSON.stringify(field, undefined, 2));
+        navigator.clipboard.writeText(JSON.stringify(fields || field, undefined, 2));
     }
 
     const toggleJSON = () => {
@@ -46,7 +65,7 @@ const PrintOneField =  <T extends Record<string, unknown>>(field: T) => {
         <div className='flex-grow-1'>
             <Form
                 {...field}
-                fields={[field as never]}
+                fields={fields as never || [field as never]}
                 onSubmit={(data) => {
                     console.log(data)
                 }}
@@ -60,14 +79,14 @@ const PrintOneField =  <T extends Record<string, unknown>>(field: T) => {
                         <Button size='sm' color='dark' onClick={copy}>Copy</Button>
                     </div>
                 </div>
-                <pre className='mb-0'>
-                    <Button size='small' className='py-0 px-1 lh-1 me-2' onClick={toggleJSON}>
+                <pre className='mb-0' style={{maxHeight: "300px", overflow: "hidden auto"}}>
+                    <Button size='small' className='py-0 px-1 lh-1 me-2 position-sticky top-0' onClick={toggleJSON}>
                         {showjson ? "-" : "+"}
                     </Button>
                     {showjson ?
-                        JSON.stringify(field, undefined, 2)
+                        JSON.stringify(fields || field, undefined, 2)
                         :
-                        "{ ... }"
+                        fields ? "[ ... ]" : "{ ... }"
                     }
                 </pre>
             </div>

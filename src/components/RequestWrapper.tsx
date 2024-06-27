@@ -1,28 +1,31 @@
-import { ComponentType, forwardRef, useEffect, useRef, useState } from 'react'
+import { ComponentType, Ref, forwardRef, useEffect, useRef, useState } from 'react'
 import { WithRequestConfig } from '../interfaces/fields.interface';
 import requestParamsMapper from '../utils/requestParamsMapper';
 import { I_JsonObject } from '../interfaces/generic.interfaces';
 
 type Props = {
-    Child: ComponentType,
-} & WithRequestConfig & I_JsonObject
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    Child: ComponentType<any>,
+} & WithRequestConfig
+    & I_JsonObject
 
 const RequestWrapper = forwardRef(({
     Child,
     request,
     doRequest,
     parentValue,
+    loadingText,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     controlled,
     ...props
-}: Props, ref) => {
-    const [data, setData] = useState<any>({});
+}: Props, ref: Ref<Props["Child"]>) => {
+    const [data, setData] = useState<Partial<typeof props>>({});
     const firstLoad = useRef(true);
 
     const getData = (req: typeof request) => {
-        setData({ options: null })
+        setData({ options: null, placeholder: loadingText || "Loading..." })
         const { url, method, params } = req;
-        doRequest?.(url, method, params).then((newData: typeof data) => {
+        doRequest?.(url, method, params).then(newData => {
             setData(newData)
         }).catch(() => {
             setData({})
@@ -51,6 +54,7 @@ const RequestWrapper = forwardRef(({
                 getData(request);
             }
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, Object.values(parentValue || {}))
 
     return <Child {...props} {...data} ref={ref} />

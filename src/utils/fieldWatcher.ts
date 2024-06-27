@@ -1,4 +1,4 @@
-import { WithChildren } from "../interfaces/fields.interface"
+import { WithDepends } from "../interfaces/fields.interface"
 import { I_JsonObject } from "../interfaces/generic.interfaces";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -15,7 +15,7 @@ const valueIsEqual = (val: any, whenValue: any):boolean => {
   return val === whenValue
 }
 
-const fieldWatcher = (dependsOn: WithChildren["dependsOn"], values: Array<unknown>) => {
+const fieldWatcher = (dependsOn: WithDepends["dependsOn"], values: Array<unknown>) => {
 
   if (typeof dependsOn === "string") dependsOn = [{ name: dependsOn }]
 

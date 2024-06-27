@@ -15,7 +15,7 @@ export type FieldTypes = (
 ) & {
     controlled?: boolean
 } & Partial<WithRequestConfig>
-    & Partial<WithChildren>
+    & Partial<WithDepends>
 
 export type FieldOption = { value: string, label: string };
 
@@ -204,7 +204,9 @@ export interface WithRequestConfig {
          */
         params?: RequestParams;
     },
-    doRequest?: (url: string, method: RequestMethod, params?: RequestParams) => Promise<unknown>
+    // doRequest?: (url: string, method: RequestMethod, params?: RequestParams) => Promise<unknown>
+    doRequest: (url: string, method: RequestMethod, params?: RequestParams) => Promise<Partial<FieldTypes>>,
+    loadingText?: string,
 }
 
 /********************************************************************\
@@ -222,7 +224,7 @@ type DependsOnItem = {
     // hideWhenValue?: string | number | boolean
 }
 
-export interface WithChildren {
+export interface WithDepends {
     dependsOn: string | DependsOnItem[];
 }
 

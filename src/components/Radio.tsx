@@ -3,7 +3,7 @@ import { default as Lbl } from "./Label"
 import classnames from 'classnames'
 import { RadioConfig } from "../interfaces/fields.interface"
 import mapOptions from "../utils/fieldOptionsMapper"
-import { RADIO_BUTTON_CLASSNAME, RADIO_BUTTON_INLINE_CLASSNAME, RADIO_BUTTON_LABEL_CLASSNAME, RADIO_BUTTON_WRAPPER_CLASSNAME } from "../constants"
+import { RADIO_BUTTON_CLASSNAME, RADIO_BUTTON_INLINE_CLASSNAME, RADIO_BUTTON_LABEL_CLASSNAME, RADIO_BUTTON_WRAPPER_CLASSNAME } from "../classNames"
 
 type Props = {
     id: string,

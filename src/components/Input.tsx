@@ -2,7 +2,6 @@ import { ComponentType, InputHTMLAttributes, forwardRef } from "react"
 import classnames from "classnames"
 
 type Props = {
-    invalid?: boolean,
     Element?: string | ComponentType,
 } & InputHTMLAttributes<HTMLInputElement>
 
@@ -18,7 +17,6 @@ const Input = forwardRef<unknown, Props>(
 
         if (typeof Element === "string") {
             elementProps.className = classnames("form-control", elementProps.className);
-            delete elementProps.invalid;
         }
 
         return (

@@ -4,7 +4,7 @@ import classnames from 'classnames'
 import { CheckboxConfig } from "../interfaces/fields.interface";
 import mapOptions from "../utils/fieldOptionsMapper";
 import { I_JsonObject } from "../interfaces/generic.interfaces";
-import { CHECKBOX_CLASSNAME, CHECKBOX_INLINE_CLASSNAME, CHECKBOX_LABEL_CLASSNAME, CHECKBOX_WRAPPER_CLASSNAME } from "../constants";
+import { CHECKBOX_CLASSNAME, CHECKBOX_INLINE_CLASSNAME, CHECKBOX_LABEL_CLASSNAME, CHECKBOX_WRAPPER_CLASSNAME } from "../classNames";
 
 type Props = {
     id: string,

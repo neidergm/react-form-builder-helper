@@ -17,7 +17,7 @@ import RequestWrapper from "../components/RequestWrapper";
 import { ValidationValueMessage } from "react-hook-form";
 import { I_JsonObject } from "../interfaces/generic.interfaces";
 import { timeGenerator } from "./TimeAndDateUtilities";
-import { FORM_LABEL, INVALID_CLASSNAME } from "../constants";
+import { FORM_LABEL_CLASSNAME, INVALID_CLASSNAME } from "../classNames";
 
 type InputCustomProps = {
     Element?: ComponentType | string,
@@ -134,7 +134,7 @@ const createFormField = (
     if (!mainElementProps) mainElementProps = inputProps
 
     return <>
-        <Label htmlFor={inputProps.id} Element={labelAs} className={FORM_LABEL} isRequired={!!(validations?.required as ValidationValueMessage)?.value}>
+        <Label htmlFor={inputProps.id} Element={labelAs} className={FORM_LABEL_CLASSNAME} isRequired={!!(validations?.required as ValidationValueMessage)?.value}>
             {label}
         </Label>
         {createElement(mainElement, mainElementProps, child)}

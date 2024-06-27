@@ -1,15 +1,13 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import commonConfiguration from './commonConfiguration';
 import { SelectWithRequestComponent } from './FormFieldsComponentsForStory';
-import { I_JsonObject } from '../interfaces/generic.interfaces';
 
 const meta = {
     ...commonConfiguration,
-    title: 'Form/Select',
+    title: 'With Request/Select',
     component: SelectWithRequestComponent,
     parameters: {
         controls: { sort: 'requiredFirst' },
-        // layout: 'centered',
     },
     tags: ['autodocs'],
 } satisfies Meta<typeof SelectWithRequestComponent>;
@@ -18,25 +16,24 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const WithRequest: Story = {
+export const Select: Story = {
     args: {
         label: "Select component",
         tag: "select",
         name: "selectFieldWithRequest",
         type: "simple",
         placeholder: "Pick one...",
-        options: [],
-        defaultValue: "008",
+        options: null,
         validations: {
             required: true
         },
-        doRequest(url, method, params) {
-            return fetch(url, { method }).then((response) => response.json()).then((r: I_JsonObject) => {
-                return { options: r.data.map((i: any) => ({ value: i.cod_pais, label: i.nombre_pais })) }
-            })
+        doRequest() {
+            return new Promise((resolve) =>
+                setTimeout(() => resolve({ options: ["Colombia", "Argentina", "Chile", "Ecuador", "Mexico"] }), 3000)
+            )
         },
         request: {
-            url: "https://axis.uninunez.edu.co/apiuninsc/paises",
+            url: "https://example.api/countries",
             method: "GET",
             params: {}
         },
