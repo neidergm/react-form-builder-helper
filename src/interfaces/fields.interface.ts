@@ -86,6 +86,7 @@ export interface CheckboxConfig extends Omit<FieldCommonConfig, "placeholder"> {
     type: "simple" | "multiple";
     defaultValue?: boolean | Array<string | boolean | number>;
     validations?: RegisterOptions;
+    inline?:  boolean;
     options?: Array<FieldOption | string> | null;
 }
 
@@ -115,9 +116,10 @@ export interface CheckboxConfig extends Omit<FieldCommonConfig, "placeholder"> {
 export interface RadioConfig extends FieldCommonConfig {
     tag: "input";
     type: "radio";
-    defaultValue?: string;
-    validations?: RegisterOptions;
     options: Array<FieldOption | string> | null;
+    defaultValue?: string;
+    inline?:  boolean;
+    validations?: RegisterOptions;
 }
 
 /********************************************************************\
@@ -167,7 +169,8 @@ export type CustomFieldComponentProps<T = object> = T & FieldCommonConfig | ((re
 
 export interface CustomConfig extends FieldCommonConfig {
     tag: "custom";
-    type: ComponentType;
+    type: string;
+    Element: ComponentType,
     defaultValue?: string;
     validations?: RegisterOptions;
     componentProps?: Omit<CustomFieldComponentProps, "name">

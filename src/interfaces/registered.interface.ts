@@ -1,4 +1,3 @@
-// import { UseFormRegisterReturn } from "react-hook-form";
 import { FieldTypes } from "./fields.interface";
 import fieldWatcher from "../utils/fieldWatcher";
 
@@ -9,10 +8,10 @@ type registeredConfigField = {
 
 type controlledConfigField = {
     value?: unknown,
-    componentProps?: object
 };
 
 export type RegisteredField = registeredConfigField & controlledConfigField & FieldTypes &
 {
-    parentValue?: ReturnType<typeof fieldWatcher>
+    parentValue?: ReturnType<typeof fieldWatcher>,
+    // validations: {[K in keyof RegisterOptions]: ValidationValueMessage},
 };

@@ -3,7 +3,7 @@ import createFormField from "./utils/fieldCreator"
 import Feedback from "./components/Feedback"
 import WrapperFormGroup from "./components/WrapperFormGroup"
 import { default as Lbl } from "./components/Label"
-import { Control, Controller, FieldError, FieldErrorsImpl, FieldValues, Merge, UseFormRegister, UseFormReturn } from "react-hook-form"
+import { Control, Controller, FieldValues, GlobalError, UseFormRegister, UseFormReturn } from "react-hook-form"
 import { FieldTypes, HtmlConfig } from "./interfaces/fields.interface"
 import registerField from "./utils/registerField"
 import validationsMapper from "./utils/validationsMapper"
@@ -18,7 +18,7 @@ type Props<T> = {
   Label?: ComponentType,
   wrapperProps?: T & { className?: string },
   field: FieldTypes | HtmlConfig,
-  error?: FieldError | Merge<FieldError, FieldErrorsImpl<I_JsonObject>>,
+  error?: GlobalError,
   form: UseFormReturn,
 }
 
@@ -35,11 +35,9 @@ const FieldPrinter = <T extends Record<string, unknown>>({
     wrapperProps.className = classnames(wrapperProps.className, wrapperClassName)
   }
 
-  if (fieldTemp.tag === "HTML") {
-    return createElement(WrapperComponent, wrapperProps as T,
-      createFormField(fieldTemp as unknown as RegisteredField, FieldComponent, Label || Lbl)
-    )
-  }
+  if (fieldTemp.tag === "HTML") return createElement(WrapperComponent, wrapperProps as T,
+    createFormField(fieldTemp as unknown as RegisteredField, FieldComponent, Label || Lbl)
+  )
 
   const { controlled, dependsOn, ...field } = fieldTemp;
 
@@ -93,13 +91,13 @@ const ControlledField = ({
     defaultValue={finallyFieldProps.defaultValue}
     rules={validationsMapper(finallyFieldProps.validations, { type: finallyFieldProps.type, tag: finallyFieldProps.tag })}
     render={({ field: rf, fieldState: { error } }) => {
-      const props = { ...finallyFieldProps, ...rf, invalid: !!error } as unknown as RegisteredField
+      const props = { ...finallyFieldProps, ...rf, invalid: !!error } as RegisteredField
       delete props.defaultValue;
       parentValue && (props.parentValue = parentValue);
 
       return <>
         {createFormField(props, FieldComponent, Label)}
-        <Feedback>{error?.message as string}</Feedback>
+        <Feedback>{error?.message}</Feedback>
       </>
     }}
   />
@@ -114,7 +112,7 @@ const UncrontrolledFIeld = ({
   parentValue,
 }: ComponentFieldProps & {
   register: UseFormRegister<FieldValues>,
-  error?: FieldError | Merge<FieldError, FieldErrorsImpl<I_JsonObject>>,
+  error?: GlobalError,
 }
 ) => {
   const registeredField = registerField(finallyFieldProps as FieldTypes, register);
@@ -124,7 +122,7 @@ const UncrontrolledFIeld = ({
 
   return <>
     {createFormField(registeredField, FieldComponent, Label)}
-    <Feedback>{error?.message as string}</Feedback>
+    <Feedback>{error?.message}</Feedback>
   </>
 }
 

@@ -24,9 +24,9 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 const CustomComponentField = forwardRef<never, { [x: string]: never }>(
-  (props, ref) => {
-    return <div className={props.invalid ? "is-invalid" : ""}>
-      <h3 className='text-info'>My custom component</h3>
+  ({ invalid, ...props }, ref) => {
+    return <div className={invalid ? "is-invalid" : ""}>
+      <h3 className="text-info">My custom component</h3>
       <input {...props} ref={ref} />
     </div>
   })
@@ -36,7 +36,8 @@ export const CustomOrExternal: Story = {
     label: "A custom field component",
     name: "customField",
     validations: { required: true },
-    type: CustomComponentField,
+    type: "MyCustomComponentName",
+    Element: CustomComponentField,
   }
 };
 

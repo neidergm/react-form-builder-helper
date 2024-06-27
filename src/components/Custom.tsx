@@ -1,13 +1,10 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-// import classnames from "classnames";
 import { ComponentType, forwardRef } from "react";
 import { CustomConfig } from "../interfaces/fields.interface";
 
 type Props = {
     Element: string | ComponentType,
     componentProps: CustomConfig["componentProps"],
-    // invalid?: boolean,
-    [x: string]: any
+    [x: string]: unknown
 }
 
 const Custom = forwardRef<unknown, Props>(
@@ -19,9 +16,11 @@ const Custom = forwardRef<unknown, Props>(
 
         const initProps = { ...props, ref }
 
-        const innerProps = typeof componentProps === "function" ? componentProps(initProps as any) : { ...componentProps, ...initProps };
+        const innerProps = typeof componentProps === "function" ? componentProps(initProps) : { ...componentProps, ...initProps };
 
         const elementProps = innerProps;
+
+        if(!Element) return <div className={elementProps.className}><b>Error:</b> Element property is required in Custom Input</div>
 
         return <Element {...elementProps} />
     }

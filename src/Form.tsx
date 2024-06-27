@@ -1,6 +1,6 @@
 import { FieldValues, SubmitErrorHandler, SubmitHandler, useForm } from 'react-hook-form';
 import { FormProps } from './interfaces/form.interface';
-import { Button, FormGroup, Label, Row } from 'reactstrap';
+import { Button, FormGroup, Row } from 'reactstrap';
 import FieldPrinter from './FieldPrinter';
 import { I_JsonObject } from './interfaces/generic.interfaces';
 
@@ -38,7 +38,7 @@ const Form = ({
                                 className: "col-md-6 col-lg-12 col-xl-6"
                             }}
                             // FieldComponent={fieldRelation(field.tag)}
-                            Label={Label}
+                            // Label={Label}
                             field={field}
                             error={errors[field.name]}
                         />

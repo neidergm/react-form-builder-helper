@@ -1,7 +1,7 @@
 import { FieldTypes } from "../interfaces/fields.interface";
 import { I_JsonObject } from "../interfaces/generic.interfaces";
 import { RegisteredField } from "../interfaces/registered.interface";
-import { validationsForFiles } from "./FilePickerUtilities";
+import { validationsForFiles } from "./filePickerUtilities";
 import { minOrMaxDateSetter } from "./TimeAndDateUtilities";
 
 const validationsByRule: I_JsonObject = {
@@ -38,6 +38,9 @@ const validationsMapper = (
     } else if (typeAndTag?.type === "tel" && !originalValidations.pattern) {
         // eslint-disable-next-line no-useless-escape
         originalValidations.pattern = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/
+    } else if (typeAndTag?.type === "url" && !originalValidations.pattern) {
+        // eslint-disable-next-line no-useless-escape
+        originalValidations.pattern = /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*(\?[^#\s]*)?(\#[\w\-]*)?$/i;
     }
 
     for (const k in originalValidations) {
@@ -75,7 +78,7 @@ const validationsMapper = (
             const r = validationsForFiles(val, validations);
             if ("validate" in originalValidations && r === true) {
                 // eslint-disable-next-line @typescript-eslint/ban-types
-                return (originalValidations.validate as Function)(val, formValues) 
+                return (originalValidations.validate as Function)(val, formValues)
             }
             return r;
         }

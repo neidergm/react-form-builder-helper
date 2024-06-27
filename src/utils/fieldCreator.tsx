@@ -1,4 +1,4 @@
-import { Attributes, ComponentType, createElement } from "react";
+import { ComponentType, createElement } from "react";
 import classnames from 'classnames'
 import {
     Radio,
@@ -17,55 +17,57 @@ import RequestWrapper from "../components/RequestWrapper";
 import { ValidationValueMessage } from "react-hook-form";
 import { I_JsonObject } from "../interfaces/generic.interfaces";
 import { timeGenerator } from "./TimeAndDateUtilities";
+import { FORM_LABEL, INVALID_CLASSNAME } from "../constants";
 
-type InputProps = I_JsonObject & { Element?: ComponentType | string, invalid?: boolean };
+type InputCustomProps = {
+    Element?: ComponentType | string,
+    invalid?: boolean,
+    type?: string,
+    Child?: ComponentType | string,
+    parentValue?: I_JsonObject,
+    multiple?: boolean
+};
 
 const createFormField = (
     config: RegisteredField,
     as?: string | ComponentType,
     labelAs?: string | ComponentType,
 ): JSX.Element => {
-    const { label: lbl, tag, type, invalid, parentValue, ...rest } = config;
+    const { label: lbl, tag, type, invalid, parentValue, validations, ...rest } = config;
     let label = lbl;
-    let mainElement: typeof as = as;
+    let mainElement = as;
     let child;
-    // let inputProps: InputProps = { invalid, ...rest }
-    let inputProps: InputProps = { ...rest }
 
-    if (typeof as !== "string") {
-        inputProps.invalid = invalid;
+    let mainElementProps: I_JsonObject | undefined = undefined;
+
+    const inputProps: typeof rest & InputCustomProps = {
+        ...rest,
+        className: classnames(config.className, { [INVALID_CLASSNAME]: invalid })
     }
 
-    if (!as) {
-        inputProps.className = classnames(config.className as string, { 'is-invalid': invalid });
-    }
-
-    delete inputProps.validations;
+    if (!!as && typeof as !== "string") { inputProps.invalid = invalid }
 
     switch (tag) {
-        case "input": {
-            const _inputProps = { Element: mainElement, invalid, ...rest, Label: labelAs };
-
-            // inputProps.Element = mainElement;
+        case "input":
+            inputProps.Element = mainElement;
             mainElement = Input;
 
             if (type === "radio") {
-                child = <Radio {..._inputProps} />;
+                child = <Radio {...inputProps} Label={labelAs} />;
                 mainElement = WrapperFormGroup;
-                inputProps = { invalid };
+                mainElementProps = { invalid };
             } else if (type === "textarea") {
-                inputProps.type = type;
-                inputProps.Element = inputProps.Element || "textarea";
+                if (!inputProps.Element) inputProps.Element = "textarea"
             } else {
                 inputProps.type = type;
             }
             break;
-        }
+
         case "checkbox":
-            child = <Checkbox {...inputProps} Label={labelAs} Element={mainElement} type={type}>{label}</Checkbox>;
+            child = <Checkbox {...inputProps} type={type} Element={mainElement} Label={labelAs}>{label}</Checkbox>;
             if (type === "simple") label = undefined;
             mainElement = WrapperFormGroup;
-            inputProps = { invalid };
+            mainElementProps = { invalid };
             break;
 
         case "select":
@@ -92,8 +94,8 @@ const createFormField = (
                 return createFormField({
                     ...config, tag: "select", type: "simple",
                     options: timeGenerator(
-                        (config.validations?.min as I_JsonObject)?.value,
-                        (config.validations?.max as I_JsonObject)?.value
+                        (config.validations?.min as ValidationValueMessage<number | string>)?.value,
+                        (config.validations?.max as ValidationValueMessage<number | string>)?.value
                     )
                 }, as, labelAs);
             }
@@ -102,7 +104,6 @@ const createFormField = (
             break;
 
         case "custom":
-            inputProps.Element = type as ComponentType;
             mainElement = Custom;
             inputProps.invalid = invalid;
             break;
@@ -110,16 +111,15 @@ const createFormField = (
         default:
             if (tag === "HTML") {
                 delete inputProps.invalid;
-                mainElement = type as ComponentType;
-                inputProps = {
+                mainElement = type as string;
+                mainElementProps = {
                     className: inputProps.className,
-                    dangerouslySetInnerHTML: { __html: inputProps.value as string }
+                    dangerouslySetInnerHTML: { __html: inputProps.value }
                 };
             } else {
                 mainElement = WrapperFormGroup;
                 label = `Not supported field for "${label}"`;
                 inputProps.className = "text-warning";
-                inputProps.ref = null;
                 child = <b>{tag} ({type})</b>;
             }
             break;
@@ -131,11 +131,13 @@ const createFormField = (
         mainElement = RequestWrapper;
     }
 
+    if (!mainElementProps) mainElementProps = inputProps
+
     return <>
-        {label && <Label htmlFor={inputProps.id} Element={labelAs}>
-            {label} {(config.validations?.required as ValidationValueMessage)?.value && <span className="text-danger">*</span>}
-        </Label>}
-        {createElement(mainElement, inputProps as Attributes, child)}
+        <Label htmlFor={inputProps.id} Element={labelAs} className={FORM_LABEL} isRequired={!!(validations?.required as ValidationValueMessage)?.value}>
+            {label}
+        </Label>
+        {createElement(mainElement, mainElementProps, child)}
     </>
 }
 
