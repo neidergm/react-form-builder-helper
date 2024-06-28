@@ -36,8 +36,18 @@ export const SelectWithRequestAndDependsComponent = (props: SelectConfig & WithR
         name: "parent",
         type: "simple",
         placeholder: "Pick one...",
-        options: [{ label: "Option1", value: "1" }, { label: "Option2", value: "2" }, { label: "Option3", value: "3" }],
-        // defaultValue: "1",
+        options:null,
+        doRequest() {
+            return new Promise((resolve) =>
+                setTimeout(() => resolve({ options: ["1", "2", "3", "4", "5"] }), 2000)
+            )
+        },
+        request: {
+            url: "https://example.api/countries",
+            method: "GET",
+        },
+        // options: [{ label: "Option1", value: "1" }, { label: "Option2", value: "2" }, { label: "Option3", value: "3" }],
+        defaultValue: "1",
         // controlled: true,
         validations: {
             required: true

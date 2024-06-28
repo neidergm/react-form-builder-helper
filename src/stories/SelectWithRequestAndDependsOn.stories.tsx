@@ -6,6 +6,22 @@ const meta = {
     ...commonConfiguration,
     // render: (props) => commonConfiguration.render([props, child], {defaultValues: {select1: "1", select2: "11"}}),
     title: 'With Request/Select',
+    decorators: [(Story) =>
+        <div>
+            <p>Default values have to be indicated in useForm params</p>
+            <p>Otherwhise, the child component dont get data</p>
+
+            <code>
+                {`const form = useForm({defaultValues: {...}})`}
+            </code>
+            
+            <br />
+            <br />
+            <br />
+
+            <Story />
+        </div>
+    ],
     component: SelectWithRequestAndDependsComponent,
     parameters: {
         controls: { sort: 'requiredFirst' },
@@ -37,6 +53,7 @@ export const DependsOn: Story = {
         },
         validations: { required: true },
         dependsOn: "parent",
-        // controlled: true
+        defaultValue: "Colombia"
     }
 };
+

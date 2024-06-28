@@ -62,12 +62,12 @@ const FieldPrinter = <T extends Record<string, unknown>>({
 
     if (controlled || (finallyFieldProps.request)) {
       return createElement(WrapperComponent, wrapperProps as T,
-        <ControlledField {...compProps} finallyFieldProps={finallyFieldProps} parentValue={parentValue} />
+        <ControlledField {...compProps} fieldProps={finallyFieldProps} parentValue={parentValue} />
       )
     } else {
       return createElement(WrapperComponent, wrapperProps as T,
         <UncrontrolledFIeld {...compProps}
-          finallyFieldProps={finallyFieldProps}
+          fieldProps={finallyFieldProps}
           parentValue={parentValue}
           error={error}
           register={register}
@@ -81,7 +81,7 @@ const FieldPrinter = <T extends Record<string, unknown>>({
 }
 
 type ComponentFieldProps = {
-  finallyFieldProps: Omit<FieldTypes, "dependsOn" | "controlled" | "wrapperClassName">;
+  fieldProps: Omit<FieldTypes, "dependsOn" | "controlled" | "wrapperClassName">;
   control: Control<FieldValues>;
   FieldComponent?: string | ComponentType,
   Label: ComponentType,
@@ -89,19 +89,19 @@ type ComponentFieldProps = {
 }
 
 const ControlledField = ({
-  finallyFieldProps,
+  fieldProps,
   control,
   FieldComponent,
   Label,
   parentValue,
 }: ComponentFieldProps) => {
   return <Controller
-    name={finallyFieldProps.name}
+    name={fieldProps.name}
     control={control}
-    defaultValue={finallyFieldProps.defaultValue}
-    rules={validationsMapper(finallyFieldProps.validations, { type: finallyFieldProps.type, tag: finallyFieldProps.tag })}
+    defaultValue={fieldProps.defaultValue}
+    rules={validationsMapper(fieldProps.validations, { type: fieldProps.type, tag: fieldProps.tag })}
     render={({ field: rf, fieldState: { error } }) => {
-      const props = { ...finallyFieldProps, ...rf, invalid: !!error } as RegisteredField
+      const props = { ...fieldProps, ...rf, invalid: !!error } as RegisteredField
       delete props.defaultValue;
       parentValue && (props.parentValue = parentValue);
 
@@ -114,7 +114,7 @@ const ControlledField = ({
 }
 
 const UncrontrolledFIeld = ({
-  finallyFieldProps,
+  fieldProps,
   FieldComponent,
   Label,
   register,
@@ -125,7 +125,7 @@ const UncrontrolledFIeld = ({
   error?: GlobalError,
 }
 ) => {
-  const registeredField = registerField(finallyFieldProps as FieldTypes, register);
+  const registeredField = registerField(fieldProps as FieldTypes, register);
 
   registeredField.invalid = !!error;
   parentValue && (registeredField.parentValue = parentValue);

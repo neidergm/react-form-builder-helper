@@ -10,7 +10,12 @@ const Form = ({
     defaultValues
 }: FormProps) => {
     // const fieldsJson = fields.reduce((p, c)=>{return {...p, [c.name]: ""}}, {})
-    const form = useForm<I_JsonObject>({ defaultValues });
+    const form = useForm<I_JsonObject>({
+        defaultValues: {
+            ...fields.reduce((p, c) => ({ ...p, [c.name]: c.defaultValue }), {}),
+            ...defaultValues
+        }
+    });
 
     const {
         handleSubmit,
