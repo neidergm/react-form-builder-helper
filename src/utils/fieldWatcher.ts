@@ -1,8 +1,7 @@
-import { WithDepends } from "../interfaces/fields.interface"
-import { I_JsonObject } from "../interfaces/generic.interfaces";
+import { DependsOnWatcherResult, WithDepends } from "../interfaces/fields.interface"
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const valueIsEqual = (val: any, whenValue: any):boolean => {
+const valueIsEqual = (val: any, whenValue: any): boolean => {
   if (typeof val === "object") {
     if (typeof whenValue !== "object") return val?.includes(whenValue)
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -15,11 +14,11 @@ const valueIsEqual = (val: any, whenValue: any):boolean => {
   return val === whenValue
 }
 
-const fieldWatcher = (dependsOn: WithDepends["dependsOn"], values: Array<unknown>) => {
+const fieldWatcher = (dependsOn: WithDepends["dependsOn"], values: Array<unknown>): DependsOnWatcherResult => {
 
   if (typeof dependsOn === "string") dependsOn = [{ name: dependsOn }]
 
-  const data: I_JsonObject = {};
+  const data: DependsOnWatcherResult = { parentValue: {}, show: true };
   const shouldShow: boolean[] = [];
 
   dependsOn.forEach((dep, idx) => {

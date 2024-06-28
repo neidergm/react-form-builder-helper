@@ -86,7 +86,7 @@ export interface CheckboxConfig extends Omit<FieldCommonConfig, "placeholder"> {
     type: "simple" | "multiple";
     defaultValue?: boolean | Array<string | boolean | number>;
     validations?: RegisterOptions;
-    inline?:  boolean;
+    inline?: boolean;
     options?: Array<FieldOption | string> | null;
 }
 
@@ -118,7 +118,7 @@ export interface RadioConfig extends FieldCommonConfig {
     type: "radio";
     options: Array<FieldOption | string> | null;
     defaultValue?: string;
-    inline?:  boolean;
+    inline?: boolean;
     validations?: RegisterOptions;
 }
 
@@ -214,6 +214,12 @@ export interface WithRequestConfig {
 \********************************************************************/
 
 type WhenValueTypes = string | number | boolean | "*";
+export type DependsOnWatcherResult<T = I_JsonObject> = {
+    show: boolean,
+    parentValue: I_JsonObject,
+    props?: T
+}
+
 
 type DependsOnItem = {
     name: string,
@@ -226,5 +232,6 @@ type DependsOnItem = {
 
 export interface WithDepends {
     dependsOn: string | DependsOnItem[];
+    dependsOnChange?: (data: DependsOnWatcherResult) => Partial<FieldTypes> | undefined
 }
 

@@ -1,28 +1,28 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import commonConfiguration from './commonConfiguration';
-import { SelectWithDependsComponent } from './FormFieldsComponentsForStory';
+import { SelectWithRequestAndDependsComponent } from './FormFieldsComponentsForStory';
 
 const meta = {
     ...commonConfiguration,
     // render: (props) => commonConfiguration.render([props, child], {defaultValues: {select1: "1", select2: "11"}}),
-    title: 'With Request/Select with depends',
-    component: SelectWithDependsComponent,
+    title: 'With Request/Select',
+    component: SelectWithRequestAndDependsComponent,
     parameters: {
         controls: { sort: 'requiredFirst' },
         // layout: 'centered',
     },
-    tags: ['autodocs'],
-} satisfies Meta<typeof SelectWithDependsComponent>;
+    // tags: ['autodocs'],
+} satisfies Meta<typeof SelectWithRequestAndDependsComponent>;
 
 export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const WithDepends: Story = {
+export const DependsOn: Story = {
     args: {
-        label: "Child",
+        label: "Child field",
         tag: "select",
-        name: "select2",
+        name: "child",
         type: "simple",
         placeholder: "Pick one...",
         options: [],
@@ -36,7 +36,7 @@ export const WithDepends: Story = {
             method: "GET",
         },
         validations: { required: true },
-        dependsOn: "select1",
+        dependsOn: "parent",
         // controlled: true
     }
 };

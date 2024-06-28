@@ -28,18 +28,18 @@ const FieldPrinter = <T extends Record<string, unknown>>({
 
   const wrapperProps: I_JsonObject = wp || {};
 
-  const { wrapperClassName, ...fieldTemp } = _field;
+  const { wrapperClassName: wcn, ...fieldTemp } = _field;
   const WrapperComponent = Wrapper || WrapperFormGroup;
 
-  if (wrapperClassName) {
-    wrapperProps.className = classnames(wrapperProps.className, wrapperClassName)
-  }
+  const wrapperClassName = classnames(wrapperProps.className || "", wcn || "");
+
+  if (wrapperClassName) wrapperProps.className = wrapperClassName;
 
   if (fieldTemp.tag === "HTML") return createElement(WrapperComponent, wrapperProps as T,
     createFormField(fieldTemp as unknown as RegisteredField, FieldComponent, Label || Lbl)
   )
 
-  const { controlled, dependsOn, ...field } = fieldTemp;
+  const { controlled, dependsOn, dependsOnChange, ...field } = fieldTemp;
 
   const compProps = {
     Label: Label || Lbl,
@@ -48,7 +48,17 @@ const FieldPrinter = <T extends Record<string, unknown>>({
   }
 
   const component = (parentValue?: I_JsonObject, newProps?: I_JsonObject) => {
-    const finallyFieldProps = newProps ? { ...field, ...newProps } : field;
+    let finallyFieldProps = field;
+
+    if (parentValue) {
+      if (newProps) {
+        const { wrapperClassName: wcnChanged, ...extraProps } = newProps;
+        finallyFieldProps = { ...field, ...extraProps };
+        wrapperProps.className = classnames(wrapperClassName, wcnChanged || "");
+      } else {
+        wrapperProps.className = wrapperClassName
+      }
+    }
 
     if (controlled || (finallyFieldProps.request)) {
       return createElement(WrapperComponent, wrapperProps as T,
@@ -67,7 +77,7 @@ const FieldPrinter = <T extends Record<string, unknown>>({
   }
 
   return dependsOn ?
-    <ChildrenWrapper control={control} dependsOn={dependsOn} children={component} /> : component()
+    <ChildrenWrapper control={control} dependsOn={dependsOn} children={component} dependsOnChange={dependsOnChange} /> : component()
 }
 
 type ComponentFieldProps = {

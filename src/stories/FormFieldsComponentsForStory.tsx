@@ -28,12 +28,12 @@ export const FileComponent = (props: FileConfig) => <PrintOneField {...props} />
 export const HtmlComponent = (props: HtmlConfig) => <PrintOneField {...props} />
 
 export const SelectWithRequestComponent = (props: SelectConfig & WithRequestConfig) => <PrintOneField {...props} />
-export const SelectWithDependsComponent = (props: SelectConfig & WithRequestConfig & WithDepends) => {
+export const SelectWithRequestAndDependsComponent = (props: SelectConfig & WithRequestConfig & WithDepends) => {
 
     const parentField = {
-        label: "Parent",
+        label: "Parent field",
         tag: "select",
-        name: "select1",
+        name: "parent",
         type: "simple",
         placeholder: "Pick one...",
         options: [{ label: "Option1", value: "1" }, { label: "Option2", value: "2" }, { label: "Option3", value: "3" }],
@@ -46,8 +46,22 @@ export const SelectWithDependsComponent = (props: SelectConfig & WithRequestConf
 
     return <PrintOneField fields={[parentField, props]} />
 }
+export const SelectWithDependsComponent = (props: SelectConfig & WithDepends) => {
 
+    const parentField = {
+        label: "Parent field",
+        tag: "select",
+        name: "parent",
+        type: "simple",
+        placeholder: "Pick one...",
+        options: [{ label: "Option1", value: "1" }, { label: "Option2", value: "2" }, { label: "Option3", value: "3" }],
+        validations: {
+            required: true
+        },
+    }
 
+    return <PrintOneField fields={[parentField, props]} />
+}
 
 const PrintOneField = <T extends Record<string, unknown>>({ fields, ...field }: T) => {
 

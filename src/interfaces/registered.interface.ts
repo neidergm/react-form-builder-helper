@@ -1,5 +1,4 @@
-import { FieldTypes } from "./fields.interface";
-import fieldWatcher from "../utils/fieldWatcher";
+import { DependsOnWatcherResult, FieldTypes } from "./fields.interface";
 
 type registeredConfigField = {
     id: string,
@@ -12,6 +11,6 @@ type controlledConfigField = {
 
 export type RegisteredField = registeredConfigField & controlledConfigField & FieldTypes &
 {
-    parentValue?: ReturnType<typeof fieldWatcher>,
+    parentValue?: DependsOnWatcherResult["parentValue"],
     // validations: {[K in keyof RegisterOptions]: ValidationValueMessage},
 };
