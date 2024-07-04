@@ -1,0 +1,5 @@
+import{c as l,g as p}from"./commonConfiguration-93338b90.js";import{F as n}from"./FormFieldsComponentsForStory-ce39eec8.js";import"./jsx-runtime-1438501e.js";import"./index-f46741a2.js";import"./index-415bee12.js";const f={...l,title:"Field tags/File",component:n,parameters:{controls:{sort:"requiredFirst"}},argTypes:{tag:{control:"inline-radio",options:["file"]}},args:{tag:"file"},tags:["autodocs"]},r={args:p("simple")},e={args:p("multiple")};var o,t,s;r.parameters={...r.parameters,docs:{...(o=r.parameters)==null?void 0:o.docs,source:{originalSource:`{
+  args: getSimpleStoryArgs<TC>('simple')
+}`,...(s=(t=r.parameters)==null?void 0:t.docs)==null?void 0:s.source}}};var a,i,m;e.parameters={...e.parameters,docs:{...(a=e.parameters)==null?void 0:a.docs,source:{originalSource:`{
+  args: getSimpleStoryArgs<TC>('multiple')
+}`,...(m=(i=e.parameters)==null?void 0:i.docs)==null?void 0:m.source}}};const F=["Simple","Multiple"];export{e as Multiple,r as Simple,F as __namedExportsOrder,f as default};

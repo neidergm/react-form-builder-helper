@@ -13,7 +13,7 @@ import {
     WithDepends
 } from '../interfaces/fields.interface';
 import { useState } from 'react';
-import { DynamicFormBuilder } from '../DynamicFormBuilder';
+import { DynamicFormBuilder, DynamicFormProps } from '../DynamicFormBuilder';
 
 
 //SIMPLE FIELDS
@@ -26,6 +26,8 @@ export const TimeComponent = (props: TimeConfig) => <PrintOneField {...props} />
 export const CustomComponent = (props: CustomConfig) => <PrintOneField {...props} />
 export const FileComponent = (props: FileConfig) => <PrintOneField {...props} />
 export const HtmlComponent = (props: HtmlConfig) => <PrintOneField {...props} />
+
+export const DynamicFormComponent = (props: DynamicFormProps) => <PrintOneField {...props} />
 
 export const SelectWithRequestComponent = (props: SelectConfig & WithRequestConfig) => <PrintOneField {...props} />
 export const SelectWithRequestAndDependsComponent = (props: SelectConfig & WithRequestConfig & WithDepends) => {

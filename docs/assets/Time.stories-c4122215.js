@@ -1,3 +1,0 @@
-import{c as s,T as a,g as i}from"./FormFieldsComponentsForStory-7c2d3a3d.js";import"./jsx-runtime-1438501e.js";import"./index-f46741a2.js";import"./index-415bee12.js";import"./DynamicFormBuilder-34320418.js";const l={...s,title:"Field tags/Time",component:a,parameters:{controls:{sort:"requiredFirst"}},argTypes:{tag:{control:"inline-radio",options:["time"]}},args:{tag:"time"},tags:["autodocs"]},r={args:i("simple")};var e,o,t;r.parameters={...r.parameters,docs:{...(e=r.parameters)==null?void 0:e.docs,source:{originalSource:`{
-  args: getSimpleStoryArgs<TC>('simple')
-}`,...(t=(o=r.parameters)==null?void 0:o.docs)==null?void 0:t.source}}};const d=["Time"];export{r as Time,d as __namedExportsOrder,l as default};

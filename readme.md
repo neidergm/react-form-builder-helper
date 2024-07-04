@@ -160,7 +160,7 @@ const MyForm = () => {
 | `fieldComponents` | `object` | Custom form field component type | |
 | `saveTemporalData` | `function` | Callback for storage data before component unmounth |  | |
 | `useFormProps` | `object` | Extra props to `useForm` hook | |
-| `className` | `string` | Classes for main form container. <br/> `Default: "row"` | |
+| `className` | `string` | Classes for main form container. <br/> `Default: "row row-gap-3"` | |
 
 
 **fieldWrapper**

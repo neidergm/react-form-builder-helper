@@ -1,15 +1,15 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { DynamicFormBuilder } from '../DynamicFormBuilder';
+import { DynamicFormComponent } from './FormFieldsComponentsForStory';
 
 const meta = {
     title: 'Form/Dynamic Form',
-    component: DynamicFormBuilder,
+    component: DynamicFormComponent,
     parameters: {
 
         // layout: 'centered',
     },
     tags: ['autodocs'],
-} satisfies Meta<typeof DynamicFormBuilder>;
+} satisfies Meta<typeof DynamicFormComponent>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;

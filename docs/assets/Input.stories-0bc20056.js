@@ -1,14 +1,14 @@
-import{c as G,I as H,g as r}from"./FormFieldsComponentsForStory-7c2d3a3d.js";import"./jsx-runtime-1438501e.js";import"./index-f46741a2.js";import"./index-415bee12.js";import"./DynamicFormBuilder-34320418.js";const V={...G,title:"Field tags/Input",component:H,parameters:{controls:{sort:"requiredFirst"}},argTypes:{tag:{control:"inline-radio",options:["input"]}},args:{tag:"input"},tags:["autodocs"]},e={args:r("text")},s={args:r("number")},a={args:r("email")},o={args:r("textarea")},t={args:r("url")},c={args:r("tel")},m={args:r("search")},p={args:r("password")},n={args:r("color")},g={args:r("range")};var i,u,l;e.parameters={...e.parameters,docs:{...(i=e.parameters)==null?void 0:i.docs,source:{originalSource:`{
+import{c as G,g as r}from"./commonConfiguration-93338b90.js";import{I as H}from"./FormFieldsComponentsForStory-ce39eec8.js";import"./jsx-runtime-1438501e.js";import"./index-f46741a2.js";import"./index-415bee12.js";const V={...G,title:"Field tags/Input",component:H,parameters:{controls:{sort:"requiredFirst"}},argTypes:{tag:{control:"inline-radio",options:["input"]}},args:{tag:"input"},tags:["autodocs"]},e={args:r("text")},s={args:r("number")},a={args:r("email")},o={args:r("textarea")},t={args:r("url")},c={args:r("tel")},m={args:r("search")},p={args:r("password")},n={args:r("color")},g={args:r("range")};var i,u,l;e.parameters={...e.parameters,docs:{...(i=e.parameters)==null?void 0:i.docs,source:{originalSource:`{
   args: getSimpleStoryArgs<TC>("text")
 }`,...(l=(u=e.parameters)==null?void 0:u.docs)==null?void 0:l.source}}};var d,S,T;s.parameters={...s.parameters,docs:{...(d=s.parameters)==null?void 0:d.docs,source:{originalSource:`{
   args: getSimpleStoryArgs<TC>("number")
 }`,...(T=(S=s.parameters)==null?void 0:S.docs)==null?void 0:T.source}}};var C,y,A;a.parameters={...a.parameters,docs:{...(C=a.parameters)==null?void 0:C.docs,source:{originalSource:`{
   args: getSimpleStoryArgs<TC>("email")
-}`,...(A=(y=a.parameters)==null?void 0:y.docs)==null?void 0:A.source}}};var x,b,h;o.parameters={...o.parameters,docs:{...(x=o.parameters)==null?void 0:x.docs,source:{originalSource:`{
+}`,...(A=(y=a.parameters)==null?void 0:y.docs)==null?void 0:A.source}}};var x,b,f;o.parameters={...o.parameters,docs:{...(x=o.parameters)==null?void 0:x.docs,source:{originalSource:`{
   args: getSimpleStoryArgs<TC>("textarea")
-}`,...(h=(b=o.parameters)==null?void 0:b.docs)==null?void 0:h.source}}};var w,f,E;t.parameters={...t.parameters,docs:{...(w=t.parameters)==null?void 0:w.docs,source:{originalSource:`{
+}`,...(f=(b=o.parameters)==null?void 0:b.docs)==null?void 0:f.source}}};var h,w,E;t.parameters={...t.parameters,docs:{...(h=t.parameters)==null?void 0:h.docs,source:{originalSource:`{
   args: getSimpleStoryArgs<TC>("url")
-}`,...(E=(f=t.parameters)==null?void 0:f.docs)==null?void 0:E.source}}};var I,F,N;c.parameters={...c.parameters,docs:{...(I=c.parameters)==null?void 0:I.docs,source:{originalSource:`{
+}`,...(E=(w=t.parameters)==null?void 0:w.docs)==null?void 0:E.source}}};var I,F,N;c.parameters={...c.parameters,docs:{...(I=c.parameters)==null?void 0:I.docs,source:{originalSource:`{
   args: getSimpleStoryArgs<TC>("tel")
 }`,...(N=(F=c.parameters)==null?void 0:F.docs)==null?void 0:N.source}}};var P,R,U;m.parameters={...m.parameters,docs:{...(P=m.parameters)==null?void 0:P.docs,source:{originalSource:`{
   args: getSimpleStoryArgs<TC>("search")

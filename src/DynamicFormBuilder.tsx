@@ -4,18 +4,7 @@ import { FormProps } from "./interfaces/form.interface";
 import { ComponentType, useEffect } from "react";
 import { I_JsonObject } from "./interfaces/generic.interfaces";
 
-export const DynamicFormBuilder = ({
-    id,
-    fields,
-    defaultValues,
-    onSubmit,
-    onInvalidSubmit,
-    fieldWrapper,
-    fieldComponents,
-    saveTemporalData,
-    useFormProps,
-    className = "row"
-}: FormProps & {
+export type DynamicFormProps = FormProps & {
     className?: string,
     useFormProps?: Omit<UseFormProps, "defaultValues">,
     fieldWrapper?: {
@@ -26,7 +15,20 @@ export const DynamicFormBuilder = ({
         label?: ComponentType,
         component?: ComponentType
     }
-}) => {
+}
+
+export const DynamicFormBuilder = ({
+    id,
+    fields,
+    defaultValues,
+    onSubmit,
+    onInvalidSubmit,
+    fieldWrapper,
+    fieldComponents,
+    saveTemporalData,
+    useFormProps,
+    className = "row row-gap-3"
+}: DynamicFormProps) => {
     const form = useForm<FieldValues>({ defaultValues, ...useFormProps });
 
     const {
