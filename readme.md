@@ -149,31 +149,31 @@ const MyForm = () => {
 
 | Propiedad | Tipo | Descripción |  |
 | --- | --- | --- | --- | 
-| `id` | `string` | El ID del formulario | Required |
-| `fields` | `array` | El array de campos del formulario | Required |
-| `defaultValues` | `object` | Los valores predeterminados del formulario | |
-| `onSubmit` | `function` | La función que se llama cuando se envía el formulario | Required |
-| `onInvalidSubmit` | `function` | La función que se llama cuando se envía el formulario con errores |  |
-| `fieldWrapper` | `object` | El componente que envuelve cada campo del formulario | |
-| `fieldComponents` | `object` | Los componentes personalizados para los campos del formulario | |
-| `saveTemporalData` | `function` | La función que se llama para guardar los datos temporales del formulario |  | |
-| `useFormProps` | `object` | Las propiedades adicionales para el hook `useForm` | |
-| `className` | `string` | La clase CSS para el contenedor del formulario. <br/> `Default: "row"` | |
+| `id` | `string` | Form ID to use it in submit button | Required |
+| `fields` | `array` | Form fields array | Required |
+| `defaultValues` | `object` | Form default values | |
+| `onSubmit` | `function` | Submit function | Required |
+| `onInvalidSubmit` | `function` | Callback when form fields has errors |  |
+| `fieldWrapper` | `object` | Component to wrap every one form field | |
+| `fieldComponents` | `object` | Custom form field component type | |
+| `saveTemporalData` | `function` | Callback for storage data before component unmounth |  | |
+| `useFormProps` | `object` | Extra props to `useForm` hook | |
+| `className` | `string` | Classes for main form container. <br/> `Default: "row"` | |
 
 
 **fieldWrapper**
 
 | Propiedad | Tipo | Descripción  | |
 | --- | --- | --- | --- | 
-| `component` | `ComponentType` | El componente que envuelve cada campo del formulario |  | 
-| `props` | `{ className?: string } & I_JsonObject` | Las propiedades adicionales para el componente wrapper |  |
+| `component` | `ComponentType` | Wrapper component |  | 
+| `props` | `{ className?: string } & I_JsonObject` | Props for wrapper component |  |
 
 **fieldComponents**
 
 | Propiedad | Tipo | Descripción | |
 | --- | --- | --- | --- |
-| `label` | `ComponentType` | Componente específico para el nombre del campo | |
-| `component` | `ComponentType` | Componente específico para un campo | |
+| `label` | `ComponentType` | Specific component for labels of form fields | |
+| `component` | `ComponentType` | Specific component for any form field | |
 
 
 

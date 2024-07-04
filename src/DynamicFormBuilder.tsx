@@ -36,7 +36,9 @@ export const DynamicFormBuilder = ({
     } = form;
 
     useEffect(() => {
-        saveTemporalData?.(getValues())
+        () => {
+            saveTemporalData?.(getValues())
+        }
     }, [])
 
     return (
