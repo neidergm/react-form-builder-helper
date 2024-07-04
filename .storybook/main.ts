@@ -8,7 +8,6 @@ const config: StorybookConfig = {
     "@storybook/addon-links",
     "@storybook/addon-essentials",
     "@chromatic-com/storybook",
-    // '@storybook/addon-storysource',
     "@storybook/addon-interactions",
     "@storybook/addon-mdx-gfm"
   ],

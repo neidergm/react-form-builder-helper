@@ -6,6 +6,8 @@
 
 React Form Builder Helper is a lightweight package that helps you create dynamic form fields from JSON objects. It uses React Hook Form [React hook form](https://react-hook-form.com/) under the hood to provide real-time validation and a simple API for creating and managing form fields.
 
+* Note: Bootstrap is recomended
+
 **Features**
 ------------
 
