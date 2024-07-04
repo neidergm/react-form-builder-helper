@@ -13,7 +13,7 @@
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build -o ./docs",
+    "build-storybook": "storybook build -o ./docs --base-path=/react-form-builder-helper",
     "build-storybook-docs": "storybook build --docs -o ./docs",
     "clean": "rimraf dist/"
   },
