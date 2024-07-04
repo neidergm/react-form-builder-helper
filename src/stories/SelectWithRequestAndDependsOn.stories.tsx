@@ -10,12 +10,6 @@ const meta = {
         <div>
             <p>Default values have to be indicated in useForm params</p>
             <p>Otherwhise, the child component dont get data</p>
-
-            <code>
-                {`const form = useForm({defaultValues: {...}})`}
-            </code>
-            
-            <br />
             <br />
             <br />
 

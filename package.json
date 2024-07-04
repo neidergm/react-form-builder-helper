@@ -1,7 +1,7 @@
 {
   "name": "react-form-builder-helper",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -11,14 +11,29 @@
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
   },
-  "dependencies": {
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+  "dependencies": {},
+  "release": {
+    "branches": [
+      "master"
+    ]
   },
+  "keywords": [
+    "react-hook-form",
+    "form-builder-helper",
+    "form-helper",
+    "form-fields-builder",
+    "react-form"
+  ],
+  "license": "MIT",
+  "files": [
+    "dist/"
+  ],
   "peerDependencies": {
     "react-hook-form": "^7.52.0"
   },
   "devDependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "@chromatic-com/storybook": "^1.5.0",
     "@storybook/addon-docs": "^8.1.10",
     "@storybook/addon-essentials": "^8.1.10",

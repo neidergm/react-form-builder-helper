@@ -94,8 +94,8 @@ const createFormField = (
                 return createFormField({
                     ...config, tag: "select", type: "simple",
                     options: timeGenerator(
-                        (config.validations?.min as ValidationValueMessage<number | string>)?.value,
-                        (config.validations?.max as ValidationValueMessage<number | string>)?.value
+                        (validations?.min as ValidationValueMessage<number | string>)?.value,
+                        (validations?.max as ValidationValueMessage<number | string>)?.value
                     )
                 }, as, labelAs);
             }

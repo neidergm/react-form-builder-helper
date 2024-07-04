@@ -1,5 +1,4 @@
 import { Button } from 'reactstrap';
-import Form from '../Form';
 import {
     InputConfig,
     SelectConfig,
@@ -14,6 +13,7 @@ import {
     WithDepends
 } from '../interfaces/fields.interface';
 import { useState } from 'react';
+import { DynamicFormBuilder } from '../DynamicFormBuilder';
 
 
 //SIMPLE FIELDS
@@ -36,7 +36,7 @@ export const SelectWithRequestAndDependsComponent = (props: SelectConfig & WithR
         name: "parent",
         type: "simple",
         placeholder: "Pick one...",
-        options:null,
+        options: null,
         doRequest() {
             return new Promise((resolve) =>
                 setTimeout(() => resolve({ options: ["1", "2", "3", "4", "5"] }), 2000)
@@ -46,15 +46,25 @@ export const SelectWithRequestAndDependsComponent = (props: SelectConfig & WithR
             url: "https://example.api/countries",
             method: "GET",
         },
-        // options: [{ label: "Option1", value: "1" }, { label: "Option2", value: "2" }, { label: "Option3", value: "3" }],
-        defaultValue: "1",
-        // controlled: true,
+        // defaultValue: "1",
         validations: {
             required: true
         },
     }
 
-    return <PrintOneField fields={[parentField, props]} />
+    const defaultValues = {
+        parent: 1,
+        [props.name]: props.defaultValue
+    }
+
+    return <>
+        <code>
+            {`const form = useForm({defaultValues: ${JSON.stringify(defaultValues)} })`}
+        </code>
+        <br />
+        <br />
+        <PrintOneField fields={[parentField, props]} defaultValues={defaultValues} />
+    </>
 }
 export const SelectWithDependsComponent = (props: SelectConfig & WithDepends) => {
 
@@ -73,8 +83,7 @@ export const SelectWithDependsComponent = (props: SelectConfig & WithDepends) =>
     return <PrintOneField fields={[parentField, props]} />
 }
 
-const PrintOneField = <T extends Record<string, unknown>>({ fields, ...field }: T) => {
-
+const PrintOneField = <T extends Record<string, unknown>>({ fields, defaultValues, ...field }: T) => {
     const [showjson, setShowJson] = useState(false)
 
     const copy = () => {
@@ -85,15 +94,25 @@ const PrintOneField = <T extends Record<string, unknown>>({ fields, ...field }: 
         setShowJson(s => !s)
     }
 
-    return <div className='d-flex gap-4'>
+    return <div className='d-flex gap-2'>
         <div className='flex-grow-1'>
-            <Form
-                {...field}
-                fields={fields as never || [field as never]}
-                onSubmit={(data) => {
-                    console.log(data)
-                }}
-            />
+            <div className='bg-light rounded-4 px-3 py-4 h-100'>
+                <DynamicFormBuilder
+                    defaultValues={defaultValues as never}
+                    fields={fields as never || [field as never]}
+                    id="NG_FORM"
+                    onSubmit={data => console.log(data)}
+                    onInvalidSubmit={data => console.log(data)}
+                    fieldWrapper={{
+                        props: {
+                            className: "col-md-6"
+                        }
+                    }}
+                />
+                <div className='mt-3'>
+                    <button className='btn btn-primary' form="NG_FORM">Send form</button>
+                </div>
+            </div>
         </div>
         <div>
             <div className='bg-light rounded-4 py-4 px-4 h-100'>
@@ -103,7 +122,7 @@ const PrintOneField = <T extends Record<string, unknown>>({ fields, ...field }: 
                         <Button size='sm' color='dark' onClick={copy}>Copy</Button>
                     </div>
                 </div>
-                <pre className='mb-0' style={{maxHeight: "300px", overflow: "hidden auto"}}>
+                <pre className='mb-0' style={{ maxHeight: "300px", overflow: "hidden auto" }}>
                     <Button size='small' className='py-0 px-1 lh-1 me-2 position-sticky top-0' onClick={toggleJSON}>
                         {showjson ? "-" : "+"}
                     </Button>

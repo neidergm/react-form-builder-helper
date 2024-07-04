@@ -95,13 +95,14 @@ const ControlledField = ({
   Label,
   parentValue,
 }: ComponentFieldProps) => {
+  const validations = validationsMapper(fieldProps.validations, { type: fieldProps.type, tag: fieldProps.tag });
   return <Controller
     name={fieldProps.name}
     control={control}
     defaultValue={fieldProps.defaultValue}
-    rules={validationsMapper(fieldProps.validations, { type: fieldProps.type, tag: fieldProps.tag })}
+    rules={validations}
     render={({ field: rf, fieldState: { error } }) => {
-      const props = { ...fieldProps, ...rf, invalid: !!error } as RegisteredField
+      const props = { ...fieldProps, ...rf, invalid: !!error, validations } as RegisteredField
       delete props.defaultValue;
       parentValue && (props.parentValue = parentValue);
 
