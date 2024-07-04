@@ -15,7 +15,9 @@
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build -o ./docs",
     "build-storybook-docs": "storybook build --docs -o ./docs",
-    "clean": "rimraf dist/"
+    "clean": "rimraf dist/",
+    "npm:push": "np",
+    "test": "echo 'No tests'"
   },
   "repository": {
     "url": "https://github.com/neidergm/react-form-builder-helper",
@@ -35,7 +37,8 @@
     "form"
   ],
   "license": "MIT",
-  "main": "index.ts",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts", 
   "files": [
     "dist/"
   ],
