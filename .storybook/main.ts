@@ -20,12 +20,9 @@ const config: StorybookConfig = {
   docs: {},
 
   typescript: {
+    check: true,
     reactDocgen: "react-docgen-typescript"
   },
 
-  viteFinal: (config) => {
-    config.base = '/react-form-builder-helper/';
-    return config;
-  },
 };
 export default config;
