@@ -1,17 +1,15 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import DynamicForm from '../Form';
-
- './../components';
+import { DynamicFormBuilder } from '../DynamicFormBuilder';
 
 const meta = {
     title: 'Form/Dynamic Form',
-    component: DynamicForm,
+    component: DynamicFormBuilder,
     parameters: {
 
         // layout: 'centered',
     },
     tags: ['autodocs'],
-} satisfies Meta<typeof DynamicForm>;
+} satisfies Meta<typeof DynamicFormBuilder>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -20,7 +18,6 @@ export const Simple: Story = {
     args: {
         fields: [
             {
-                // className: "form-control",
                 label: "Name",
                 name: "text",
                 tag: "input",
@@ -32,7 +29,6 @@ export const Simple: Story = {
                 }
             },
             {
-                // className: "form-control",
                 label: "Age",
                 name: "number",
                 tag: "input",
@@ -43,30 +39,25 @@ export const Simple: Story = {
                 }
             },
             {
-                // className: "form-select ",
                 label: "Type",
                 name: "select",
                 tag: "select",
                 type: "simple",
                 options: ["opcion1", "opcion2", "opcion3"],
-                // options: [{value:"opcion1", label: "Opción 1"}, {value:"opcion2", label: "Opción 2"}, {value:"opcion3", label: "Opción 3"}],
                 validations: {
                     required: true
                 }
             },
             {
-                // className: "form-select ",
                 label: "Check",
                 name: "checkbox",
                 tag: "checkbox",
                 type: "simple",
-                // options: ["opcion1", "opcion2", "opcion3"],
                 validations: {
                     required: true
                 }
             },
             {
-                // className: "form-select ",
                 label: "Radio",
                 name: "radio",
                 tag: "input",
@@ -75,8 +66,7 @@ export const Simple: Story = {
                 validations: {
                     required: true
                 }
-            },
-
+            }
         ],
         onSubmit: (d) => {
             console.log(d)

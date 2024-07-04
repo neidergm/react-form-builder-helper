@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import commonConfiguration, { getSimpleStoryArgs } from './commonConfiguration';
+import commonConfiguration from './commonConfiguration';
 import { HtmlComponent } from './FormFieldsComponentsForStory';
 
 const meta = {
@@ -22,7 +22,6 @@ const meta = {
 export default meta;
 
 type Story = StoryObj<typeof meta>;
-type TC = Story["args"]["type"]
 
 export const Default: Story = {
   args: {

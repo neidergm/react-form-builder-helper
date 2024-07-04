@@ -5,13 +5,17 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "npm run clean && tsc",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "clean": "rimraf dist/"
   },
-  "dependencies": {},
+  "repository": {
+    "url": "https://github.com/neidergm/react-form-builder-helper",
+    "type": "git"
+  },
   "release": {
     "branches": [
       "master"
@@ -22,7 +26,8 @@
     "form-builder-helper",
     "form-helper",
     "form-fields-builder",
-    "react-form"
+    "react-form",
+    "form"
   ],
   "license": "MIT",
   "files": [
@@ -32,8 +37,6 @@
     "react-hook-form": "^7.52.0"
   },
   "devDependencies": {
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
     "@chromatic-com/storybook": "^1.5.0",
     "@storybook/addon-docs": "^8.1.10",
     "@storybook/addon-essentials": "^8.1.10",
@@ -56,7 +59,10 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.3.4",
     "eslint-plugin-storybook": "^0.8.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "reactstrap": "^9.2.2",
+    "rimraf": "^5.0.7",
     "storybook": "^8.1.10",
     "typescript": "^5.0.2",
     "vite": "^4.3.9"
