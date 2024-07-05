@@ -1,6 +1,6 @@
 {
   "name": "react-form-builder-helper",
-  "private": true,
+  "private": false,
   "author": {
     "name": "Neider Galofre",
     "email": "neidergm.ng@gmail.com"

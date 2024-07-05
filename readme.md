@@ -49,7 +49,7 @@ You have to import `FieldPrinter` component and use an array of field configurat
 Here's an example:
 ```jsx
 import { useForm } from 'react-hook-form'
-import FieldPrinter from 'react-form-builder-helper';
+import Field from 'react-form-builder-helper';
 
 const fields = [
   {
@@ -85,7 +85,7 @@ const MyForm = () => {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       {fields.map((field, index) => (
-        <FieldPrinter
+        <Field
           key={index}
           field={field}
           form={form}
@@ -176,54 +176,4 @@ const MyForm = () => {
 | --- | --- | --- | --- |
 | `label` | `ComponentType` | Specific component for labels of form fields | |
 | `component` | `ComponentType` | Specific component for any form field | |
-
-
-
-
-
-
-### Usage
-
-Here's a basic example of how to use React Form Builder Helper:
-```jsx
-import React from 'react';
-import { useFormBuilder } from 'react-form-builder-helper';
-
-const formData = [
-  {
-    type: 'text',
-    label: 'Name',
-    name: 'name',
-  },
-  {
-    type: 'email',
-    label: 'Email',
-    name: 'email',
-  },
-  {
-    type: 'checkbox',
-    label: 'Agree to terms',
-    name: 'terms',
-  },
-];
-
-const MyForm = () => {
-  const { register, handleSubmit } = useFormBuilder(formData);
-
-  const onSubmit = (data) => {
-    console.log(data);
-  };
-
-  return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      {formData.map((field, index) => (
-        <div key={index}>
-          <label>{field.label}</label>
-          <input {...register(field.name)} type={field.type} />
-        </div>
-      ))}
-      <button type="submit">Submit</button>
-    </form>
-  );
-};
 
