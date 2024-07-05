@@ -16,7 +16,7 @@
     "build-storybook": "storybook build -o ./docs",
     "build-storybook-docs": "storybook build --docs -o ./docs",
     "clean": "rimraf dist/",
-    "npm:push": "np",
+    "npm:push": "np --no-cleanup",
     "test": "echo 'No tests'"
   },
   "repository": {
@@ -76,4 +76,5 @@
     "typescript": "^5.0.2",
     "vite": "^4.3.9"
   }
+
 }
