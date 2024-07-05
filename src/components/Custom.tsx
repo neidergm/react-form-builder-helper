@@ -1,11 +1,11 @@
 import { ComponentType, forwardRef } from "react";
 import { CustomConfig } from "../interfaces/fields.interface";
+import classnames from 'classnames';
 
 type Props = {
-    Element: string | ComponentType,
-    componentProps: CustomConfig["componentProps"],
-    [x: string]: unknown
-}
+    Element: string | ComponentType
+    invalid: boolean,
+} & Omit<CustomConfig, "wrapperClassName" | "validations" | "tag" | "type">
 
 const Custom = forwardRef<unknown, Props>(
     ({
@@ -16,13 +16,16 @@ const Custom = forwardRef<unknown, Props>(
 
         const initProps = { ...props, ref }
 
-        const innerProps = typeof componentProps === "function" ? componentProps(initProps) : { ...componentProps, ...initProps };
+        const elementProps = (typeof componentProps === "function" ? componentProps(initProps) : componentProps) || {};
 
-        const elementProps = innerProps;
+        if (!Element) return <div className={`${props.className || ""}`}><b>Error:</b> Element property is required in Custom Input</div>
 
-        if(!Element) return <div className={elementProps.className}><b>Error:</b> Element property is required in Custom Input</div>
+        if (!elementProps.ref) elementProps.ref = ref;
 
-        return <Element {...elementProps} />
+        return <Element
+            {...elementProps} {...initProps}
+            className={classnames(props.className, elementProps.className)}
+        />
     }
 )
 

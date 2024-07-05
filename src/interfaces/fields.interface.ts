@@ -1,5 +1,5 @@
 import { ChangeEventHandler, ComponentType, FocusEventHandler } from "react";
-import { ControllerRenderProps, FieldValues, RegisterOptions, ValidationRule } from "react-hook-form";
+import { RegisterOptions, ValidationRule } from "react-hook-form";
 import { I_JsonObject } from "./generic.interfaces";
 
 export type FieldTypes = (
@@ -17,7 +17,7 @@ export type FieldTypes = (
 } & Partial<WithRequestConfig>
     & Partial<WithDepends>
 
-export type FieldOption = { value: string, label: string };
+export type FieldOption = { value: string | number | boolean, label: string | number | boolean };
 
 export interface FieldCommonConfig {
     name: string;
@@ -162,10 +162,13 @@ export interface TimeConfig extends FieldCommonConfig {
 /********************************************************************\
 | CUSTOM
 \********************************************************************/
+// type ReturnProps = ControllerRenderProps<FieldValues, string> & { ref: ForwardedRef<unknown> }
+type CustomFieldReturnProps = Omit<CustomConfig, "Element" | "tag" | "type" | "validations" | "componentProps" | "wrapperClassName">
+    & { invalid: boolean }
 
-type ReturnProps = ControllerRenderProps<FieldValues, string>
-
-export type CustomFieldComponentProps<T = object> = T & FieldCommonConfig | ((renderProps: ReturnProps & FieldCommonConfig) => T);
+export type CustomFieldComponentProps<T extends Record<string, unknown>> = T | (
+    (renderProps: T & CustomFieldReturnProps & I_JsonObject) => T
+)
 
 export interface CustomConfig extends FieldCommonConfig {
     tag: "custom";
@@ -173,8 +176,11 @@ export interface CustomConfig extends FieldCommonConfig {
     Element: ComponentType,
     defaultValue?: string;
     validations?: RegisterOptions;
-    componentProps?: Omit<CustomFieldComponentProps, "name">
+    componentProps?: CustomFieldComponentProps<
+        React.ComponentProps<CustomConfig["Element"]>
+    >
 }
+
 
 /********************************************************************\
 | HTML

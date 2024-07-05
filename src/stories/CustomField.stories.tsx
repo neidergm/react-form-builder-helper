@@ -23,8 +23,17 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-const CustomComponentField = forwardRef<never, { [x: string]: never }>(
+type PropsCustomField = {
+  testProp?: string | number | boolean;
+  invalid: boolean,
+  validations: any,
+} & {
+  [x: string]: string | boolean | number 
+}
+
+const CustomComponentField = forwardRef<HTMLInputElement, PropsCustomField>(
   ({ invalid, ...props }, ref) => {
+    console.log(props)
     return <div className={invalid ? "is-invalid" : ""}>
       <h3 className="text-info">My custom component</h3>
       <input {...props} ref={ref} />
@@ -34,10 +43,11 @@ const CustomComponentField = forwardRef<never, { [x: string]: never }>(
 export const CustomOrExternal: Story = {
   args: {
     label: "A custom field component",
+    wrapperClassName: "true",
     name: "customField",
     validations: { required: true },
     type: "MyCustomComponentName",
-    Element: CustomComponentField,
+    Element: CustomComponentField
   }
 };
 

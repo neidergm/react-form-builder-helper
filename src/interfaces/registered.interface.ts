@@ -9,7 +9,7 @@ type controlledConfigField = {
     value?: unknown,
 };
 
-export type RegisteredField = registeredConfigField & controlledConfigField & FieldTypes &
+export type RegisteredField<T = FieldTypes> = T & registeredConfigField & controlledConfigField &
 {
     parentValue?: DependsOnWatcherResult["parentValue"],
     // validations: {[K in keyof RegisterOptions]: ValidationValueMessage},

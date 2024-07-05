@@ -104,7 +104,7 @@ const createFormField = (
             break;
 
         case "custom":
-            mainElement = Custom;
+            mainElement = Custom as unknown as ComponentType;
             inputProps.invalid = invalid;
             break;
 
