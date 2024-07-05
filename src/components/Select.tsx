@@ -32,7 +32,7 @@ const Select = forwardRef<unknown, Props>(
                 <option value="">{placeholder || "Seleccione..."}</option>
                 {options?.map((o, i) => {
                     typeof o === "string" && (o = { value: o, label: o });
-                    return <option value={o.value} key={`${o.value}-${i}`}>{o.label}</option>
+                    return <option value={o.value as string} key={`${o.value}-${i}`}>{o.label}</option>
                 }
                 )}
             </Element>

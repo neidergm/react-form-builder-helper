@@ -1,4 +1,3 @@
-import { Button } from 'reactstrap';
 import {
     InputConfig,
     SelectConfig,
@@ -121,13 +120,13 @@ const PrintOneField = <T extends Record<string, unknown>>({ fields, defaultValue
                 <div className='d-flex justify-content-between gap-3 align-items-center mb-3'>
                     <p className='fw-bold m-0'>Field config JSON </p>
                     <div>
-                        <Button size='sm' color='dark' onClick={copy}>Copy</Button>
+                        <button className='btn btn-sm btn-dark' onClick={copy}>Copy</button>
                     </div>
                 </div>
                 <pre className='mb-0' style={{ maxHeight: "300px", overflow: "hidden auto" }}>
-                    <Button size='small' className='py-0 px-1 lh-1 me-2 position-sticky top-0' onClick={toggleJSON}>
+                    <button className='py-0 px-1 lh-1 me-2 position-sticky top-0 btn btn-sm btn-secondary' onClick={toggleJSON}>
                         {showjson ? "-" : "+"}
-                    </Button>
+                    </button>
                     {showjson ?
                         JSON.stringify(fields || field, undefined, 2)
                         :
