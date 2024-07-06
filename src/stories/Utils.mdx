@@ -1,0 +1,47 @@
+import { Meta } from '@storybook/addon-docs';
+
+<Meta title="Utils" />
+
+# Utilities
+---------------
+
+
+- [getFieldDefaultValues](#getfielddefaultvalues)
+- [normalizeFieldConfig](#normalizefieldconfig)
+
+<br/>
+
+
+### **getFieldDefaultValues**
+
+Extract default values from the form fields, it return a JSON object used to pass to useForm hook.
+
+```js
+const fields = [{...}, ...];
+const defaultValues = getFieldDefaultValues(fields);
+
+// Result: defaultValues = { "field1": "value", ... }
+```
+
+### **normalizeFieldConfig**
+
+Normalizes an array of field configurations by renaming properties according to a provided relation mapping.
+
+This function takes an array of field configurations and a relation mapping as input, and returns a new array of normalized field configurations.
+The normalization process involves renaming properties in each field configuration according to the mapping defined in the relation object. This can be useful when working with data that has inconsistent or legacy property names, and you need to standardize them to a common format to be used in form building.
+
+For example, if you have:
+```js
+const fields = [{"inputname": "field1", "type": "text", "rules": {...}, ...}, ...]
+```
+Then, you have to normalize fields configuration in a valid format to be used in form building: 
+```js
+const relation = {"input": "inputname", "validations": "rules"};
+const normalizedFields = normalizeFieldConfig(fields, relation);
+
+// Result: normalizedFields = [ {"name": "field1", "type": "text", "validations": {...}, ...}, ... ]
+```
+
+*NOTE: All properties are optional, it will depend on which ones are needed to standardize the field configuration.*
+
+
