@@ -37,7 +37,6 @@ const createFormField = (
     const { label: lbl, tag, type, invalid, validations, ...rest } = config;
     let label = lbl;
     let mainElement = as;
-    let child;
 
     let mainElementProps: I_JsonObject | undefined = undefined;
 
@@ -54,9 +53,9 @@ const createFormField = (
             mainElement = Input;
 
             if (type === "radio") {
-                child = <Radio {...inputProps} Label={labelAs} />;
-                mainElement = WrapperFormGroup;
-                mainElementProps = { invalid };
+                mainElement = Radio as ComponentType<unknown>;
+                (inputProps as ComponentProps<typeof Radio>).Label = labelAs;
+                inputProps.invalid = invalid;
             } else if (type === "textarea") {
                 if (!inputProps.Element) inputProps.Element = "textarea"
             } else {
@@ -122,15 +121,14 @@ const createFormField = (
                 };
             } else {
                 mainElement = WrapperFormGroup;
-                label = `Not supported field for "${label}"`;
+                label = `<p>Not supported field <b>{tag} ({type})</b> for "${label}"</p>`;
                 inputProps.className = "text-warning";
-                child = <b>{tag} ({type})</b>;
+                // child = <b>{tag} ({type})</b>;
             }
             break;
     }
 
     if (config.request) {
-        // inputProps.parentValue = parentValue;
         inputProps.Child = mainElement;
         mainElement = RequestWrapper;
     }
@@ -141,7 +139,7 @@ const createFormField = (
         <Label htmlFor={inputProps.id} Element={labelAs} className={FORM_LABEL_CLASSNAME} isRequired={!!(validations?.required as ValidationValueMessage)?.value}>
             {label}
         </Label>
-        {createElement(mainElement, mainElementProps, child)}
+        {createElement(mainElement, mainElementProps)}
     </>
 }
 

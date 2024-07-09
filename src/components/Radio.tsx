@@ -3,15 +3,13 @@ import { default as Lbl } from "./Label"
 import classnames from 'classnames'
 import { RadioConfig } from "../interfaces/fields.interface"
 import mapOptions from "../utils/fieldOptionsMapper"
-import { RADIO_BUTTON_CLASSNAME, RADIO_BUTTON_INLINE_CLASSNAME, RADIO_BUTTON_LABEL_CLASSNAME, RADIO_BUTTON_WRAPPER_CLASSNAME } from "../classNames"
+import { INVALID_CLASSNAME, RADIO_BUTTON_CLASSNAME, RADIO_BUTTON_INLINE_CLASSNAME, RADIO_BUTTON_LABEL_CLASSNAME, RADIO_BUTTON_WRAPPER_CLASSNAME } from "../classNames"
 
-type Props = {
-    id: string,
+type Props = RadioConfig & {
     Label?: string | ComponentType,
     Element?: ComponentType<InputHTMLAttributes<HTMLInputElement>> | string,
-    options?: RadioConfig["options"],
-    inline?: boolean,
-    className?: string
+    invalid?: boolean,
+    placeholder?: string
 }
 
 const Radio = forwardRef<unknown, Props>(
@@ -21,6 +19,8 @@ const Radio = forwardRef<unknown, Props>(
         options,
         id,
         inline,
+        invalid,
+        placeholder,
         ...props
     }, ref) => {
         const elementProps = {
@@ -30,8 +30,12 @@ const Radio = forwardRef<unknown, Props>(
         }
         elementProps.className = classnames(RADIO_BUTTON_CLASSNAME, elementProps.className);
 
-        if (!options) return <></>
-        return (<>
+        if (!options) {
+            if (!placeholder) return <></>
+            options = [{ label: placeholder, value: "" }]
+            elementProps.disabled = true;
+        }
+        return (<div className={classnames({ [INVALID_CLASSNAME]: invalid })}>
             {
                 mapOptions(options, (label, value, index) =>
                     <div className={classnames(RADIO_BUTTON_WRAPPER_CLASSNAME, { [RADIO_BUTTON_INLINE_CLASSNAME]: inline })} key={value}>
@@ -40,7 +44,7 @@ const Radio = forwardRef<unknown, Props>(
                     </div>
                 )
             }
-        </>
+        </div>
         )
     }
 )

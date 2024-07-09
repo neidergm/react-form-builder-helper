@@ -28,18 +28,36 @@ export const ShowByAnyValue: Story = {
         },
         dependsOn: [{ name: "parent", show: true }]
     },
+    decorators: [(Story) =>
+        <div>
+            <p>Pick some value to show other field</p>
+            <Story />
+        </div>
+    ],
 };
 export const ShowBySpecificValue: Story = {
     args: {
         ...ShowByAnyValue.args,
         dependsOn: [{ name: "parent", show: true, whenValue: "2" }]
     },
+    decorators: [(Story) =>
+        <div>
+            <p>Pick <b>Option2</b> to show other field</p>
+            <Story />
+        </div>
+    ],
 };
 export const HideBySpecificValue: Story = {
     args: {
         ...ShowByAnyValue.args,
         dependsOn: [{ name: "parent", show: false, whenValue: "2" }]
     },
+    decorators: [(Story) =>
+        <div>
+            <p>Pick <b>Option2</b> to hide other field</p>
+            <Story />
+        </div>
+    ],
 };
 export const ChangeProps: Story = {
     args: {

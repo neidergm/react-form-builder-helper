@@ -29,6 +29,7 @@ export const HtmlComponent = (props: HtmlConfig) => <PrintOneField {...props} />
 export const DynamicFormComponent = (props: DynamicFormProps) => <PrintOneField {...props} />
 
 export const CheckboxWithRequestComponent = (props: CheckboxConfig & WithRequestConfig) => <PrintOneField {...props} />
+export const RadioWithRequestComponent = (props: RadioConfig & WithRequestConfig) => <PrintOneField {...props} />
 
 export const SelectWithRequestComponent = (props: SelectConfig & WithRequestConfig) => <PrintOneField {...props} defaultValues={{ [props.name]: props.defaultValue }} />
 export const SelectWithRequestAndDependsComponent = (props: SelectConfig & WithRequestConfig & WithDepends) => {
