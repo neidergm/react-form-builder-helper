@@ -163,6 +163,7 @@ export interface TimeConfig extends FieldCommonConfig {
 | CUSTOM
 \********************************************************************/
 // type ReturnProps = ControllerRenderProps<FieldValues, string> & { ref: ForwardedRef<unknown> }
+// type ReturnProps = Pick<CustomConfig, "name" | "id" | "className" | "onBlur" | "onChange" | "componentProps">
 type CustomFieldReturnProps = Omit<CustomConfig, "Element" | "tag" | "type" | "validations" | "componentProps" | "wrapperClassName">
     & { invalid: boolean }
 
@@ -212,7 +213,7 @@ export interface WithRequestConfig {
     },
     // doRequest?: (url: string, method: RequestMethod, params?: RequestParams) => Promise<unknown>
     doRequest: (url: string, method: RequestMethod, params?: RequestParams) => Promise<Partial<FieldTypes>>,
-    loadingText?: string,
+    // loadingText?: string,
 }
 
 /********************************************************************\

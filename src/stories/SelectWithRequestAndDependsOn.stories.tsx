@@ -5,7 +5,7 @@ import { SelectWithRequestAndDependsComponent } from './FormFieldsComponentsForS
 const meta = {
     ...commonConfiguration,
     // render: (props) => commonConfiguration.render([props, child], {defaultValues: {select1: "1", select2: "11"}}),
-    title: 'With Request/Select',
+    title: 'Advanced/With Request',
     decorators: [(Story) =>
         <div>
             <p>Default values have to be indicated in useForm params</p>

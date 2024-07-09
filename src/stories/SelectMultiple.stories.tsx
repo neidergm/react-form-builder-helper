@@ -16,7 +16,8 @@ const meta = {
     },
     args: {
         tag: 'select',
-        defaultValue: []
+        defaultValue: ["Option1"],
+        // controlled: true,
     },
     tags: ['autodocs'],
 } satisfies Meta<typeof SelectComponent>;

@@ -1,4 +1,4 @@
-import { ComponentType, createElement } from "react";
+import { ComponentProps, ComponentType, createElement } from "react";
 import classnames from 'classnames'
 import {
     Radio,
@@ -24,7 +24,7 @@ type InputCustomProps = {
     invalid?: boolean,
     type?: string,
     Child?: ComponentType | string,
-    parentValue?: I_JsonObject,
+    // parentValue?: I_JsonObject,
     multiple?: boolean
 };
 
@@ -33,7 +33,8 @@ const createFormField = (
     as?: string | ComponentType,
     labelAs?: string | ComponentType,
 ): JSX.Element => {
-    const { label: lbl, tag, type, invalid, parentValue, validations, ...rest } = config;
+    // const { label: lbl, tag, type, invalid, parentValue, validations, ...rest } = config;
+    const { label: lbl, tag, type, invalid, validations, ...rest } = config;
     let label = lbl;
     let mainElement = as;
     let child;
@@ -64,10 +65,13 @@ const createFormField = (
             break;
 
         case "checkbox":
-            child = <Checkbox {...inputProps} type={type} Element={mainElement} Label={labelAs}>{label}</Checkbox>;
-            if (type === "simple") label = undefined;
-            mainElement = WrapperFormGroup;
-            mainElementProps = { invalid };
+            inputProps.Element = mainElement;
+            mainElement = Checkbox as ComponentType<unknown>;
+            (inputProps as ComponentProps<typeof Checkbox>).Label = labelAs;
+            (inputProps as ComponentProps<typeof Checkbox>).label = label;
+            inputProps.type = type;
+            inputProps.invalid = invalid;
+            if (type === "simple") label = undefined
             break;
 
         case "select":
@@ -126,7 +130,7 @@ const createFormField = (
     }
 
     if (config.request) {
-        inputProps.parentValue = parentValue;
+        // inputProps.parentValue = parentValue;
         inputProps.Child = mainElement;
         mainElement = RequestWrapper;
     }

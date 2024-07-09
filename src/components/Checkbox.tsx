@@ -4,41 +4,39 @@ import classnames from 'classnames'
 import { CheckboxConfig } from "../interfaces/fields.interface";
 import mapOptions from "../utils/fieldOptionsMapper";
 import { I_JsonObject } from "../interfaces/generic.interfaces";
-import { CHECKBOX_CLASSNAME, CHECKBOX_INLINE_CLASSNAME, CHECKBOX_LABEL_CLASSNAME, CHECKBOX_WRAPPER_CLASSNAME } from "../classNames";
+import {
+    CHECKBOX_CLASSNAME,
+    CHECKBOX_INLINE_CLASSNAME,
+    CHECKBOX_LABEL_CLASSNAME,
+    CHECKBOX_WRAPPER_CLASSNAME,
+    INVALID_CLASSNAME
+} from "../classNames";
 
-type Props = {
-    id: string,
-    children: unknown;
-    type: CheckboxConfig["type"],
+type Props = Omit<CheckboxConfig, "validations" | "wrapperClassName"> & {
     Label?: string | ComponentType,
     Element?: ComponentType<InputHTMLAttributes<HTMLInputElement>> | string,
-    options?: CheckboxConfig["options"],
-    defaultValue?: unknown,
-    className?: string,
-    inline?: boolean,
+    placeholder?: string,
+    invalid?: boolean,
 }
 
 const Checkbox = forwardRef<unknown, Props>(
     ({
         Element = "input",
         Label,
-        children,
+        label,
         defaultValue,
         type,
         options,
         id,
         inline,
+        invalid,
+        placeholder,
         ...props
     }, ref) => {
-
         const elementProps: I_JsonObject = {
             ...props,
             type: "checkbox",
             [typeof Element === "string" ? "ref" : "innerRef"]: ref
-        }
-
-        if (defaultValue) {
-            elementProps.defaultChecked = defaultValue as never;
         }
 
         if (typeof Element === "string") {
@@ -46,29 +44,51 @@ const Checkbox = forwardRef<unknown, Props>(
             elementProps.className = classnames(CHECKBOX_CLASSNAME, elementProps.className);
         }
 
+        if (!options && !!placeholder && type !== "simple") {
+            type = "simple";
+            elementProps.disabled = true;
+            elementProps.checked = false;
+            label = placeholder;
+        }
+
         if (type !== "simple") {
             if (!options) return <></>
-            return (<>
+
+            //Its controlled
+            if (elementProps.value) {
+                elementProps.onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+                    const currentValue = Array.isArray(elementProps.value) ? elementProps.value : [];
+                    const newValue = e.target.checked
+                        ? [...currentValue, e.target.value]
+                        : currentValue.filter(i => i !== e.target.value);
+                    props.onChange?.(newValue as never);
+                }
+            }
+
+            return (<div className={classnames({ [INVALID_CLASSNAME]: invalid })}>
                 {
                     mapOptions(options, (label, value, index) => {
-                        if (Array.isArray(defaultValue)) {
-                            elementProps.defaultChecked = defaultValue?.includes(value) as never;
+                        if (elementProps.value) {
+                            if (Array.isArray(elementProps.value)) elementProps.checked = elementProps.value.includes(value);
+                        } else {
+                            elementProps.defaultChecked = (defaultValue as Array<string>)?.includes(value);
                         }
 
-                        return <div  className={classnames(CHECKBOX_WRAPPER_CLASSNAME, { [CHECKBOX_INLINE_CLASSNAME]: inline })} key={value}>
+                        return <div className={classnames(CHECKBOX_WRAPPER_CLASSNAME, { [CHECKBOX_INLINE_CLASSNAME]: inline })} key={value}>
                             <Element {...elementProps} value={value} id={`${id}-${index}`} />
                             <Lbl Element={Label} htmlFor={`${id}-${index}`} className={CHECKBOX_LABEL_CLASSNAME}>{label}</Lbl>
                         </div >
-                    }
-                    )
+                    })
                 }
-            </>)
+            </div>)
         }
 
+        if (defaultValue) elementProps.defaultChecked = defaultValue;
+
         return (
-            <div className={CHECKBOX_WRAPPER_CLASSNAME}>
+            <div className={classnames(CHECKBOX_WRAPPER_CLASSNAME, { [INVALID_CLASSNAME]: invalid })}>
                 <Element {...elementProps} id={id} />
-                <Lbl Element={Label} htmlFor={id} className={CHECKBOX_LABEL_CLASSNAME}>{children as never}</Lbl>
+                <Lbl Element={Label} htmlFor={id} className={CHECKBOX_LABEL_CLASSNAME}>{label}</Lbl>
             </div>
         )
     }

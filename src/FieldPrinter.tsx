@@ -60,15 +60,14 @@ const FieldPrinter = <T extends Record<string, unknown>>({
       }
     }
 
-    if (controlled || (finallyFieldProps.request)) {
+    if (controlled || (finallyFieldProps.tag === "select" && finallyFieldProps.request)) {
       return createElement(WrapperComponent, wrapperProps as T,
-        <ControlledField {...compProps} fieldProps={finallyFieldProps} parentValue={parentValue} />
+        <ControlledField {...compProps} fieldProps={finallyFieldProps} />
       )
     } else {
       return createElement(WrapperComponent, wrapperProps as T,
         <UncrontrolledFIeld {...compProps}
           fieldProps={finallyFieldProps}
-          parentValue={parentValue}
           error={error}
           register={register}
         />
@@ -85,7 +84,6 @@ type ComponentFieldProps = {
   control: Control<FieldValues>;
   FieldComponent?: string | ComponentType,
   Label: ComponentType,
-  parentValue?: I_JsonObject;
 }
 
 const ControlledField = ({
@@ -93,7 +91,6 @@ const ControlledField = ({
   control,
   FieldComponent,
   Label,
-  parentValue,
 }: ComponentFieldProps) => {
   const validations = validationsMapper(fieldProps.validations, { type: fieldProps.type, tag: fieldProps.tag });
   return <Controller
@@ -102,9 +99,9 @@ const ControlledField = ({
     defaultValue={fieldProps.defaultValue}
     rules={validations}
     render={({ field: rf, fieldState: { error } }) => {
-      const props = { ...fieldProps, ...rf, invalid: !!error, validations } as RegisteredField
+      const props = { ...fieldProps, ...rf, invalid: !!error, validations } as RegisteredField;
+      if (!props.id) props.id = props.name;
       delete props.defaultValue;
-      parentValue && (props.parentValue = parentValue);
 
       return <>
         {createFormField(props, FieldComponent, Label)}
@@ -120,7 +117,6 @@ const UncrontrolledFIeld = ({
   Label,
   register,
   error,
-  parentValue,
 }: ComponentFieldProps & {
   register: UseFormRegister<FieldValues>,
   error?: GlobalError,
@@ -129,7 +125,6 @@ const UncrontrolledFIeld = ({
   const registeredField = registerField(fieldProps as FieldTypes, register);
 
   registeredField.invalid = !!error;
-  parentValue && (registeredField.parentValue = parentValue);
 
   return <>
     {createFormField(registeredField, FieldComponent, Label)}

@@ -28,7 +28,9 @@ export const HtmlComponent = (props: HtmlConfig) => <PrintOneField {...props} />
 
 export const DynamicFormComponent = (props: DynamicFormProps) => <PrintOneField {...props} />
 
-export const SelectWithRequestComponent = (props: SelectConfig & WithRequestConfig) => <PrintOneField {...props} />
+export const CheckboxWithRequestComponent = (props: CheckboxConfig & WithRequestConfig) => <PrintOneField {...props} />
+
+export const SelectWithRequestComponent = (props: SelectConfig & WithRequestConfig) => <PrintOneField {...props} defaultValues={{ [props.name]: props.defaultValue }} />
 export const SelectWithRequestAndDependsComponent = (props: SelectConfig & WithRequestConfig & WithDepends) => {
 
     const parentField = {
@@ -86,7 +88,6 @@ export const SelectWithDependsComponent = (props: SelectConfig & WithDepends) =>
 
 const PrintOneField = <T extends Record<string, unknown>>({ fields, defaultValues, ...field }: T) => {
     const [showjson, setShowJson] = useState(false)
-
     const copy = () => {
         navigator.clipboard.writeText(JSON.stringify(fields || field, undefined, 2));
     }
@@ -95,8 +96,8 @@ const PrintOneField = <T extends Record<string, unknown>>({ fields, defaultValue
         setShowJson(s => !s)
     }
 
-    return <div className='d-flex gap-2'>
-        <div className='flex-grow-1'>
+    return <div className='d-flex gap-2  flex-wrap'>
+        <div className='flex-grow-1' style={{ minWidth: "300px" }}>
             <div className='bg-light rounded-4 px-3 py-4 h-100'>
                 <DynamicFormBuilder
                     defaultValues={defaultValues as never}

@@ -4,12 +4,11 @@ import { SelectWithDependsComponent } from './FormFieldsComponentsForStory';
 
 const meta = {
     ...commonConfiguration,
-    title: 'With depends On/Select',
+    title: 'Advanced/With depends On',
     component: SelectWithDependsComponent,
     parameters: {
         controls: { sort: 'requiredFirst' },
     },
-    tags: ['autodocs'],
 } satisfies Meta<typeof SelectWithDependsComponent>;
 
 export default meta;
