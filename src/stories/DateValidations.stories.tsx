@@ -1,24 +1,23 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import commonConfiguration from './commonConfiguration';
-import { CheckboxValidationsComponent } from './FormFieldsComponentsForStory';
+import { DateValidationsComponent } from './FormFieldsComponentsForStory';
 
 const meta = {
   ...commonConfiguration,
-  title: 'Field tags/Checkbox',
-  component: CheckboxValidationsComponent,
+  title: 'Field tags/Date',
+  component: DateValidationsComponent,
   parameters: {
     controls: { sort: 'requiredFirst' },
+    argTypes: {
+      valueAsDate: { control: "boolean" }
+    }
   },
-  argTypes: {},
-} satisfies Meta<typeof CheckboxValidationsComponent>;
+} satisfies Meta<typeof DateValidationsComponent>;
 
 export default meta;
 
 type Story = StoryObj<typeof meta>;
 
 export const Validations: Story = {
-  args: {
-    min: 2,
-  }
+  args: {}
 };
-

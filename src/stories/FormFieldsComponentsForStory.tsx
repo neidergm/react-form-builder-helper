@@ -162,11 +162,54 @@ export const CheckboxValidationsComponent = (props: Pick<NonNullable<CheckboxCon
 
     return <div>
         <p>Avalaible validations: <i>required</i></p>
-        <PrintOneField {...simple} key="simple" />
+        <PrintOneField {...simple} />
         <br />
         <hr />
         <br />
-        <p>Avalaible validations: <i>required, min, max</i></p>
-        <PrintOneField {...multiple} key="multiple" />
+        <p>Avalaible validations: <i>required, min: number, max: number</i></p>
+        <PrintOneField {...multiple} />
+    </div>
+}
+
+export const DateValidationsComponent = (props: Pick<NonNullable<DateConfig["validations"]>, "required" | "min" | "max" | "valueAsDate">) => {
+    const input = {
+        ...getSimpleStoryArgs<DateConfig["type"]>("date"),
+        validations: props,
+        tag: "date"
+    }
+    return <div>
+        <PrintOneField {...input} />
+        <br />
+        <p>Avalaible validations (values):</p>
+        <ul>
+            <li><b>min:</b> string
+                <p>Valid format as date:</p>
+                <ul>
+                    <li>01-01-2024</li>
+                    <li>2024-01-01</li>
+                </ul>
+                <br />
+                <p>Valid format as string (Calculated by current date):</p>
+                <ul>
+                    <li>last 7 days</li>
+                    <li>last 1 month</li>
+                    <li>last 2 months</li>
+                    <li>next 3 days</li>
+                    <li>next 1 month</li>
+                </ul>
+            </li>
+            <li><b>max:</b> Same as min</li>
+        </ul>
+    </div>
+}
+
+export const InputValidationsComponent = ({ type, ...props }: { type: InputConfig["type"] } & Pick<NonNullable<InputConfig["validations"]>, "required" | "min" | "max" | "minLength" | "maxLength" | "pattern">) => {
+    const input = {
+        ...getSimpleStoryArgs<InputConfig["type"]>(type),
+        validations: props,
+        tag: "input"
+    }
+    return <div>
+        <PrintOneField {...input} />
     </div>
 }

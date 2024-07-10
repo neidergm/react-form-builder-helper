@@ -1,0 +1,36 @@
+import { Meta } from '@storybook/addon-docs';
+
+<Meta title="Validations" />
+
+# Validations
+---------------
+
+See [Validations section](https://react-hook-form.com/docs/useform/register) in Reack Hook Form to know what kind of validations you can use.
+
+For some complex validations (Not in below table), you have to see the validations sections.
+
+The validations can be different according to field type, here simple validations:
+
+| Validation | Description |
+| ---------- | ----------- |
+| required   | Field is required |
+| min        | Minimum value for numbers or minimum length for strings |
+| max        | Maximum value for numbers or maximum length for strings |
+| minLength  | Minimum length for strings |
+| maxLength  | Maximum length for strings |
+| pattern    | Regular expression pattern |
+| validate   | Custom validation function |
+
+
+**Validations usage**
+
+
+| Validation | Simple Usage | Object Usage |
+| ---------- | ------------ | ------------ |
+| required   | `true` | `{ value: true, message: 'This field is required' }` |
+| min        | `5` | `{ value: 5, message: 'Minimum value is 5' }` |
+| max        | `10` | `{ value: 10, message: 'Maximum value is 10' }` |
+| minLength  | `2` | `{ value: 2, message: 'Minimum length is 2' }` |
+| maxLength  | `10` | `{ value: 10, message: 'Maximum length is 10' }` |
+| pattern    | `/[A-Za-z]/` | `{ value: /[A-Za-z]/, message: 'Only letters are allowed' }` |
+| validate   | `value => value === '100'` | `{ isHundred: value => value === '100' \|\| 'Value must be 100' }` |
