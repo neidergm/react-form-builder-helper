@@ -18,12 +18,17 @@ const registerField = (
 
     const registeredData = register(name, vals);
 
+    if (restFieldProps.tag === "checkbox" && restFieldProps.type === "multiple") {
+        vals.setValueAs = (v) => v || []
+    }
+
     const mappedField = {
         ...registeredData,
         ...restFieldProps,
         validations: vals,
         id: id || registeredData.name
     }
+
 
     if (mappedField.tag === "file" && vals && "accept" in vals) {
         (mappedField as I_JsonObject).accept = (vals["accept"] as I_JsonObject).value;

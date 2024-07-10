@@ -1,3 +1,4 @@
+import { ValidationValueMessage } from "react-hook-form";
 import { FieldTypes } from "../interfaces/fields.interface";
 import { I_JsonObject } from "../interfaces/generic.interfaces";
 import { RegisteredField } from "../interfaces/registered.interface";
@@ -24,6 +25,8 @@ const validationsMapper = (
 ) => {
 
     const validations: RegisteredField["validations"] = {}
+    // type validationsListObj = NonNullable<RegisteredField["validations"]>
+    // const validations: {[K in validationsListObj]:ValidationValueMessage = {}}
 
     if (!vals) return validations;
 
@@ -84,8 +87,42 @@ const validationsMapper = (
         }
     }
 
-    // if (typeAndTag?.tag === "checkbox" && typeAndTag.type === "multiple") {
-    // }
+    if (typeAndTag?.tag === "checkbox" && typeAndTag.type === "multiple") {
+        const originalValidateFunction = originalValidations.validate;
+        let newValidateFunction = originalValidateFunction;
+
+        if ("min" in validations) {
+            const minValidation = (validations.min as ValidationValueMessage);
+            newValidateFunction = (val, formValues) => {
+                console.log(val)
+                if (val?.length) {
+                    if (val.length < minValidation.value) return minValidation.message;
+                    if (originalValidateFunction) {
+                        // eslint-disable-next-line @typescript-eslint/ban-types
+                        return (originalValidateFunction as Function)(val, formValues);
+                    }
+                }
+                return true;
+            };
+        }
+
+        if ("max" in validations) {
+            const maxValidation = (validations.max as ValidationValueMessage);
+            const previousValidateFunction = newValidateFunction;
+            newValidateFunction = (val, formValues) => {
+                if ( val?.length) {
+                    if (val.length > maxValidation.value) return maxValidation.message;
+                    // eslint-disable-next-line @typescript-eslint/ban-types
+                    return (previousValidateFunction as Function)(val, formValues);
+                }
+                return true;
+            };
+        }
+
+        validations.validate = newValidateFunction;
+    }
+
+
 
     return validations;
 }
