@@ -166,7 +166,7 @@ export const CheckboxValidationsComponent = (props: Pick<NonNullable<CheckboxCon
         <br />
         <hr />
         <br />
-        <p>Avalaible validations: <i>required, min: number, max: number</i></p>
+        <p>Avalaible validations: <i>required, min, max</i></p>
         <PrintOneField {...multiple} />
     </div>
 }
@@ -211,5 +211,62 @@ export const InputValidationsComponent = ({ type, ...props }: { type: InputConfi
     }
     return <div>
         <PrintOneField {...input} />
+    </div>
+}
+
+export const TimeValidationsComponent = (props: Pick<NonNullable<TimeConfig["validations"]>, "required" | "min" | "max">) => {
+    const input = {
+        ...getSimpleStoryArgs<TimeConfig["type"]>("simple"),
+        validations: props,
+        tag: "time"
+    }
+    return <div>
+        <PrintOneField {...input} />
+    </div>
+}
+
+export const SelectValidationsComponent = (props: Pick<NonNullable<SelectConfig["validations"]>, "required" | "min" | "max">) => {
+    const simple = {
+        ...getSimpleStoryArgs<SelectConfig["type"]>("simple"),
+        options: ["Option1", "Option2", "Option3", "Option4"],
+        validations: { required: props?.required || false },
+        tag: "select"
+    }
+    const multiple = {
+        ...getSimpleStoryArgs<SelectConfig["type"]>("multiple"),
+        validations: props,
+        tag: "select",
+        options: ["Option1", "Option2", "Option3", "Option4"]
+    }
+    return <div>
+        <p>Avalaible validations: <i>required</i></p>
+        <PrintOneField {...simple} />
+        <br />
+        <hr />
+        <br />
+        <p>Avalaible validations: <i>required, min, max</i></p>
+        <PrintOneField {...multiple} />
+    </div>
+}
+
+export const FileValidationsComponent = (props: Pick<NonNullable<FileConfig["validations"]>, "required" | "min" | "max" | "maxFileSize" | "minFileSize" | "accept">) => {
+    const simple = {
+        ...getSimpleStoryArgs<FileConfig["type"]>("simple"),
+        validations: props,
+        tag: "file"
+    }
+    const multiple = {
+        ...getSimpleStoryArgs<FileConfig["type"]>("multiple"),
+        validations: props,
+        tag: "file",
+    }
+    return <div>
+        <p>Avalaible validations: <i>required, min, max, accept</i></p>
+        <PrintOneField {...simple} />
+        <br />
+        <hr />
+        <br />
+        <p>Avalaible validations: <i>required, min, max, maxFileSize, minFileSize, accept </i></p>
+        <PrintOneField {...multiple} />
     </div>
 }

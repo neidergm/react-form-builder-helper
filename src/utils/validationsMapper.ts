@@ -87,14 +87,15 @@ const validationsMapper = (
         }
     }
 
-    if (typeAndTag?.tag === "checkbox" && typeAndTag.type === "multiple") {
+    if (
+        (typeAndTag?.tag === "checkbox" || typeAndTag?.tag === "select") && typeAndTag.type === "multiple"
+    ) {
         const originalValidateFunction = originalValidations.validate;
         let newValidateFunction = originalValidateFunction;
 
         if ("min" in validations) {
             const minValidation = (validations.min as ValidationValueMessage);
             newValidateFunction = (val, formValues) => {
-                console.log(val)
                 if (val?.length) {
                     if (val.length < minValidation.value) return minValidation.message;
                     if (originalValidateFunction) {
@@ -110,7 +111,7 @@ const validationsMapper = (
             const maxValidation = (validations.max as ValidationValueMessage);
             const previousValidateFunction = newValidateFunction;
             newValidateFunction = (val, formValues) => {
-                if ( val?.length) {
+                if (val?.length) {
                     if (val.length > maxValidation.value) return maxValidation.message;
                     // eslint-disable-next-line @typescript-eslint/ban-types
                     return (previousValidateFunction as Function)(val, formValues);

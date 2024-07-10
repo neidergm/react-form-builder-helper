@@ -28,9 +28,22 @@ The validations can be different according to field type, here simple validation
 | Validation | Simple Usage | Object Usage |
 | ---------- | ------------ | ------------ |
 | required   | `true` | `{ value: true, message: 'This field is required' }` |
-| min        | `5` | `{ value: 5, message: 'Minimum value is 5' }` |
-| max        | `10` | `{ value: 10, message: 'Maximum value is 10' }` |
-| minLength  | `2` | `{ value: 2, message: 'Minimum length is 2' }` |
-| maxLength  | `10` | `{ value: 10, message: 'Maximum length is 10' }` |
+| min        | `5` | `{ value: 5, message: 'Minimum value is {value}' }` |
+| max        | `10` | `{ value: 10, message: 'Maximum value is {value}' }` |
+| minLength  | `2` | `{ value: 2, message: 'Minimum length is {value}' }` |
+| maxLength  | `10` | `{ value: 10, message: 'Maximum length is {value}' }` |
 | pattern    | `/[A-Za-z]/` | `{ value: /[A-Za-z]/, message: 'Only letters are allowed' }` |
 | validate   | `value => value === '100'` | `{ isHundred: value => value === '100' \|\| 'Value must be 100' }` |
+
+
+**Extra validations for files**
+
+| Validation | Simple Usage | Object Usage |
+| ---------- | ------------ | ------------ |
+| accept     | `'.png,.pdf'` \| `['.png', '.pdf']` | `{ value: '.png,.pdf', message: 'Only accept {value} file types' }` |
+| minFileSize| `1` | `{ value: 1, message: 'Minimum size for file {value}MB' }` |
+| maxFileSize| `2` | `{ value: 2, message: 'Maximum size for file {value}MB' }` |
+
+**Extra validations for custom fields**
+
+The validations can be any type
