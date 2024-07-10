@@ -11,8 +11,9 @@ import {
     HtmlConfig,
     WithDepends
 } from '../interfaces/fields.interface';
-import { useState } from 'react';
+import { useId, useState } from 'react';
 import { DynamicFormBuilder, DynamicFormProps } from '../DynamicFormBuilder';
+import { getSimpleStoryArgs } from './commonConfiguration';
 
 
 //SIMPLE FIELDS
@@ -93,6 +94,8 @@ const PrintOneField = <T extends Record<string, unknown>>({ fields, defaultValue
         navigator.clipboard.writeText(JSON.stringify(fields || field, undefined, 2));
     }
 
+    const idForm = useId()
+
     const toggleJSON = () => {
         setShowJson(s => !s)
     }
@@ -103,7 +106,7 @@ const PrintOneField = <T extends Record<string, unknown>>({ fields, defaultValue
                 <DynamicFormBuilder
                     defaultValues={defaultValues as never}
                     fields={fields as never || [field as never]}
-                    id="NG_FORM"
+                    id={idForm}
                     onSubmit={data => console.log(data)}
                     onInvalidSubmit={data => console.log(data)}
                     fieldWrapper={{
@@ -113,7 +116,7 @@ const PrintOneField = <T extends Record<string, unknown>>({ fields, defaultValue
                     }}
                 />
                 <div className='mt-3'>
-                    <button className='btn btn-primary' form="NG_FORM">Send form</button>
+                    <button className='btn btn-primary' form={idForm}>Send form</button>
                 </div>
             </div>
         </div>
@@ -138,4 +141,32 @@ const PrintOneField = <T extends Record<string, unknown>>({ fields, defaultValue
             </div>
         </div>
     </div >
+}
+
+
+
+// VALIDATIONS
+
+export const CheckboxValidationsComponent = (props: Pick<NonNullable<CheckboxConfig["validations"]>, "required" | "min" | "max">) => {
+    const simple = {
+        ...getSimpleStoryArgs<CheckboxConfig["type"]>("simple"),
+        validations: { required: props?.required || false },
+        tag: "checkbox"
+    }
+    const multiple = {
+        ...getSimpleStoryArgs<CheckboxConfig["type"]>("multiple"),
+        validations: props,
+        tag: "checkbox",
+        options: ["Option1", "Option2", "Option3", "Option4"]
+    }
+
+    return <div>
+        <p>Avalaible validations: <i>required</i></p>
+        <PrintOneField {...simple} key="simple" />
+        <br />
+        <hr />
+        <br />
+        <p>Avalaible validations: <i>required, min, max</i></p>
+        <PrintOneField {...multiple} key="multiple" />
+    </div>
 }

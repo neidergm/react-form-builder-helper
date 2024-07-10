@@ -84,6 +84,9 @@ const validationsMapper = (
         }
     }
 
+    // if (typeAndTag?.tag === "checkbox" && typeAndTag.type === "multiple") {
+    // }
+
     return validations;
 }
 

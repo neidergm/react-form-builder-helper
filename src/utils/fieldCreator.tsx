@@ -121,7 +121,7 @@ const createFormField = (
                 };
             } else {
                 mainElement = WrapperFormGroup;
-                label = `<p>Not supported field <b>{tag} ({type})</b> for "${label}"</p>`;
+                label = `<p>Not supported field <b>${tag} (${type})</b> for "${label}"</p>`;
                 inputProps.className = "text-warning";
                 // child = <b>{tag} ({type})</b>;
             }
