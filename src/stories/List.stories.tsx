@@ -51,7 +51,6 @@ export const List: Story = {
                     required: true
                 }
             }
-        ]
+        ],
     }
-    // args: getSimpleStoryArgs<TC>("text"),
 };

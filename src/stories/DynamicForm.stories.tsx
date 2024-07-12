@@ -74,5 +74,8 @@ export const Simple: Story = {
         onInvalidSubmit: (d) => {
             console.log(d)
         },
+        defaultValues:{
+            "text": "Neider"
+          }
     },
 };

@@ -15,6 +15,7 @@ import {
 import { useId, useState } from 'react';
 import { DynamicFormBuilder, DynamicFormProps } from '../DynamicFormBuilder';
 import { getSimpleStoryArgs } from './commonConfiguration';
+import { getFieldDefaultValues } from '../utils/getFieldDefaultValues';
 
 
 //SIMPLE FIELDS
@@ -34,7 +35,7 @@ export const DynamicFormComponent = (props: DynamicFormProps) => <PrintOneField 
 export const CheckboxWithRequestComponent = (props: CheckboxConfig & WithRequestConfig) => <PrintOneField {...props} />
 export const RadioWithRequestComponent = (props: RadioConfig & WithRequestConfig) => <PrintOneField {...props} />
 
-export const SelectWithRequestComponent = (props: SelectConfig & WithRequestConfig) => <PrintOneField {...props} defaultValues={{ [props.name]: props.defaultValue }} />
+export const SelectWithRequestComponent = (props: SelectConfig & WithRequestConfig) => <PrintOneField {...props} />
 export const SelectWithRequestAndDependsComponent = (props: SelectConfig & WithRequestConfig & WithDepends) => {
 
     const parentField = {
@@ -107,7 +108,7 @@ const PrintOneField = <T extends Record<string, unknown>>({ fields, defaultValue
         <div className='flex-grow-1' style={{ minWidth: "300px" }}>
             <div className='bg-light rounded-4 px-3 py-4 h-100'>
                 <DynamicFormBuilder
-                    defaultValues={defaultValues as never}
+                    defaultValues={defaultValues || getFieldDefaultValues((field.tag === "list" ? [{ ...field, fields }] : (fields || [field])) as never)}
                     fields={(field.tag === "list" ? [{ ...field, fields }] : (fields || [field])) as never}
                     id={idForm}
                     onSubmit={data => console.log(data)}
@@ -300,7 +301,7 @@ export const ListValidationsComponent = (props: Pick<NonNullable<ListConfig["val
                 }
             }
         ],
-        tag: "list"
+        tag: "list",
     }
     return <div>
         <PrintOneField {...simple} />
