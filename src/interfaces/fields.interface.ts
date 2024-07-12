@@ -10,7 +10,8 @@ export type FieldTypes = (
     DateConfig |
     TimeConfig |
     FileConfig |
-    CustomConfig
+    CustomConfig | 
+    ListConfig
     // HtmlConfig
 ) & {
     controlled?: boolean
@@ -181,6 +182,24 @@ export interface CustomConfig extends FieldCommonConfig {
         React.ComponentProps<CustomConfig["Element"]>
     >
 }
+
+
+/********************************************************************\
+| LIST
+\********************************************************************/
+
+export interface ListConfig extends Omit<FieldCommonConfig, "placeholder"> {
+    tag: "list";
+    type: "group" | "table";
+    /**
+     * For every group of fields
+     */
+    className?: string;
+    defaultValue?: Array<unknown>;
+    validations?: RegisterOptions;
+    fields: Array<FieldTypes>;
+}
+
 
 
 /********************************************************************\

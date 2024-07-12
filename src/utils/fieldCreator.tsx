@@ -10,7 +10,8 @@ import {
     FilePicker,
     DatePicker,
     TimePicker,
-    Custom
+    Custom,
+    FieldList
 } from "./../components"
 import { RegisteredField } from "../interfaces/registered.interface";
 import RequestWrapper from "../components/RequestWrapper";
@@ -23,8 +24,6 @@ type InputCustomProps = {
     Element?: ComponentType | string,
     invalid?: boolean,
     type?: string,
-    Child?: ComponentType | string,
-    // parentValue?: I_JsonObject,
     multiple?: boolean
 };
 
@@ -33,7 +32,6 @@ const createFormField = (
     as?: string | ComponentType,
     labelAs?: string | ComponentType,
 ): JSX.Element => {
-    // const { label: lbl, tag, type, invalid, parentValue, validations, ...rest } = config;
     const { label: lbl, tag, type, invalid, validations, ...rest } = config;
     let label = lbl;
     let mainElement = as;
@@ -107,14 +105,21 @@ const createFormField = (
             break;
 
         case "custom":
-            mainElement = Custom as unknown as ComponentType;
+            mainElement = Custom as ComponentType<unknown>;
             inputProps.invalid = invalid;
+            break;
+
+        case "list":
+            mainElement = FieldList as ComponentType<unknown>;
+            inputProps.invalid = invalid;
+            (inputProps as ComponentProps<typeof FieldList>).min = (validations?.min || (validations?.required ? 1 : 0)) as number;
+            (inputProps as ComponentProps<typeof FieldList>).max = validations?.max as number;
             break;
 
         default:
             if (tag === "HTML") {
                 delete inputProps.invalid;
-                mainElement = type as string;
+                mainElement = type;
                 mainElementProps = {
                     className: inputProps.className,
                     dangerouslySetInnerHTML: { __html: inputProps.value }
@@ -123,13 +128,12 @@ const createFormField = (
                 mainElement = WrapperFormGroup;
                 label = `<p>Not supported field <b>${tag} (${type})</b> for "${label}"</p>`;
                 inputProps.className = "text-warning";
-                // child = <b>{tag} ({type})</b>;
             }
             break;
     }
 
     if (config.request) {
-        inputProps.Child = mainElement;
+        (inputProps as ComponentProps<typeof RequestWrapper>).Child = mainElement;
         mainElement = RequestWrapper;
     }
 

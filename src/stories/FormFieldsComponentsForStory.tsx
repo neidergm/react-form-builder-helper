@@ -9,7 +9,8 @@ import {
     CustomConfig,
     FileConfig,
     HtmlConfig,
-    WithDepends
+    WithDepends,
+    ListConfig
 } from '../interfaces/fields.interface';
 import { useId, useState } from 'react';
 import { DynamicFormBuilder, DynamicFormProps } from '../DynamicFormBuilder';
@@ -26,6 +27,7 @@ export const TimeComponent = (props: TimeConfig) => <PrintOneField {...props} />
 export const CustomComponent = (props: CustomConfig) => <PrintOneField {...props} />
 export const FileComponent = (props: FileConfig) => <PrintOneField {...props} />
 export const HtmlComponent = (props: HtmlConfig) => <PrintOneField {...props} />
+export const ListComponent = (props: ListConfig) => <PrintOneField {...props} />
 
 export const DynamicFormComponent = (props: DynamicFormProps) => <PrintOneField {...props} />
 
@@ -100,12 +102,13 @@ const PrintOneField = <T extends Record<string, unknown>>({ fields, defaultValue
         setShowJson(s => !s)
     }
 
+
     return <div className='d-flex gap-2  flex-wrap'>
         <div className='flex-grow-1' style={{ minWidth: "300px" }}>
             <div className='bg-light rounded-4 px-3 py-4 h-100'>
                 <DynamicFormBuilder
                     defaultValues={defaultValues as never}
-                    fields={fields as never || [field as never]}
+                    fields={(field.tag === "list" ? [{ ...field, fields }] : (fields || [field])) as never}
                     id={idForm}
                     onSubmit={data => console.log(data)}
                     onInvalidSubmit={data => console.log(data)}
@@ -133,9 +136,9 @@ const PrintOneField = <T extends Record<string, unknown>>({ fields, defaultValue
                         {showjson ? "-" : "+"}
                     </button>
                     {showjson ?
-                        JSON.stringify(fields || field, undefined, 2)
+                        JSON.stringify(field.tag === "list" ? { ...field, fields } : (fields || field), undefined, 2)
                         :
-                        fields ? "[ ... ]" : "{ ... }"
+                        field.tag === "list" ? "{ ... }" : (fields ? "[ ... ]" : "{ ... }")
                     }
                 </pre>
             </div>
@@ -268,5 +271,38 @@ export const FileValidationsComponent = (props: Pick<NonNullable<FileConfig["val
         <br />
         <p>Avalaible validations: <i>required, min, max, maxFileSize, minFileSize, accept </i></p>
         <PrintOneField {...multiple} />
+    </div>
+}
+
+export const ListValidationsComponent = (props: Pick<NonNullable<ListConfig["validations"]>, "required" | "min" | "max" >) => {
+    const simple = {
+        ...getSimpleStoryArgs<ListConfig["type"]>("group"),
+        validations: props,
+        fields: [
+            {
+                wrapperClassName: "col-6",
+                tag: "input",
+                type: "text",
+                name: "name",
+                label: "Name:",
+                validations: {
+                    required: true
+                }
+            },
+            {
+                wrapperClassName: "col-6",
+                tag: "input",
+                type: "number",
+                name: "age",
+                label: "Age:",
+                validations: {
+                    required: true
+                }
+            }
+        ],
+        tag: "list"
+    }
+    return <div>
+        <PrintOneField {...simple} />
     </div>
 }

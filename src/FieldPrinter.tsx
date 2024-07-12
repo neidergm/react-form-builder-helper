@@ -23,9 +23,9 @@ type Props<T> = {
 }
 
 const FieldPrinter = <T extends Record<string, unknown>>({
-  field: _field, error, Wrapper, wrapperProps: wp, FieldComponent, Label, form: { register, control }
+  field: _field, error, Wrapper, wrapperProps: wp, FieldComponent, Label, form
 }: Props<T>) => {
-
+  const { register, control } = form;
   const wrapperProps: I_JsonObject = wp || {};
 
   const { wrapperClassName: wcn, ...fieldTemp } = _field;
@@ -38,6 +38,13 @@ const FieldPrinter = <T extends Record<string, unknown>>({
   if (fieldTemp.tag === "HTML") return createElement(WrapperComponent, wrapperProps as T,
     createFormField(fieldTemp as unknown as RegisteredField, FieldComponent, Label || Lbl)
   )
+
+  if (fieldTemp.tag === "list") {
+    (fieldTemp as any).form = form;
+    return createElement(WrapperComponent, wrapperProps as T,
+      createFormField(fieldTemp as unknown as RegisteredField, FieldComponent, Label || Lbl)
+    )
+  }
 
   const { controlled, dependsOn, dependsOnChange, ...field } = fieldTemp;
 
