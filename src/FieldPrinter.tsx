@@ -58,9 +58,10 @@ const FieldPrinter = <T extends Record<string, unknown>>({
     let finallyFieldProps = field;
 
     if (parentValue) {
+      finallyFieldProps = { ...finallyFieldProps, parentValue } as unknown as typeof finallyFieldProps;
       if (newProps) {
         const { wrapperClassName: wcnChanged, ...extraProps } = newProps;
-        finallyFieldProps = { ...field, ...extraProps };
+        finallyFieldProps = { ...finallyFieldProps, ...extraProps };
         wrapperProps.className = classnames(wrapperClassName, wcnChanged || "");
       } else {
         wrapperProps.className = wrapperClassName

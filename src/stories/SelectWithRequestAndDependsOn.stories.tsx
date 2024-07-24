@@ -47,7 +47,6 @@ export const DependsOn: Story = {
         },
         validations: { required: true },
         dependsOn: "parent",
-        defaultValue: "Colombia"
     }
 };
 
