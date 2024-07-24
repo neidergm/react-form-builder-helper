@@ -35,16 +35,19 @@ const RequestWrapper = forwardRef(({
     useEffect(() => {
         if (request) {
             if (parentValue) {
-                // controlled && props.onChange("")
-
                 //Verificar cuando un padre tiene valor por defecto, que el hijo haga lo suyo
+                // if (firstLoad.current) {
+                //     props.value && (firstLoad.current = false)
+                // } else {
+                //     !props.value && (firstLoad.current = true)
+                //     props.onChange("")
+                // }
                 if (firstLoad.current) {
-                    props.value && (firstLoad.current = false)
+                    firstLoad.current = false
                 } else {
-                    !props.value && (firstLoad.current = true)
                     props.onChange("")
                 }
-                // console.log({props, parentValue})
+
                 if (!["", undefined, null].includes(Object.values(parentValue as I_JsonObject)[0])) {
                     getData(requestParamsMapper(request, parentValue));
                 } else {

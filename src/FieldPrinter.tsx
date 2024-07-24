@@ -84,7 +84,12 @@ const FieldPrinter = <T extends Record<string, unknown>>({
   }
 
   return dependsOn ?
-    <ChildrenWrapper control={control} dependsOn={dependsOn} children={component} dependsOnChange={dependsOnChange} /> : component()
+    <ChildrenWrapper
+      control={control}
+      dependsOn={dependsOn}
+      children={component}
+      dependsOnChange={dependsOnChange}
+    /> : component()
 }
 
 type ComponentFieldProps = {
