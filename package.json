@@ -5,7 +5,7 @@
     "name": "Neider Galofre",
     "email": "neidergm.ng@gmail.com"
   },
-  "version": "1.2.0",
+  "version": "1.2.1",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -13,7 +13,7 @@
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "storybook": "storybook dev -p 6006",
-    "build:all": "npm run build && npm run build-storybook && xcopy \/Y .\\src\\.nojekyll docs",
+    "build:all": "npm run build && npm run build-storybook && xcopy /Y .\\src\\.nojekyll docs",
     "build-storybook": "storybook build -o ./docs",
     "build-storybook-docs": "storybook build --docs -o ./docs",
     "clean": "rimraf dist/",
