@@ -29,7 +29,7 @@ const RequestWrapper = forwardRef(({
     ...props
 }: Props, ref: Ref<Props["Child"]>) => {
     const [data, setData] = useState<Partial<typeof props>>({});
-    const firstLoad = useRef(true);
+    const clearValueWhenParentChange = useRef(false);
 
     const getData = (req: typeof request) => {
         setData({ options: null, placeholder: loadingText || "Loading..." })
@@ -53,29 +53,18 @@ const RequestWrapper = forwardRef(({
     useEffect(() => {
         if (request) {
             if (parentValue) {
+                if (clearValueWhenParentChange.current) props.onChange("")
 
-                if (firstLoad.current) {
-                    props.value && (firstLoad.current = false)
-                } else {
-                    !props.value && (firstLoad.current = true)
-                    props.onChange("")
-                }
-                // if (firstLoad.current) {
-                //     firstLoad.current = false
-                // } else {
-                //     props.onChange("")
-                // }
-
-                if (!["", undefined, null].includes(Object.values(parentValue as I_JsonObject)[0])) {
-                    getData(requestParamsMapper(request, parentValue));
-                } else {
+                if (Object.values(parentValue as I_JsonObject).every(i => ["", undefined, null].includes(i))) {
                     setData({})
+                } else {
+                    if (!clearValueWhenParentChange.current) clearValueWhenParentChange.current = true
+                    getData(requestParamsMapper(request, parentValue));
                 }
             } else {
                 getData(request);
             }
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, Object.values(parentValue || {}))
 
     return <Child {...props} {...data} ref={ref} />

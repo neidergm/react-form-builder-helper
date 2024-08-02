@@ -1,0 +1,88 @@
+import { Meta } from '@storybook/addon-docs';
+
+<Meta title="Advanced/With Request/Usage" />
+
+# With request usage
+---------------
+
+If you need that some field do http request to an API, you need to set the next properties:
+
+```typescript
+interface WithRequestConfig {
+  request: {
+    method: "GET" | "POST" | "post" | "get",
+    url: string,
+    params?: { [key: string]: number | boolean | string } | string,
+    mapOptions?: { label: string, value: string }
+  },
+  doRequest: (url: string, method: RequestMethod, params?: RequestParams) => Promise<{FieldProps || OptionsArray}>
+}
+```
+
+### request (Object)
+
+| Property | Type | Description | Usage |
+|----------|------|-------------|-------|
+| `method` | String | Specifies the HTTP method for the request | - Allowed values: "GET", "POST", "get", or "post"<br/>- Determines how the request will be sent to the server<br/>- Use "GET" to retrieve data and "POST" to send data |
+| `url` | String | Defines the URL of the API endpoint | - Example: "https://api.example.com/data"<br/>- This is the address to which the request will be sent |
+| `params` | Object or String (optional) | Allows sending additional parameters with the request | - Object: `{ "fieldName1": "", "fieldName2": "" }`<br/>- String: `"{fieldName1}/{fieldName2}"` or `"?{fieldName1}&{fieldName2}"`<br/>- Parameters are replaced by form field values<br/>- Can be sent from URL: `https://example.com/api/{fieldName1}?exampleParam={fieldName2}` |
+| `mapOptions` | Object (optional) | Defines how to map the API response to field options | - Properties:<br/>  `label` (String): Name of visible label property<br/>  `value` (String): Name of internal value property<br/>- Essential for select, checkbox, or radio fields |
+
+### doRequest (Function)
+
+| Aspect | Description | Details |
+|--------|-------------|---------|
+| Parameters | - `url` (String)<br/>- `method` (String)<br/>- `params` (Object or String, optional) | - `url`: Final URL of the request<br/>- `method`: HTTP method to use<br/>- `params`: Request parameters |
+| Return | Promise | Promise resolving to an object with:<br/>  `options` (Array): List of field options<br/>  Other properties to update field state<br/> Or just an Array of options |
+| Usage | Implements HTTP request logic, error handling, and response processing | - Handles the entire request-response cycle<br/>- Executes the API request with given parameters<br/>- Provides data to update the field |
+
+
+### Example
+
+```js
+
+{
+    ...
+    "request": {
+        "url": "https://example/citiesbycountry/{id_country}",
+        "method": "GET"
+    },
+    "doRequest": (url, method, data)=> {
+        return fetch(url).then(res => res.json())
+            .then(r => {
+                return { options: r.data.map((i: any) => ({ label: i.name, value: i.id })) };
+            });
+    }
+}
+```
+or
+
+```js
+{
+    ...
+    "request": {
+        "url": "https://example/citiesbycountry/{id_country}",
+        "method": "GET",
+        "mapOptions": {"label": "name", "value": "id"}
+    },
+    "doRequest": (url, method, data)=> {
+        return fetch(url).then(res => res.json()).then(r => r.data)
+    }
+}
+```
+or
+
+```js
+{
+    ...
+    "request": {
+        "url": "https://example/citiesbycountry",
+        "method": "GET",
+        "mapOptions": {"label": "name", "value": "id"}
+        "params": "/{id_country}"
+    },
+    "doRequest": (url, method, data)=> {
+        return fetch(url + data).then(res => res.json()).then(r => r.data)
+    }
+}
+```
