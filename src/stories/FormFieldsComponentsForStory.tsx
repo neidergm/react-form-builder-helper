@@ -10,7 +10,7 @@ import {
     FileConfig,
     HtmlConfig,
     WithDepends,
-    ListConfig
+    ListConfig,
 } from '../interfaces/fields.interface';
 import { useId, useState } from 'react';
 import { DynamicFormBuilder, DynamicFormProps } from '../DynamicFormBuilder';
@@ -275,7 +275,7 @@ export const FileValidationsComponent = (props: Pick<NonNullable<FileConfig["val
     </div>
 }
 
-export const ListValidationsComponent = (props: Pick<NonNullable<ListConfig["validations"]>, "required" | "min" | "max" >) => {
+export const ListValidationsComponent = (props: Pick<NonNullable<ListConfig["validations"]>, "required" | "min" | "max">) => {
     const simple = {
         ...getSimpleStoryArgs<ListConfig["type"]>("group"),
         validations: props,

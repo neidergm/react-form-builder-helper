@@ -1,5 +1,5 @@
 import { ComponentType, Ref, forwardRef, useEffect, useRef, useState } from 'react'
-import { WithRequestConfig } from '../interfaces/fields.interface';
+import { FieldOption, WithRequestConfig } from '../interfaces/fields.interface';
 import requestParamsMapper from '../utils/requestParamsMapper';
 import { I_JsonObject } from '../interfaces/generic.interfaces';
 
@@ -8,6 +8,15 @@ type Props = {
     Child: ComponentType<any>,
 } & WithRequestConfig
     & I_JsonObject
+
+const mapOptionsResult = (options: { [x: string]: unknown }[] | string[], mapOptions: { label: string, value: string }) => {
+    return options.map(i => {
+        if (typeof i === "object" && i !== undefined) {
+            return { label: i[mapOptions.label], value: i[mapOptions.value] }
+        }
+        return { label: i, value: i }
+    })
+}
 
 const RequestWrapper = forwardRef(({
     Child,
@@ -24,10 +33,19 @@ const RequestWrapper = forwardRef(({
 
     const getData = (req: typeof request) => {
         setData({ options: null, placeholder: loadingText || "Loading..." })
-        const { url, method, params } = req;
+        const { url, method, params, mapOptions } = req;
         doRequest?.(url, method, params).then(newData => {
-            setData(newData)
-        }).catch(() => {
+            if (mapOptions && newData) {
+                if (Array.isArray(newData)) {
+                    setData({ options: mapOptionsResult(newData, mapOptions) })
+                } else {
+                    setData({ ...newData, options: mapOptionsResult(newData.options as FieldOption[], mapOptions) })
+                }
+            } else {
+                setData(newData)
+            }
+        }).catch((e) => {
+            console.log(e)
             setData({})
         });
     }
@@ -35,18 +53,18 @@ const RequestWrapper = forwardRef(({
     useEffect(() => {
         if (request) {
             if (parentValue) {
-                //Verificar cuando un padre tiene valor por defecto, que el hijo haga lo suyo
-                // if (firstLoad.current) {
-                //     props.value && (firstLoad.current = false)
-                // } else {
-                //     !props.value && (firstLoad.current = true)
-                //     props.onChange("")
-                // }
+
                 if (firstLoad.current) {
-                    firstLoad.current = false
+                    props.value && (firstLoad.current = false)
                 } else {
+                    !props.value && (firstLoad.current = true)
                     props.onChange("")
                 }
+                // if (firstLoad.current) {
+                //     firstLoad.current = false
+                // } else {
+                //     props.onChange("")
+                // }
 
                 if (!["", undefined, null].includes(Object.values(parentValue as I_JsonObject)[0])) {
                     getData(requestParamsMapper(request, parentValue));

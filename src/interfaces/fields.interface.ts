@@ -10,7 +10,7 @@ export type FieldTypes = (
     DateConfig |
     TimeConfig |
     FileConfig |
-    CustomConfig | 
+    CustomConfig |
     ListConfig
     // HtmlConfig
 ) & {
@@ -229,9 +229,10 @@ export interface WithRequestConfig {
          * @param {string} as "{key1}/{key2}/{keyN}"
          */
         params?: RequestParams;
+        mapOptions?: { label: string, value: string }
     },
     // doRequest?: (url: string, method: RequestMethod, params?: RequestParams) => Promise<unknown>
-    doRequest: (url: string, method: RequestMethod, params?: RequestParams) => Promise<Partial<FieldTypes>>,
+    doRequest: (url: string, method: RequestMethod, params?: RequestParams) => Promise<Partial<FieldTypes & { options: unknown[] }>>,
     // loadingText?: string,
 }
 
