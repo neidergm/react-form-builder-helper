@@ -3,6 +3,7 @@ import FieldPrinter from "./FieldPrinter";
 import { FormProps } from "./interfaces/form.interface";
 import { ComponentType, useEffect } from "react";
 import { I_JsonObject } from "./interfaces/generic.interfaces";
+import { FieldTypes } from "./interfaces/fields.interface";
 
 export type DynamicFormProps = FormProps & {
     className?: string,
@@ -12,9 +13,27 @@ export type DynamicFormProps = FormProps & {
         props?: { className?: string } & I_JsonObject
     },
     fieldComponents?: {
-        label?: ComponentType,
-        component?: ComponentType
+        [K in FieldTypes["tag"]]: FieldComponent
     }
+}
+
+type FieldComponent = {
+    label?: ComponentType,
+    component?: ComponentType
+}
+
+const getCustomComponentType = (name: string, types: DynamicFormProps["fieldComponents"]) => {
+
+    if (!types || !name) return undefined
+
+    let t = types[name as never];
+
+    if (!t) {
+        const [tag] = name.split(".");
+        t = types[tag as never];
+    }
+
+    return t as FieldComponent | undefined;
 }
 
 export const DynamicFormBuilder = ({
@@ -48,13 +67,14 @@ export const DynamicFormBuilder = ({
             <div className={className}>
                 {
                     fields.map((field, i) => {
+                        const customComponent = getCustomComponentType(`${field.tag}.${field.type}`, fieldComponents);
                         return <FieldPrinter
                             form={form}
                             key={i}
                             Wrapper={fieldWrapper?.component}
                             wrapperProps={fieldWrapper?.props}
-                            FieldComponent={fieldComponents?.component}
-                            Label={fieldComponents?.label}
+                            FieldComponent={customComponent?.component}
+                            Label={customComponent?.label}
                             field={field}
                             error={errors[field.name]}
                         />
