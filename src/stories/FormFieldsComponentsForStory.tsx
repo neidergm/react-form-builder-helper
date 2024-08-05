@@ -66,6 +66,9 @@ export const SelectWithRequestAndDependsComponent = (props: SelectConfig & WithR
     }
 
     return <>
+        <p>
+            Field config object contains both field data (parent and child)
+        </p>
         <code>
             {`const form = useForm({defaultValues: ${JSON.stringify(defaultValues)} })`}
         </code>

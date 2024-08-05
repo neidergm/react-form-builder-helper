@@ -13,13 +13,14 @@
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "storybook": "storybook dev -p 6006",
-    "build:all": "npm run build && npm run build-storybook && xcopy /Y .\\src\\.nojekyll docs",
-    "build-storybook": "storybook build -o ./docs",
+    "build:all": "npm run build && npm run build-storybook",
+    "build-storybook": "storybook build -o ./docs && xcopy /Y .\\src\\.nojekyll docs",
     "build-storybook-docs": "storybook build --docs -o ./docs",
     "clean": "rimraf dist/",
     "npm:push": "np --no-cleanup",
     "test": "echo 'No tests'"
   },
+  "homepage": "https://neidergm.github.io/react-form-builder-helper/",
   "repository": {
     "url": "https://github.com/neidergm/react-form-builder-helper",
     "type": "git"

@@ -36,13 +36,14 @@ export const DependsOn: Story = {
         type: "simple",
         placeholder: "Pick one...",
         options: [],
-        doRequest() {
+        doRequest(url) {
+            console.log(`Requesting ${url}`)
             return new Promise((resolve) =>
                 setTimeout(() => resolve({ options: ["Colombia", "Argentina", "Chile", "Ecuador", "Mexico"] }), 2000)
             )
         },
         request: {
-            url: "https://example.api/countries",
+            url: "https://example.api/countries/{parent}",
             method: "GET",
         },
         validations: { required: true },
