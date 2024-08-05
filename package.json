@@ -5,7 +5,7 @@
     "name": "Neider Galofre",
     "email": "neidergm.ng@gmail.com"
   },
-  "version": "1.2.5",
+  "version": "1.2.6",
   "type": "module",
   "scripts": {
     "dev": "vite",
