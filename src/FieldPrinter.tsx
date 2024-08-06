@@ -21,10 +21,11 @@ type Props<T> = {
   error?: GlobalError,
   form: UseFormReturn,
   includeFormUtils?: boolean
+  disabled?: boolean
 }
 
 const FieldPrinter = <T extends Record<string, unknown>>({
-  field: _field, error, Wrapper, wrapperProps: wp, FieldComponent, Label, form, includeFormUtils
+  field: _field, error, Wrapper, wrapperProps: wp, FieldComponent, Label, form, includeFormUtils, disabled
 }: Props<T>) => {
   const { register, control, ...formUtils } = form;
   const wrapperProps: I_JsonObject = wp || {};
@@ -56,6 +57,8 @@ const FieldPrinter = <T extends Record<string, unknown>>({
   }
 
   let finallyFieldProps = includeFormUtils ? { ...field, formUtils } : field;
+
+  if (disabled) finallyFieldProps.disabled = disabled;
 
   const component = (parentValue?: I_JsonObject, newProps?: I_JsonObject) => {
     if (parentValue) {

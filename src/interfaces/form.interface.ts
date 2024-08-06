@@ -1,4 +1,4 @@
-import { FieldValues, SubmitErrorHandler, SubmitHandler } from "react-hook-form";
+import { DefaultValues, FieldValues, SubmitErrorHandler, SubmitHandler } from "react-hook-form";
 import { FieldTypes } from "./fields.interface";
 
 export type OnSubmit = SubmitHandler<FieldValues>
@@ -9,6 +9,9 @@ export interface FormProps {
     fields: Array<FieldTypes>;
     onSubmit: OnSubmit;
     onInvalidSubmit?: OnSubmit;
-    defaultValues?: object;
+    /**
+     * JSON object with default values or async function that returns default values
+     */
+    defaultValues?: DefaultValues<FieldValues>;
     saveTemporalData?: (data: FieldValues) => void
 }

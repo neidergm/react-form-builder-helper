@@ -12,6 +12,11 @@ export type DynamicFormProps = FormProps & {
         component?: ComponentType,
         props?: { className?: string } & I_JsonObject
     },
+    /**
+     * true if the form is currently loading async default values
+     */
+    disableOnLoading?: boolean,
+    disabled?: boolean,
     fieldComponents?: Partial<Record<FieldTypes['tag'] | `${FieldTypes['tag']}.${FieldTypes['type']}`, FieldComponent>>
 }
 
@@ -45,15 +50,19 @@ export const DynamicFormBuilder = ({
     fieldComponents,
     saveTemporalData,
     useFormProps,
-    className = "row row-gap-3"
+    className = "row row-gap-3",
+    disableOnLoading,
+    disabled
 }: DynamicFormProps) => {
     const form = useForm<FieldValues>({ defaultValues, ...useFormProps });
 
     const {
         handleSubmit,
-        formState: { errors },
+        formState: { errors, isLoading },
         getValues
     } = form;
+
+    const disableForm = disabled || (disableOnLoading && isLoading)
 
     useEffect(() => {
         () => {
@@ -77,6 +86,7 @@ export const DynamicFormBuilder = ({
                             includeFormUtils={customComponent?.includeFormUtils}
                             field={field}
                             error={errors[field.name]}
+                            disabled={disableForm}
                         />
                     })
                 }

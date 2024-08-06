@@ -66,6 +66,22 @@ const MyForm = () => {
   );
 };
 ```
+### `Field` Props
+| Prop | Type | Description |  |
+| --- | --- | --- | --- |
+| FieldComponent | `string \| ComponentType` | Component or component name to render the field |  |
+| Wrapper | `ComponentType<T>` | Wrapper component for the field |  |
+| Label | `ComponentType` | Component to render the field label |  |
+| wrapperProps | `T & { className?: string }` | Additional properties for the wrapper component |  |
+| field | `FieldTypes \| HtmlConfig` | Field configuration or HTML field type | required |
+| error | `GlobalError` | Global error object |  |
+| form | `UseFormReturn` | Object returned by the useForm hook | required |
+| includeFormUtils | `boolean` | Indicates whether to include additional form utilities |  |
+| disabled | `boolean` | Indicates whether the field is disabled |  |
+
+<br/>
+<hr/>
+<br/>
 
 ### Usage with `DynamicFormBuilder`
 
@@ -131,6 +147,8 @@ const MyForm = () => {
 | `saveTemporalData` | `function` | Callback for storage data before component unmounth |  | |
 | `useFormProps` | `object` | Extra props to `useForm` hook | |
 | `className` | `string` | Classes for main form container. <br/> `Default: "row row-gap-3"` | |
+| `disabled` | `boolean` | Disabled all form fields | |
+| `disabledOnLoading` | `boolean` | Disabled all form fields when defaultValues property is an async function | |
 
 
 **fieldWrapper**
@@ -146,4 +164,5 @@ const MyForm = () => {
 | --- | --- | --- | --- |
 | `label` | `ComponentType` | Specific component for labels of form fields | |
 | `component` | `ComponentType` | Specific component for any form field | |
+| `includeFormUtils` | `boolean` | If `true` the component will have access to the returned object from useForm hook into the property **formUtils**   | |
 

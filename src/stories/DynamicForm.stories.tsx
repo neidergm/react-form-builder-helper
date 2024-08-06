@@ -88,3 +88,80 @@ export const Simple: Story = {
         // }
     },
 };
+
+export const Disabled: Story = {
+    args: {
+        fields: [
+            {
+                label: "Name",
+                name: "text",
+                tag: "input",
+                type: "text",
+                placeholder: "Write name",
+                validations: {
+                    minLength: 3,
+                    required: true
+                }
+            },
+            {
+                label: "Type",
+                name: "select",
+                tag: "select",
+                type: "simple",
+                options: ["opcion1", "opcion2", "opcion3"],
+                validations: {
+                    required: true
+                }
+            }
+        ],
+        onSubmit: (d) => {
+            console.log(d)
+        },
+        onInvalidSubmit: (d) => {
+            console.log(d)
+        },
+        disabled: true
+    },
+}
+
+export const DisabledOnFetchDefaultValues: Story = {
+    args: {
+        fields: [
+            {
+                label: "Name",
+                name: "text",
+                tag: "input",
+                type: "text",
+                placeholder: "Write name",
+                validations: {
+                    minLength: 3,
+                    required: true
+                }
+            },
+            {
+                label: "Type",
+                name: "select",
+                tag: "select",
+                type: "simple",
+                options: ["opcion1", "opcion2", "opcion3"],
+                validations: {
+                    required: true
+                }
+            }
+        ],
+        onSubmit: (d) => {
+            console.log(d)
+        },
+        onInvalidSubmit: (d) => {
+            console.log(d)
+        },
+        disableOnLoading: true,
+        defaultValues: ()=>{
+            return new Promise((resolve)=>{
+                setTimeout(()=>{
+                    resolve({"select": "opcion1", "text": "Developer"})
+                }, 3000)
+            })
+        }
+    },
+}

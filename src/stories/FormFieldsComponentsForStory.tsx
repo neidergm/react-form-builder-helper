@@ -122,6 +122,10 @@ const PrintOneField = <T extends Record<string, unknown>>({ fields, defaultValue
                             className: "col-md-6"
                         }
                     }}
+
+                    {
+                    ...((field.tag !== "list" && fields) ? field : {})
+                    }
                 />
                 <div className='mt-3'>
                     <button className='btn btn-primary' form={idForm}>Send form</button>
