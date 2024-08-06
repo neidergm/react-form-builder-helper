@@ -74,8 +74,17 @@ export const Simple: Story = {
         onInvalidSubmit: (d) => {
             console.log(d)
         },
-        defaultValues:{
+        defaultValues: {
             "text": "Neider"
-          }
+        },
+        // fieldComponents: {
+        //     "select": {
+        //         includeFormUtils: true,
+        //         component: (props) => {
+        //             console.log(props.formUtils)
+        //             return <input />
+        //         }
+        //     }
+        // }
     },
 };

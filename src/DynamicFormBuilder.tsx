@@ -12,14 +12,13 @@ export type DynamicFormProps = FormProps & {
         component?: ComponentType,
         props?: { className?: string } & I_JsonObject
     },
-    fieldComponents?: {
-        [K in FieldTypes["tag"]]: FieldComponent
-    }
+    fieldComponents?: Partial<Record<FieldTypes['tag'] | `${FieldTypes['tag']}.${FieldTypes['type']}`, FieldComponent>>
 }
 
 type FieldComponent = {
-    label?: ComponentType,
-    component?: ComponentType
+    label?: ComponentType<any>,
+    component?: ComponentType<any>,
+    includeFormUtils?: boolean
 }
 
 const getCustomComponentType = (name: string, types: DynamicFormProps["fieldComponents"]) => {
@@ -75,6 +74,7 @@ export const DynamicFormBuilder = ({
                             wrapperProps={fieldWrapper?.props}
                             FieldComponent={customComponent?.component}
                             Label={customComponent?.label}
+                            includeFormUtils={customComponent?.includeFormUtils}
                             field={field}
                             error={errors[field.name]}
                         />

@@ -94,7 +94,7 @@ export const SelectWithDependsComponent = (props: SelectConfig & WithDepends) =>
     return <PrintOneField fields={[parentField, props]} />
 }
 
-const PrintOneField = <T extends Record<string, unknown>>({ fields, defaultValues, ...field }: T) => {
+const PrintOneField = <T extends Record<string, unknown>>({ fields, defaultValues, fieldComponents, ...field }: T) => {
     const [showjson, setShowJson] = useState(false)
     const copy = () => {
         navigator.clipboard.writeText(JSON.stringify(fields || field, undefined, 2));
@@ -116,6 +116,7 @@ const PrintOneField = <T extends Record<string, unknown>>({ fields, defaultValue
                     id={idForm}
                     onSubmit={data => console.log(data)}
                     onInvalidSubmit={data => console.log(data)}
+                    fieldComponents={fieldComponents as never}
                     fieldWrapper={{
                         props: {
                             className: "col-md-6"

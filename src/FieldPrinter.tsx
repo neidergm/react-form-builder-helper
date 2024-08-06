@@ -20,12 +20,13 @@ type Props<T> = {
   field: FieldTypes | HtmlConfig,
   error?: GlobalError,
   form: UseFormReturn,
+  includeFormUtils?: boolean
 }
 
 const FieldPrinter = <T extends Record<string, unknown>>({
-  field: _field, error, Wrapper, wrapperProps: wp, FieldComponent, Label, form
+  field: _field, error, Wrapper, wrapperProps: wp, FieldComponent, Label, form, includeFormUtils
 }: Props<T>) => {
-  const { register, control } = form;
+  const { register, control, ...formUtils } = form;
   const wrapperProps: I_JsonObject = wp || {};
 
   const { wrapperClassName: wcn, ...fieldTemp } = _field;
@@ -54,9 +55,9 @@ const FieldPrinter = <T extends Record<string, unknown>>({
     FieldComponent
   }
 
-  const component = (parentValue?: I_JsonObject, newProps?: I_JsonObject) => {
-    let finallyFieldProps = field;
+  let finallyFieldProps = includeFormUtils ? { ...field, formUtils } : field;
 
+  const component = (parentValue?: I_JsonObject, newProps?: I_JsonObject) => {
     if (parentValue) {
       finallyFieldProps = { ...finallyFieldProps, parentValue } as unknown as typeof finallyFieldProps;
       if (newProps) {
