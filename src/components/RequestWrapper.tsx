@@ -6,6 +6,7 @@ import { I_JsonObject } from '../interfaces/generic.interfaces';
 type Props = {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     Child: ComponentType<any>,
+    formValues?: I_JsonObject,
 } & WithRequestConfig
     & I_JsonObject
 
@@ -23,6 +24,7 @@ const RequestWrapper = forwardRef(({
     request,
     doRequest,
     parentValue,
+    formValues = {},
     loadingText,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     controlled,
@@ -30,10 +32,20 @@ const RequestWrapper = forwardRef(({
 }: Props, ref: Ref<Props["Child"]>) => {
     const [data, setData] = useState<Partial<typeof props>>({});
     const clearValueWhenParentChange = useRef(false);
+    const loading = useRef<{ isLoading: boolean, waitingCallback?: () => void }>({
+        isLoading: false
+    });
 
     const getData = (req: typeof request) => {
+        if (loading.current.isLoading) {
+            loading.current.waitingCallback = () => getData(req)
+            return;
+        }
         setData({ options: null, placeholder: loadingText || "Loading..." })
         const { url, method, params, mapOptions } = req;
+
+        loading.current.isLoading = true
+
         doRequest?.(url, method, params).then(newData => {
             if (mapOptions && newData) {
                 if (Array.isArray(newData)) {
@@ -47,11 +59,16 @@ const RequestWrapper = forwardRef(({
         }).catch((e) => {
             console.log(e)
             setData({})
+        }).finally(() => {
+            loading.current.waitingCallback?.()
+            loading.current = { isLoading: false }
         });
     }
 
     useEffect(() => {
         if (request) {
+            const dataForMapper = { ...(request.otherValuesToMap || {}), ...formValues, ...(parentValue || {}) }
+
             if (parentValue) {
                 if (clearValueWhenParentChange.current) props.onChange("")
 
@@ -59,13 +76,12 @@ const RequestWrapper = forwardRef(({
                     setData({})
                 } else {
                     if (!clearValueWhenParentChange.current) clearValueWhenParentChange.current = true
-                    getData(requestParamsMapper(request, parentValue));
                 }
-            } else {
-                getData(request);
             }
+            getData(requestParamsMapper(request, dataForMapper));
         }
-    }, Object.values(parentValue || {}))
+        // }, Object.values(parentValue || {}))
+    }, [parentValue])
 
     return <Child {...props} {...data} ref={ref} />
 }

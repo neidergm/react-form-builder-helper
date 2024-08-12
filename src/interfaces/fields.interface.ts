@@ -230,6 +230,10 @@ export interface WithRequestConfig {
          */
         params?: RequestParams;
         mapOptions?: { label: string, value: string }
+        /**
+         * Other values to map params
+         */
+        otherValuesToMap?: I_JsonObject,
     },
     // doRequest?: (url: string, method: RequestMethod, params?: RequestParams) => Promise<unknown>
     doRequest: (url: string, method: RequestMethod, params?: RequestParams) => Promise<Partial<FieldTypes & { options: unknown[] }>>,

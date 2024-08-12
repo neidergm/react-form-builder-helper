@@ -6,16 +6,6 @@ const meta = {
     ...commonConfiguration,
     // render: (props) => commonConfiguration.render([props, child], {defaultValues: {select1: "1", select2: "11"}}),
     title: 'Advanced/With Request',
-    decorators: [(Story) =>
-        <div>
-            <p>Default values have to be indicated in useForm params</p>
-            <p>Otherwhise, the child component dont get data</p>
-            <br />
-            <br />
-
-            <Story />
-        </div>
-    ],
     component: SelectWithRequestAndDependsComponent,
     parameters: {
         controls: { sort: 'requiredFirst' },
@@ -48,6 +38,37 @@ export const DependsOn: Story = {
         },
         validations: { required: true },
         dependsOn: "parent",
-    }
+    },
+    decorators: [(Story) =>
+        <div>
+            <p>Default values have to be indicated in useForm params</p>
+            <p>Otherwhise, the child component dont get data</p>
+            <br />
+            <br />
+
+            <Story />
+        </div>
+    ],
 };
+
+export const WithExtraDataForParams: Story = {
+    args: {
+        ...DependsOn.args,
+        request: {
+            url: "https://example.api/countries/{parent}/{extra}",
+            method: "GET",
+            otherValuesToMap: { "extra": "3" }
+        },
+    },
+    decorators: [(Story) =>
+        <div>
+            <p>You can pass extra data to map the values of the params request</p>
+            <p>Use the "otherValuesToMap" property in request object</p>
+            <br />
+            <br />
+
+            <Story />
+        </div>
+    ],
+}
 

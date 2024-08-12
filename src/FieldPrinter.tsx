@@ -62,7 +62,7 @@ const FieldPrinter = <T extends Record<string, unknown>>({
 
   const component = (parentValue?: I_JsonObject, newProps?: I_JsonObject) => {
     if (parentValue) {
-      finallyFieldProps = { ...finallyFieldProps, parentValue } as unknown as typeof finallyFieldProps;
+      finallyFieldProps = { ...finallyFieldProps, parentValue, formValues: formUtils.getValues() } as unknown as typeof finallyFieldProps;
       if (newProps) {
         const { wrapperClassName: wcnChanged, ...extraProps } = newProps;
         finallyFieldProps = { ...finallyFieldProps, ...extraProps };
