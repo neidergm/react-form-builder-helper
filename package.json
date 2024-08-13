@@ -17,6 +17,7 @@
     "build-storybook": "storybook build -o ./docs && xcopy /Y .\\src\\.nojekyll docs",
     "build-storybook-docs": "storybook build --docs -o ./docs",
     "clean": "rimraf dist/",
+    "clean-sotorybook-cache": "rimraf node_modules/.cache/storybook",
     "npm:push": "np --no-cleanup",
     "test": "echo 'No tests'"
   },

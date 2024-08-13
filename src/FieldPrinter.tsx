@@ -27,7 +27,7 @@ type Props<T> = {
 const FieldPrinter = <T extends Record<string, unknown>>({
   field: _field, error, Wrapper, wrapperProps: wp, FieldComponent, Label, form, includeFormUtils, disabled
 }: Props<T>) => {
-  const { register, control, ...formUtils } = form;
+  const { register, control, setValue, ...formUtils } = form;
   const wrapperProps: I_JsonObject = wp || {};
 
   const { wrapperClassName: wcn, ...fieldTemp } = _field;
@@ -68,7 +68,7 @@ const FieldPrinter = <T extends Record<string, unknown>>({
     }
 
     if (parentValue) {
-      finallyFieldProps = { ...finallyFieldProps, parentValue, formValues: formUtils.getValues() } as unknown as typeof finallyFieldProps;
+      finallyFieldProps = { ...finallyFieldProps, parentValue, formValues: formUtils.getValues(), setValue } as unknown as typeof finallyFieldProps;
       if (newProps) {
         const { wrapperClassName: wcnChanged, ...extraProps } = newProps;
         finallyFieldProps = { ...finallyFieldProps, ...extraProps };

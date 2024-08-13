@@ -32,7 +32,7 @@ const createFormField = (
     as?: string | ComponentType,
     labelAs?: string | ComponentType,
 ): JSX.Element => {
-    const { label: lbl, tag, type, invalid, validations, parentValue, formValues, ...rest } = config;
+    const { label: lbl, tag, type, invalid, validations, parentValue, formValues, setValue, ...rest } = config;
     let label = lbl;
     let mainElement = as;
 
@@ -136,6 +136,7 @@ const createFormField = (
         (inputProps as ComponentProps<typeof RequestWrapper>).Child = mainElement;
         (inputProps as ComponentProps<typeof RequestWrapper>).parentValue = parentValue;
         (inputProps as ComponentProps<typeof RequestWrapper>).formValues = formValues;
+        (inputProps as ComponentProps<typeof RequestWrapper>).setValue = setValue;
         mainElement = RequestWrapper;
     }
 
