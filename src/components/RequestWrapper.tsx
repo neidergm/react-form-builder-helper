@@ -67,21 +67,23 @@ const RequestWrapper = forwardRef(({
 
     useEffect(() => {
         if (request) {
-            const dataForMapper = { ...(request.otherValuesToMap || {}), ...formValues, ...(parentValue || {}) }
-
             if (parentValue) {
                 if (clearValueWhenParentChange.current) props.onChange("")
 
                 if (Object.values(parentValue as I_JsonObject).every(i => ["", undefined, null].includes(i))) {
                     setData({})
+                    clearValueWhenParentChange.current = false
                 } else {
                     if (!clearValueWhenParentChange.current) clearValueWhenParentChange.current = true
+                    const dataForMapper = { ...(request.otherValuesToMap || {}), ...formValues, ...(parentValue || {}) }
+                    getData(requestParamsMapper(request, dataForMapper));
                 }
+            } else {
+                const dataForMapper = { ...(request.otherValuesToMap || {}), ...formValues }
+                getData(requestParamsMapper(request, dataForMapper));
             }
-            getData(requestParamsMapper(request, dataForMapper));
         }
     }, Object.values(parentValue || {}))
-    // }, [parentValue])
 
     return <Child {...props} {...data} ref={ref} />
 }

@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { DynamicFormComponent } from './FormFieldsComponentsForStory';
+import { FieldTypes } from '../interfaces/fields.interface';
 
 const meta = {
     title: 'Form/Dynamic Form',
@@ -150,7 +151,7 @@ export const DisabledOnFetchDefaultValues: Story = {
             },
             {
                 label: "Select with request",
-                name: "select",
+                name: "selectrequest",
                 tag: "select",
                 type: "simple",
                 options: null,
@@ -159,11 +160,12 @@ export const DisabledOnFetchDefaultValues: Story = {
                 },
                 dependsOn: "text",
                 doRequest() {
-                    return new Promise((resolve) =>{
+                    return new Promise((resolve) => {
                         console.log("Fetching")
                         setTimeout(() => resolve({ options: ["Colombia", "Argentina", "Chile", "Ecuador", "Mexico"] }), 100)
-                 }   )
+                    })
                 },
+                // defaultValue: "Colombia",
                 request: {
                     url: "https://example.api/countries",
                     method: "GET",
@@ -178,11 +180,11 @@ export const DisabledOnFetchDefaultValues: Story = {
             console.log(d)
         },
         disableOnLoading: true,
-        defaultValues: ()=>{
-            return new Promise((resolve)=>{
-                setTimeout(()=>{
-                    resolve({"select": "opcion1", "text": "Developer"})
-                }, 3000)
+        defaultValues: () => {
+            return new Promise((resolve) => {
+                setTimeout(() => {
+                    resolve({ "select": "opcion1", "text": "Developer", selectrequest: "Colombia" })
+                }, 100)
             })
         }
     },
