@@ -41,7 +41,7 @@ const RequestWrapper = forwardRef(({
             loading.current.waitingCallback = () => getData(req)
             return;
         }
-        setData({ options: null, placeholder: loadingText || "Loading..." })
+        setData({ placeholder: loadingText || "Loading..." })
         const { url, method, params, mapOptions } = req;
 
         loading.current.isLoading = true

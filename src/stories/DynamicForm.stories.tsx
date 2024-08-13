@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { DynamicFormComponent } from './FormFieldsComponentsForStory';
-import { FieldTypes } from '../interfaces/fields.interface';
 
 const meta = {
     title: 'Form/Dynamic Form',
