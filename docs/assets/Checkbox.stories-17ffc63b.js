@@ -1,0 +1,3 @@
+import{c as s,C as a,g as c}from"./FormFieldsComponentsForStory-774496c2.js";import"./jsx-runtime-1438501e.js";import"./index-f46741a2.js";const m={...s,title:"Field tags/Checkbox",component:a,parameters:{controls:{sort:"requiredFirst"}},argTypes:{tag:{control:"inline-radio",options:["checkbox"]},type:{control:"inline-radio",options:["simple"]},defaultValue:{control:"boolean"}},args:{tag:"checkbox"},tags:["autodocs"]},o={args:c("simple","checkbox")};var e,r,t;o.parameters={...o.parameters,docs:{...(e=o.parameters)==null?void 0:e.docs,source:{originalSource:`{
+  args: getSimpleStoryArgs<TC>('simple', "checkbox")
+}`,...(t=(r=o.parameters)==null?void 0:r.docs)==null?void 0:t.source}}};const l=["Simple"];export{o as Simple,l as __namedExportsOrder,m as default};

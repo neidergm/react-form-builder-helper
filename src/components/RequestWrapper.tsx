@@ -80,8 +80,8 @@ const RequestWrapper = forwardRef(({
             }
             getData(requestParamsMapper(request, dataForMapper));
         }
-        // }, Object.values(parentValue || {}))
-    }, [parentValue])
+    }, Object.values(parentValue || {}))
+    // }, [parentValue])
 
     return <Child {...props} {...data} ref={ref} />
 }

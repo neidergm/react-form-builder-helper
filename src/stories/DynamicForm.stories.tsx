@@ -147,6 +147,28 @@ export const DisabledOnFetchDefaultValues: Story = {
                 validations: {
                     required: true
                 }
+            },
+            {
+                label: "Select with request",
+                name: "select",
+                tag: "select",
+                type: "simple",
+                options: null,
+                validations: {
+                    required: true
+                },
+                dependsOn: "text",
+                doRequest() {
+                    return new Promise((resolve) =>{
+                        console.log("Fetching")
+                        setTimeout(() => resolve({ options: ["Colombia", "Argentina", "Chile", "Ecuador", "Mexico"] }), 100)
+                 }   )
+                },
+                request: {
+                    url: "https://example.api/countries",
+                    method: "GET",
+                    params: {}
+                },
             }
         ],
         onSubmit: (d) => {

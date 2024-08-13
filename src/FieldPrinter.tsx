@@ -61,6 +61,11 @@ const FieldPrinter = <T extends Record<string, unknown>>({
   if (disabled) finallyFieldProps.disabled = disabled;
 
   const component = (parentValue?: I_JsonObject, newProps?: I_JsonObject) => {
+
+    if(form.formState.isLoading && finallyFieldProps.request){
+      delete finallyFieldProps.request;
+    }
+
     if (parentValue) {
       finallyFieldProps = { ...finallyFieldProps, parentValue, formValues: formUtils.getValues() } as unknown as typeof finallyFieldProps;
       if (newProps) {
