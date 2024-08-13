@@ -62,8 +62,9 @@ const FieldPrinter = <T extends Record<string, unknown>>({
 
   const component = (parentValue?: I_JsonObject, newProps?: I_JsonObject) => {
 
-    if(form.formState.isLoading && finallyFieldProps.request){
+    if(form.formState.isLoading && finallyFieldProps.request && dependsOn) {
       delete finallyFieldProps.request;
+      delete finallyFieldProps.doRequest;
     }
 
     if (parentValue) {
